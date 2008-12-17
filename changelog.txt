@@ -1,0 +1,19 @@
+[*] Correction du fait que le dernier steamid du fichier adminlist.txt n'était pas trouvé
+
+[*] Correction de la réponse à la commande "cssm_help" sans argument
+
+[*] 2 autres corrections dont j'ai perdu la description...
+
+[*] Ajout d'une variable "cssmatch_report" pour déterminer si un rapport doit être généré en fin de match
+Cette variable servira uniquement à désactiver les rapports en cas de problème avec la génération des rapports, comme ça a été le cas récemment.
+
+[*] Fichier de configurations :
+	- ajout d'une variable "cssmatch_kniferound_money" pour déterminer la quantité d'argent disponible au début des rounds au couteau ( http://cssmatch.frenchboard.com/suggestions-f4/argent-lors-du-round-au-couteau-t104.htm#722 )
+
+[*] Fichiers de langage :
+	- ajout d'une description pour la variable cssmatch_language
+	- ajout d'une description pour la commande cssm_adminlist
+	- ajout d'une description pour la variable cssmatch_report
+	- ajout d'une description pour la variable cssmatch_kniferound_money
+	
+[*] Ajout de la traduction allemande, merci atrx ;-)

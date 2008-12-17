@@ -1,0 +1,23 @@
+﻿// CSSMatch
+// Nicolous
+// http://code.google.com/p/cssmatch-plugin/
+
+// Please ONLY TRANSLATE the sentences between QUOTES
+//
+// ABOUT THE KEYWORDS prefixed by $ 
+//	YOU CAN MOVE these keywords, but YOU MUST NOT MODIFY the name of the keyword
+//
+// Keywords's message suffixed by _popup are the only which support \n escape sequence
+//
+// Tchat message can use some colors :
+//  (Alt+01) = orange
+//  (Alt+03) = light green or team color
+//  (Alt+04) = green
+
+[French]
+
+// Match
+match_in_progress =				"Un match est déjà en cours..."
+match_not_in_progress =			"Il n'y a aucun match en cours..."
+match_round_popup =				"Round $current / $total\n$team1 : $score1\n$team2 : $score2"
+match_retag =					"Changement de situation, redétection des tags..."

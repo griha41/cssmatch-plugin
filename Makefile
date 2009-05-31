@@ -21,10 +21,10 @@
 #
 
 # Dossier de travail
-export BASE_DIR = /home/nico/Desktop/cssmatch
+BASE_DIR = ../../..
 
 # Compilateur
-export CXX = g++-3.4
+CXX = g++-3.4
 
 # Code source du SDK de VALVE
 SDK_SRC_DIR = $(BASE_DIR)/src
@@ -37,7 +37,7 @@ RELEASE_DIR = Release/linux
 DEBUG_DIR = Debug/linux
 
 # Dossier contenant les librairies dynamiques
-SRCDS_BIN_DIR = $(BASE_DIR)/bin
+SRCDS_BIN_DIR = bin
 
 # Dossier contenant les librairies statiques
 SRCDS_A_DIR = $(SDK_SRC_DIR)/linux_sdk
@@ -93,11 +93,12 @@ SRC= $(wildcard *.cpp) $(wildcard */*.cpp) $(wildcard */*/*.cpp)
 
 LINK_SO =	$(SRCDS_BIN_DIR)/tier0_i486.so \
 			$(SRCDS_BIN_DIR)/vstdlib_i486.so
-LINK_A = 	$(SRCDS_A_DIR)/mathlib_i486.a \
-			$(SRCDS_A_DIR)/choreoobjects_i486.a \
-			$(SRCDS_A_DIR)/tier1_i486.a
+LINK_A = 	$(SRCDS_A_DIR)/tier1_i486.a \
+			$(SRCDS_A_DIR)/mathlib_i486.a \
+			$(SRCDS_A_DIR)/choreoobjects_i486.a
+			
 
-LINK = -lm -ldl $(LINK_SO) $(LINK_A)
+LINK = -lm -ldl $(LINK_A) $(LINK_SO)
 
 # #############
 # Bibliothèques à inclure 

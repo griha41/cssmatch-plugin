@@ -50,6 +50,8 @@ void Api::configExecute(const string & configPath)
 
 	// Insertion de la commande
 	engine->ServerCommand(commande.c_str());
+	engine->ServerCommand("\n"); // Pour éviter un comportement bizarre avec la dernière commande du fichier
+								// (comportement engendré par les deux engine->ServerExecute() qui suivent
 
 	// Exécution des commandes en attente
 	engine->ServerExecute();

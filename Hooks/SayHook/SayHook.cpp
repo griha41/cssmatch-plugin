@@ -210,7 +210,7 @@ void SayHook::cmdTeamct(int indexJoueur, std::istringstream & in) throw(CSSMatch
 
 					map<string,string> parametres;
 					parametres["$team"] = nouvTag;
-					Messages::sayMsg(0,"admin_new_t_team_name",parametres);
+					Messages::sayMsg(0,"admin_new_ct_team_name",parametres);
 
 					match->formateHostname();
 				}

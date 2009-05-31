@@ -333,6 +333,47 @@ void Messages::clientPrintTell(edict_t * pEntity,const string & message)
 	catch(const CSSMatchApiException & e){}
 }
 
+void Messages::clientPrintMsgI18n(const std::string & message, const std::map<std::string, std::string> & parametres)
+{
+	CSSMatch * cssmatch = CSSMatch::getInstance();
+	int maxplayers = cssmatch->getMaxPlayers();
+
+	for (int i=1;i<=maxplayers;i++)
+		clientPrintTellI18n(i,message,parametres);
+}
+
+void Messages::clientPrintTellI18n(int indexJoueur, const std::string & message,
+						 const std::map<std::string, std::string> & parametres)
+{
+	CSSMatch * cssmatch = CSSMatch::getInstance();
+	IVEngineServer * engine = cssmatch->getEngine();
+
+	try
+	{
+		edict_t * pEntity = Api::getPEntityFromIndex(indexJoueur);
+		IPlayerInfo * pInfo = Api::getIPlayerInfoFromEntity(pEntity);
+
+		if (pInfo->IsConnected() && (! pInfo->IsFakeClient()))
+		{
+			string traduction;
+			try
+			{
+				//string nomLocale = I18n::getNomLocale(engine->GetClientConVarValue(indexJoueur,"cl_language"));
+				string nomLocale = engine->GetClientConVarValue(indexJoueur,"cl_language");
+				traduction = I18n::getInstance()->getMessage(nomLocale,message,parametres) + "\n";
+			}
+			catch(const CSSMatchI18nException & e)
+			{
+				Api::reporteException(e,__FILE__,__LINE__);
+			}
+
+			const char * msg = traduction.c_str();
+			Messages::clientPrintTell(pEntity,msg);
+		}
+	}
+	catch(const CSSMatchApiException & e){}
+}
+
 void Messages::rconPrintTell(const string & message, const map<string, string> & parametres)
 {
 	string traduction;

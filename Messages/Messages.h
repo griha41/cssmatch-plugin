@@ -196,6 +196,25 @@ namespace Messages
 	 */
 	void clientPrintTell(edict_t * pEntity,const std::string & message);
 
+	/** Message global affiché dans la console d'un joueur
+	 *
+	 * @param message Le message à afficher
+	 * @param parametres Les paramètres du messages à afficher
+	 * @see I18n
+	 */
+	void clientPrintMsgI18n(const std::string & message,
+		const std::map<std::string, std::string> & parametres = I18n::SANS_PARAMETRE);
+
+	/** Message privé affiché dans la console d'un joueur
+	 *
+	 * @param indexJoueur Index du joueur destinataire
+	 * @param message Le message à afficher
+	 * @param parametres Les paramètres du messages à afficher
+	 * @see I18n
+	 */
+	void clientPrintTellI18n(int indexJoueur, const std::string & message,
+		const std::map<std::string, std::string> & parametres = I18n::SANS_PARAMETRE);
+
 	/** Message affiché dans la console d'un joueur accédant à la console par RCON
 	 *
 	 * @param message Le nom du message à afficher

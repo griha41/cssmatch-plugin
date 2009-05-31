@@ -464,7 +464,7 @@ void Match::finMatch(edict_t * pEntity)
 	Messages::sayPopup("match_end_popup",6,parametresAnnonce);
 
 	// Envoi de l'annonce dans la console de tous les joueurs
-	Messages::clientPrintMsg("match_end_popup");
+	Messages::clientPrintMsgI18n("match_end_popup",parametresAnnonce);
 
 	map<string,string> parametres;
 	if (scoreTeam1 > scoreTeam2)
@@ -740,7 +740,7 @@ void Match::finManche()
 		Messages::sayPopup("match_end_manche_popup",6,parametres);
 
 		// Envoie de l'annonce dans la console de tous les joueurs
-		Messages::clientPrintMsg("match_end_manche_popup");
+		Messages::clientPrintMsgI18n("match_end_manche_popup",parametres);
 
 
 		// On lance la prochaine phase en léger décalage avec le swap

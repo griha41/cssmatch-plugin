@@ -46,10 +46,10 @@ EnregistrementTV::EnregistrementTV(const string & fichierSansPathSansExtension) 
 	IFileSystem * filesystem = cssmatch->getFileSystem();
 
 	// Est-ce que SourceTV est prête ?
-	if (ConVars::tv_enable == NULL)
+	/*if (ConVars::tv_enable == NULL)
 		throw CSSMatchTVException("error_tv_enable_not_found");
 	if (! ConVars::tv_enable->GetBool())
-		throw CSSMatchTVException("error_tv_enable_0");
+		throw CSSMatchTVException("error_tv_enable_0");*/
 	if (! Api::hltvPresente())
 		throw CSSMatchTVException("error_tv_not_connected");
 

@@ -303,18 +303,18 @@ void EventListener::player_disconnect(IGameEvent * event)
 					parametres["$reason"] = motif;
 					Messages::sayMsg(indexJoueur,"player_leave_game",parametres);
 
-					if (Api::getPlayerCount(TEAM_ALL) > 0)
-					{
+					//if (Api::getPlayerCount(TEAM_ALL) > 0)
+					//{
 						// Le mot de passe est rappellé à tous les joueurs
 						map<string,string> parametresPass;
 						parametresPass["$password"] = ConVars::cssmatch_password.GetString();
 						cssmatch->getTimers()->addTimer(Timer(2.0f,Messages::timerSayMsg,"match_password_remember",parametresPass));
-					}
-					else
-					{
-						// Temporaire : évite que SourceTv continue à enregistrer le match si tous les joueurs sont partis
-						match->finMatch();
-					}
+					//}
+					//else
+					//{
+					//	// Temporaire : évite que SourceTv continue à enregistrer le match si tous les joueurs sont partis
+					//	match->finMatch();
+					//}
 				}
 			}
 		}

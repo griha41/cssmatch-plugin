@@ -1,0 +1,10 @@
+// One line commentary
+
+[Configuration Name] // This header is required
+
+"Data Name" = "The Data" // The quotes are not required, 
+							// but this is the only way to avoid an ambiguity in relation with a "=" character
+
+"This "Data Name" is valid" = "Others data"
+
+// Except error, CfgFile is not disturbed by the UTF-n encoding (with or without BOM)

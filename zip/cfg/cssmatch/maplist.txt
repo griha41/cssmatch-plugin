@@ -1,0 +1,28 @@
+// CSSMatch
+// Nicolous
+// http://code.google.com/p/cssmatch-plugin-en/
+
+// Français ? German ? http://www.cssmatch.com/translations/
+
+// ======================================================
+// List of the maps which are available in the admin menu
+// ======================================================
+// For more informations : http://code.google.com/p/cssmatch-plugin-en/wiki/maplist .
+
+cpl_fire
+cpl_strike
+de_aztec
+de_cbble
+de_chateau
+de_contra
+de_cpl_mill
+de_dust
+de_dust2
+de_inferno
+de_nuke
+de_piranesi
+de_port
+de_prodigy
+de_tides
+de_train
+de_villa

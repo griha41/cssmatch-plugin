@@ -1,0 +1,184 @@
+﻿// CSSMatch
+// Nicolous
+// http://code.google.com/p/cssmatch-plugin-en/
+
+// Please ONLY TRANSLATE the sentences between QUOTES
+//
+// ABOUT THE KEYWORDS prefixed by $ 
+//	YOU CAN MOVE these keywords, but YOU MUST NOT MODIFY the name of the keyword
+//
+// Keywords's message suffixed by _popup are the only which supports \n escape sequences
+//
+// Chat messages can use some colors :
+//  (Alt+01) = orange
+//  (Alt+03) = light green or team color
+//  (Alt+04) = green
+
+[English]
+
+// ConCommands
+cssm_help =						"Lists cssmatch RCON commands in console"
+cssm_start =					"cssm_start [optional : config file] : Starts match"
+cssm_stop =						"cssm_stop : Stops match"
+cssm_retag =					"cssm_retag : New team's name detection"
+cssm_go =						"cssm_go : Force !go of each team during warmup"
+cssm_restartmanche =			"cssm_restartmanche : Restarts half"
+cssm_restartround =				"cssm_restartround : Restarts round"
+cssm_adminlist =				"cssm_adminlist : Lists all current referees"
+cssm_grant =					"cssm_grant steamID : Adds an referee for one map"
+cssm_revoke =					"cssm_revoke steamID : Revoke an umpire during one map"
+cssm_teamt =					"cssm_teamt terrorist team name : Edit the terrorist's team name"
+cssm_teamct =					"cssm_teamct counter-terrorist team name : Edit the counter-terrorist's team name"
+cssm_swap =						"cssm_swap ID : Player swap"
+cssm_spec =						"cssm_spec ID : Move player to spectactors"
+
+// ConVars
+cssmatch_version =				"CSSMatch : Plugin version"
+cssmatch_advanced =				"CSSMatch : "1" = full server administration menu, "0" = only war administration menu"
+cssmatch_language =				"CSSMatch : Default language of CSSMatch (e.g. : "english" will use the file  cfg/cssmatch/languages/english.txt)"
+cssmatch_report = 				"CSSMatch : "1" = After each match a new report file will be created, "0" = No report file will be created"
+cssmatch_kniferound =			"CSSMatch : "1" = Enable kniferound, "0" = off"
+cssmatch_kniferound_money =		"CSSMatch : Amount of money available for the kniferound"
+cssmatch_kniferound_allows_c4 =	"CSSMatch : "1" = Enable bomb planting during kniferound, "0" = off"
+cssmatch_end_kniferound =		"CSSMatch : Time (seconds) between end of kniferound and beginning of warmup"
+cssmatch_rounds =				"CSSMatch : Number of rounds per half"
+cssmatch_sets =					"CSSMatch : Number of halfs per match"
+cssmatch_end_set =				"CSSMatch : Time (seconds) between end of half and next one (warmup, new half or end of match)"
+cssmatch_sourcetv =				"CSSMatch : "1" = Starts sourceTV record if it's on, "0" = off"
+cssmatch_sourcetv_path =		"CSSMatch : Target file that points to sourceTV records files"
+cssmatch_warmup_time =			"CSSMatch : Time limit (minutes) for warmup ("0" = off)"
+cssmatch_hostname =				"CSSMatch : Hostname during the match (%s change to team's names)"
+cssmatch_password =				"CSSMatch : Server password during the match"
+cssmatch_default_config =		"CSSMatch : Default server config file"
+
+// Warnings
+sv_alltalk =					"AllTalk is On"
+sv_cheats =						"Sv_Cheats are On"
+tv_enable =						"The map will restart to connect the SourceTV to the server"
+
+// Knife Round
+kniferound_announcement =		"KnifeRound ! GO ! GO ! GO !"
+kniferound_c4 =					"Planting the bomb during kniferound is forbidden !"
+kniferound_restarts =			"3 restarts, then kniferound starts !"
+kniferound_winner =				"Kniferound won by team $team !"
+kniferound_dead_time =			"$team has $time secondes to choose a side, the other team is waiting as spectactor."
+
+// Warmup
+warmup_announcement =			"Warmup !"
+warmup_c4 =						"Planting the bomb during warmup is forbidden !"
+warmup_ready =					"$team is ready"
+warmup_already_ready =			"$team already announced as ready"
+warmup_all_ready =				"All teams are ready to go !"
+warmup_disable =				"This feature can only be used during warmup"
+warmup_end =					"End of warmup !"
+
+// Match
+match_in_progress =				"Match already running..."
+match_not_in_progress =			"No match running..."
+match_round_popup =				"Round $current / $total\n$team1 : $score1\n$team2 : $score2"
+match_retag =					"A change has occured, detecting new team's name..."
+match_plugin_list =				"Installed plugin's list and status :"
+match_password_popup =			"Server password : $password"
+match_password_remember =		"REMINDER ! Server password is $password"
+match_started_by =				"Match started by $admin..."
+match_started =					"Match started..."
+match_name =					"$team1 VS $team2"
+match_config_error =			"Error : config file has no match information !"
+match_scores =					"Scores :"
+match_scores_team =				"$team : $score"
+match_winner =					"Winning team : $team"
+match_no_winner =				"Winning team : none"
+match_dead_time =				"$time seconds to make screenshots !"
+match_please_changelevel =		"Change map to restore default config"
+match_start_manche =			"Starting half $current / $total"
+match_restarts =				"3 restarts, then GO ! GO ! GO !"
+match_end_manche_popup =		"End of half $current !\n\nScores :\n$team1 : $score1\n$team2 : $score2"
+match_end_current_manche =		"Half $current complete !"
+match_end =						"End of match !"
+match_end_popup =				"End of match !\n\nScores :\n$team1 : $score1\n$team2 : $score2"
+
+// Administration
+admin_adminlist =				"Admin's steamID list :"
+admin_new_admin =				"SteamID $steamid is now referee for one map"
+admin_is_already_admin =		"SteamID $steamid is referee"
+admin_old_admin =				"SteamID $steamid is no more referee"
+admin_is_not_admin =			"SteamID $steamid is not referee"
+admin_new_t_team_name =			"New terrorist's team name $team"
+admin_new_ct_team_name =		"New counter-terrorist's team name $team"
+admin_spectator_player =		"This player is a spectactor"
+admin_map_not_found =			"Map $map can't be loaded !"
+admin_swap =					"$username swapped by $admin"
+admin_is_not_connected =		"$username disconnected"
+admin_spec =					"$admin moved $username to spectactor"
+admin_kick =					"Kicked by admin"
+admin_kick_by =					"$username kicked by $admin"
+admin_ban =						"Banned by admin"
+admin_temporaly_ban =			"$username temporarily banned by $admin"
+admin_permanently_ban =			"$username banned by $admin"	
+admin_new_tag =					"Please specify new tag"
+admin_please_specify_tag =		"Please add new clantag"
+admin_round_restarted_by =		"Round has been restarted by $admin"
+admin_round_restarted =			"Round has been restarted by admin"
+admin_manche_restarted_by =		"half has been restarted by $admin"
+admin_manche_restarted =		"Half has been restarted by admin"
+admin_unable_to_force_go =		"You cannot force !go, warmup has not begun"
+admin_no_warmup_started	=		"Warmup has not begun"
+admin_all_teams_say_ready_by =	"Both team have been marked ready by $admin"
+admin_all_teams_say_ready =		"Both team have been marked ready by admin"
+
+// Menus
+menu_play_kniferound =			"CSSMatch : Do you want to play Kniferound ?"
+menu_yes =						"Yes"
+menu_no	=						"No"
+menu_back =						"Back"
+menu_more =						"Next"
+menu_play_warmup =				"CSSMatch : Will a warmup be played ?"
+menu_alltalk =					"$action alltalk"
+menu_enable =					"Enable"
+menu_disable =					"Disable"
+menu_no_match =					"CSSMatch : No match running"
+menu_start =					"Start match"
+menu_kniferound =				"CSSMatch : Start kniferound"
+menu_restart =					"Restart"
+menu_stop =						"Stop match"
+menu_retag =					"New team's name detection"
+menu_warmup =					"CSSMatch : Warmup"
+menu_go =						"Enforce !go for all teams"
+menu_match =					"CSSMatch : Match"
+menu_restart_manche =			"Restart half"
+menu_config =					"CSSMatch : Select config"
+menu_administration =			"CSSMatch : Admin menu"
+menu_changelevel =				"Change map"
+menu_swap =						"Swap a player"
+menu_spec =						"Move player to spectactor"
+menu_kick =						"Kick a player"
+menu_ban =						"Ban a player"
+menu_map =						"CSSMatch : Choose map"
+menu_player =					"CSSMatch : Choose player"
+menu_ban_time =					"CSSMatch : Choose ban time"
+menu_5_min =					"5 min"
+menu_1_h =						"1 h"
+menu_permanent =				"Permanent"
+menu_administration_options =	"Administration options"
+menu_cant_display =				"This part of the menu cannot be displayed ! Please inform plugin author on $site !"
+menu_empty =					"This list is empty :-("
+menu_close =					"Close"
+
+// Errors
+error_default.cfg =				"default.cfg not found, please specify a file name"
+error_file_not_found =			"File $file cannot be found"
+error_command_not_found =		"Command "$command" cannot be found"
+error_cmd =						"Error using command"
+error_invalid_player =			"Invalid player"
+error_general =					"Error has occured, please contact plugin author on $site"
+error_tv_not_connected =		"SourceTV record cannot start because it's not connected on server"
+
+// Players
+player_join_game =				"$username joins the game"
+player_match_hosted_popup =		"Match is running on this server !\n \nIf you're not one of the people taking part, please leave"
+player_no_swap_in_match =		"Only CSSMatch and admins can swap players"
+player_you_not_admin =			"You're not an admin !"
+player_leave_game =				"$username left game ! (reason : $reason)"
+player_username =				"Player nickname"
+player_nobody =					"Nobody"
+player_thetime =				"$hoursh$minutes"

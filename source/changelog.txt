@@ -1,9 +1,0 @@
-* Correction d'une incompatibilité avec ZombieMod : http://forum.mondialservers.com/sujet-21733,mon-serveur-est-en-time-out-en-ne-veut-pas-repartir.htm
-* Correction du message affiché par la commande !teamct : http://code.google.com/p/cssmatch-plugin/issues/detail?id=22
-* Correction d'un bug sur l'exécution des dernières lignes des fichiers de configuration : http://code.google.com/p/cssmatch-plugin/issues/detail?id=23
-* Il est maintenant possible de lancer des enregistrements SourceTv si tv_enable est sur 0. L'important est que SourceTv soit connectée au serveur : http://www.cssmatch.com/forums/viewtopic.php?f=22&t=52
- => Les traductions suivants sont devenus inutiles dans les fichiers de langage : "error_tv_enable_not_found" et "error_tv_enable_0"
-* Les mots "match_end_manche_popup" et "match_end_popup" apparaissaient dans la console des joueurs, respectivement à la fin d'une manche et à la fin du match.
- => Dorénavant ce sera bien la traduction correspondante qui sera affichées, c'est-à-dire le même message que les popup (~les scores)
-* Ajout d'un arrêt automatique du match si le dernier joueur présent quitte le serveur (A TESTER)
- =>  C'est un ajustement temporaire pour éviter que SourceTv ne continue d'enregistrer des heures entières alors qu'il n'y a plus personne sur le serveur. Ca ne résoud pas le problème du temps mort illimité en fin de match s'il n'y a plus personne sur le serveur.

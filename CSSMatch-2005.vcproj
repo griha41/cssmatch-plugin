@@ -29,8 +29,8 @@
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
-				CommandLine="attrib -r ..\..\..\bin\serverplugin_empty.dll&#x0D;&#x0A;copy &quot;$(TargetPath)&quot; ..\..\..\bin\serverplugin_empty.dll&#x0D;&#x0A;"
-				Outputs="..\..\..\bin\serverplugin_empty.dll"
+				CommandLine="attrib -r ..\zip\addons\cssmatch.dll&#x0D;&#x0A;"
+				Outputs="..\zip\addons\cssmatch.dll"
 			/>
 			<Tool
 				Name="VCXMLDataGeneratorTool"
@@ -50,7 +50,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\..\public,..\..\public\tier0,..\..\public\tier1,..\..\dlls,..\..\game_shared"
+				AdditionalIncludeDirectories="..\SDKEP1\public,..\SDKEP1\public\tier0,..\SDKEP1\public\tier1,..\SDKEP1\dlls,..\SDKEP1\game_shared"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;serverplugin_emptyONLY"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
@@ -79,10 +79,10 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="odbc32.lib odbccp32.lib"
-				OutputFile="C:\Jeux\Steam\SteamApps\nicoloso\counter-strike source\cstrike\addons\"
+				OutputFile="..\zip\addons\cssmatch.dll"
 				LinkIncremental="2"
 				SuppressStartupBanner="true"
-				AdditionalLibraryDirectories="..\lib\public,..\lib\common"
+				AdditionalLibraryDirectories="..\SDK1\lib\public,SDK1\lib\common"
 				IgnoreDefaultLibraryNames="LIBC,libcmt"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile=".\Debug/serverplugin_empty.pdb"
@@ -132,8 +132,8 @@
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
-				CommandLine="attrib -r ..\..\..\bin\serverplugin_empty.dll&#x0D;&#x0A;copy &quot;$(TargetPath)&quot; ..\..\..\bin\serverplugin_empty.dll&#x0D;&#x0A;"
-				Outputs="..\..\..\bin\serverplugin_empty.dll"
+				CommandLine="attrib -r zip\addons\cssmatch.dll&#x0D;&#x0A;"
+				Outputs="zip\addons\cssmatch.dll"
 			/>
 			<Tool
 				Name="VCXMLDataGeneratorTool"
@@ -156,7 +156,7 @@
 				InlineFunctionExpansion="2"
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
-				AdditionalIncludeDirectories="..\..\public,..\..\public\tier0,..\..\public\tier1,..\..\dlls,..\..\game_shared"
+				AdditionalIncludeDirectories="..\SDKEP1\public,..\SDKEP1\public\tier0,..\SDKEP1\public\tier1,..\SDKEP1\dlls,..\SDKEP1\game_shared"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;serverplugin_emptyONLY"
 				StringPooling="true"
 				RuntimeLibrary="0"
@@ -186,10 +186,10 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="odbc32.lib odbccp32.lib"
-				OutputFile="C:\Jeux\Steam\SteamApps\nicoloso\counter-strike source\cstrike\addons\cssmatch.dll"
+				OutputFile="zip\addons\cssmatch.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
-				AdditionalLibraryDirectories="..\lib\public,..\lib\common"
+				AdditionalLibraryDirectories="..\SDK1\lib\public,SDK1\lib\common"
 				IgnoreDefaultLibraryNames="libcmtd.lib"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile=".\Release/serverplugin_empty.pdb"
@@ -233,30 +233,8 @@
 			Filter="cpp;c;cxx;rc;def;r;odl;idl;hpj;bat"
 			>
 			<File
-				RelativePath="..\..\public\tier0\memoverride.cpp"
+				RelativePath="..\SDKEP1\public\tier0\memoverride.cpp"
 				>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="0"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_MBCS;serverplugin_emptyONLY;$(NoInherit)"
-						BasicRuntimeChecks="3"
-						BrowseInformation="1"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="2"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_MBCS;serverplugin_emptyONLY;$(NoInherit)"
-					/>
-				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="serverplugin_convar.cpp"
@@ -286,140 +264,23 @@
 			</File>
 		</Filter>
 		<Filter
-			Name="Header Files"
-			Filter="h;hpp;hxx;hm;inl"
-			>
-			<File
-				RelativePath="..\..\Public\tier0\basetypes.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\public\Color.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\public\tier0\dbg.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\Public\eiface.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\Public\FileSystem.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\public\vstdlib\ICommandLine.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\public\igameevents.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\public\tier1\interface.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\public\dlls\iplayerinfo.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\public\engine\iserverplugin.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\public\tier1\KeyValues.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\public\tier0\mem.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\public\tier0\memalloc.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\public\tier0\memdbgon.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\public\vstdlib\strtools.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\public\tier1\utlbuffer.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\public\tier1\utlmemory.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\public\tier1\utlvector.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\public\vstdlib\vstdlib.h"
-				>
-			</File>
-		</Filter>
-		<Filter
 			Name="Link Libraries"
 			>
 			<File
-				RelativePath="..\..\lib\public\mathlib.lib"
+				RelativePath="..\SDKEP1\lib\public\mathlib.lib"
 				>
 			</File>
 			<File
-				RelativePath="..\..\lib\public\tier0.lib"
-				>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-						Description=""
-						CommandLine=""
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-						Description=""
-						CommandLine=""
-					/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath="..\..\lib\public\tier1.lib"
+				RelativePath="..\SDKEP1\lib\public\tier0.lib"
 				>
 			</File>
 			<File
-				RelativePath="..\..\lib\public\vstdlib.lib"
+				RelativePath="..\SDKEP1\lib\public\tier1.lib"
 				>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-						Description=""
-						CommandLine=""
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-						Description=""
-						CommandLine=""
-					/>
-				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\SDKEP1\lib\public\vstdlib.lib"
+				>
 			</File>
 		</Filter>
 		<Filter
@@ -796,14 +657,6 @@
 		</File>
 		<File
 			RelativePath=".\Makefile"
-			>
-		</File>
-		<File
-			RelativePath=".\Makefile_lin"
-			>
-		</File>
-		<File
-			RelativePath=".\Makefile_win"
 			>
 		</File>
 		<File

@@ -21,7 +21,7 @@
 #
 
 # Dossier de travail
-BASE_DIR = ../../..
+BASE_DIR = ../SDKEP1
 
 # Compilateur
 CXX = g++-3.4

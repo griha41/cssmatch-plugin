@@ -27,7 +27,7 @@ BASE_DIR = ../SDKEP1
 CXX = g++-3.4
 
 # Code source du SDK de VALVE
-SDK_SRC_DIR = $(BASE_DIR)/src
+SDK_SRC_DIR = $(BASE_DIR)
 SDK_PUBLIC_DIR = $(SDK_SRC_DIR)/public
 SDK_TIER0_DIR = $(SDK_SRC_DIR)/public/tier0
 SDK_TIER1_DIR = $(SDK_SRC_DIR)/tier1
@@ -40,7 +40,7 @@ DEBUG_DIR = Debug/linux
 SRCDS_BIN_DIR = bin
 
 # Dossier contenant les librairies statiques
-SRCDS_A_DIR = $(SDK_SRC_DIR)/linux_sdk
+SRCDS_A_DIR = $(SDK_SRC_DIR)/linux_sdk/lib
 
 ###############
 # Options de compilation
@@ -122,6 +122,9 @@ INCLUDE = 	-I. \
 # Nom du fichier binaire de sortie
 BINARY_NAME = cssmatch_$(ARCH)$(ARCH_BIN)
 
+# Dossier de sortie du fichier binaire
+BINARY_DIR = zip/addons
+
 # Détermination du dossier de sortie et rassemblement des options de compilation
 ifeq "$(DEBUG)" "true"
 	BIN_DIR = $(DEBUG_DIR)
@@ -144,7 +147,7 @@ all:
 	@$(MAKE) release
 
 release: $(OBJ_LINUX)
-	@$(CXX) $(INCLUDE) $(CFLAGS) $(OBJ_LINUX) $(LINK) -shared -o $(BIN_DIR)/$(BINARY_NAME)
+	@$(CXX) $(INCLUDE) $(CFLAGS) $(OBJ_LINUX) $(LINK) -shared -o $(BINARY_DIR)/$(BINARY_NAME)
 	
 debug:
 	@$(MAKE) all DEBUG=true

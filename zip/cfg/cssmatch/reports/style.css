@@ -1,0 +1,153 @@
+/*
+	CSSMatch
+	Nicolous
+	http://code.google.com/p/cssmatch-plugin-en/
+	
+	Français ? German ? http://www.cssmatch.com/translations/
+	
+	The style.css and cssmatch.xsl are used to display the reports.
+	To open the reports, open them with your Internet browser.
+	
+	These files don't need to stay on your game server. You can send them on your site. 
+	All your reports have to be placed in the same folder than the style.css and cssmatch.xsl to be displayed. 
+	Once your reports and these files sent on your Internet site, distribute the links corresponding to 
+	your reports : everybody can see them :-)
+
+*/
+
+body
+{
+	background-color : aliceblue;
+
+	margin : 4%;
+	padding : 4%;
+	padding-top : 0%;
+	margin-top: 0%;
+	
+	font-family: 'Trebuchet MS', Tahoma, Verdana, 'Times New Roman', Times, serif;
+	/*font-family: 'Comic Sans MS';*/
+}
+
+h1
+{
+	font-size : 110%;
+}
+
+h2
+{
+	font-size : 105%;
+}
+
+.cssmatch
+{
+	border : solid black 1px;
+}
+
+.sommaire
+{
+	/*float : left;*/
+	
+	margin : 1%;
+	margin-right : 10%;
+	margin-left : 0%;
+	
+	padding : 1%;
+	padding-top : 0%;
+	padding-bottom : 0%;
+}
+
+.match_entete
+{
+	margin-bottom : 8%;
+	
+	text-align : center;
+}
+
+.match_entete h1
+{
+	font-size : 200%;
+}
+
+.teams
+{
+	margin-left : 2%;
+	margin-right : 2%;
+	
+	margin-bottom: 10%;
+}
+
+.teams h1
+{
+	margin-bottom : 3%;
+}
+
+.teams .note
+{
+	font-size : small;
+	font-style : italic;
+}
+
+.team table
+{
+	border-collapse: collapse;
+	border : solid black 1px;
+}
+
+.team a
+{
+	text-decoration : none;
+}
+
+.team td
+{
+	border : solid black 1px;
+	text-align : center;
+	padding : 3px;
+}
+
+.team
+{
+	margin-bottom : 6%;
+}
+
+.joueurs, .spectateurs
+{
+	margin-left : 2%;
+	margin-right : 2%;
+	margin-bottom : 6%;
+}
+
+.joueur
+{
+	border : solid black 1px;
+	margin : 1px;
+	padding : 1px;
+}
+
+.joueur b
+{
+	margin-left : 5%;
+}
+
+.sourcetv
+{
+	margin-left : 2%;
+	margin-right : 2%;
+}
+
+.sourcetv b
+{
+	margin-left : 3%;
+}
+
+.plugin
+{
+	margin-top : 5%;
+	margin-left : 2%;
+	margin-right : 2%;
+}
+
+.plugin b
+{
+	margin-left : 3%;
+}

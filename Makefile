@@ -24,7 +24,7 @@
 BASE_DIR = ../SDKEP1
 
 # Compilateur
-CXX = g++-4.1
+CXX = g++-3.4
 
 # Code source du SDK de VALVE
 SDK_SRC_DIR = $(BASE_DIR)

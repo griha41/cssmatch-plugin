@@ -24,7 +24,7 @@
 BASE_DIR = ../SDKEP1
 
 # Compilateur
-CXX = g++-3.4
+CXX = g++-4.1
 
 # Code source du SDK de VALVE
 SDK_SRC_DIR = $(BASE_DIR)
@@ -78,6 +78,7 @@ OPT_FLAGS = -O3 \
 			-pipe
 DEBUG_FLAGS = 	-g \
 				-ggdb3 \
+				-O0 \
 				-D_DeBuG
 
 
@@ -131,8 +132,9 @@ ifeq "$(DEBUG)" "true"
 	CFLAGS = $(DEBUG_FLAGS)
 else
 	BIN_DIR = $(RELEASE_DIR)
-	CFLAGS = $(OPT_FLAGS) $(USER_CFLAGS) $(BASE_CFLAGS) $(ARCH_CFLAGS)
+	CFLAGS = $(OPT_FLAGS)
 endif
+CFLAGS += $(USER_CFLAGS) $(BASE_CFLAGS) $(ARCH_CFLAGS)
 
 # Règles de compilation des fichiers .cpp
 OBJ_LINUX := $(SRC:%.cpp=$(BIN_DIR)/%.o)

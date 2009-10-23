@@ -21,10 +21,11 @@
 #
 
 # Dossier de travail
-BASE_DIR = ../SDKEP1
+BASE_DIR = ../hl2sdk
 
 # Compilateur
-CXX = g++-3.4
+#CXX = g++-3.4
+CXX = g++-4.1
 
 # Code source du SDK de VALVE
 SDK_SRC_DIR = $(BASE_DIR)
@@ -40,7 +41,7 @@ DEBUG_DIR = Debug/linux
 SRCDS_BIN_DIR = bin
 
 # Dossier contenant les librairies statiques
-SRCDS_A_DIR = $(SDK_SRC_DIR)/linux_sdk/lib
+SRCDS_A_DIR = $(SDK_SRC_DIR)/linux_sdk
 
 ###############
 # Options de compilation

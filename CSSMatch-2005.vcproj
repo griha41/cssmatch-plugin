@@ -156,7 +156,7 @@
 				InlineFunctionExpansion="2"
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
-				AdditionalIncludeDirectories="..\SDKEP1\public,..\SDKEP1\public\tier0,..\SDKEP1\public\tier1,..\SDKEP1\dlls,..\SDKEP1\game_shared"
+				AdditionalIncludeDirectories="..\hl2sdk\public,..\hl2sdk\public\tier0,..\hl2sdk\public\tier1,..\hl2sdk\dlls,..\hl2sdk\game_shared"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;serverplugin_emptyONLY"
 				StringPooling="true"
 				RuntimeLibrary="0"
@@ -189,7 +189,7 @@
 				OutputFile="zip\addons\cssmatch.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
-				AdditionalLibraryDirectories="..\SDK1\lib\public,SDK1\lib\common"
+				AdditionalLibraryDirectories="..\hl2sdk\lib\public,..\hl2sdk\lib\common"
 				IgnoreDefaultLibraryNames="libcmtd.lib"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile=".\Release/serverplugin_empty.pdb"
@@ -233,7 +233,7 @@
 			Filter="cpp;c;cxx;rc;def;r;odl;idl;hpj;bat"
 			>
 			<File
-				RelativePath="..\SDKEP1\public\tier0\memoverride.cpp"
+				RelativePath="..\hl2sdk\public\tier0\memoverride.cpp"
 				>
 			</File>
 			<File
@@ -267,19 +267,19 @@
 			Name="Link Libraries"
 			>
 			<File
-				RelativePath="..\SDKEP1\lib\public\mathlib.lib"
+				RelativePath="..\hl2sdk\lib\public\mathlib.lib"
 				>
 			</File>
 			<File
-				RelativePath="..\SDKEP1\lib\public\tier0.lib"
+				RelativePath="..\hl2sdk\lib\public\tier0.lib"
 				>
 			</File>
 			<File
-				RelativePath="..\SDKEP1\lib\public\tier1.lib"
+				RelativePath="..\hl2sdk\lib\public\tier1.lib"
 				>
 			</File>
 			<File
-				RelativePath="..\SDKEP1\lib\public\vstdlib.lib"
+				RelativePath="..\hl2sdk\lib\public\vstdlib.lib"
 				>
 			</File>
 		</Filter>

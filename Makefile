@@ -141,6 +141,7 @@ CFLAGS += $(USER_CFLAGS) $(BASE_CFLAGS) $(ARCH_CFLAGS)
 OBJ_LINUX := $(SRC:%.cpp=$(BIN_DIR)/%.o)
 
 $(BIN_DIR)/%.o: %.cpp
+	@mkdir -p $(@D)
 	@echo "$< => $@"
 	@$(CXX) $(INCLUDE) $(CFLAGS) -o $@ -c $<
 
@@ -156,10 +157,5 @@ debug:
 	@$(MAKE) all DEBUG=true
 
 clean:
-	@rm -rf $(BIN_DIR)/*.o
-	@rm -rf $(BIN_DIR)/*/*.o
-	@rm -rf $(BIN_DIR)/*/*/*.o
-	@rm -rf *.lnk
-
-	@rm -rf $(BIN_DIR)/*/*/*.o
-	@rm -rf *.lnk
+	@rm -rf $(RELEASE_DIR)
+	@rm -rf $(DEBUG_DIR)	

@@ -1,0 +1,184 @@
+﻿// CSSMatch
+// Nicolous
+// http://code.google.com/p/cssmatch-plugin-en/
+
+// Por favor, SOLO TRADUCE las frases entre COMILLAS
+//
+// Sobre las palabras clave prefijadas por $ 
+//	Puedes mover estas palabras clave, Pero no debe modificar el nombre de la palabra clave
+//
+// Las palabras clave con sufijo _popup sonlas únicas que soportan \n en las secuencias de escape.
+//
+// Los mensajes de chat pueden llevar algunos colores:
+//  (Alt+01) = naranja
+//  (Alt+03) = verde claro o el color del equipo
+//  (Alt+04) = verde
+
+[Spanish]
+
+// ConCommands
+cssm_help =						"Lista cssmatch de comandos RCON en consola"
+cssm_start =					"cssm_start [Fichero de configuración opcional] : Iniciar War"
+cssm_stop =						"cssm_stop : Parar War"
+cssm_retag =					"cssm_retag : Detecta nuevos nombres de los equipos"
+cssm_go =						"cssm_go : Fuerza el !go para cada equipo durante el calentamiento"
+cssm_restartmanche =			"cssm_restartmanche : Reinicia un jueego"
+cssm_restartround =				"cssm_restartround : Reinicia una ronda"
+cssm_adminlist =				"cssm_adminlist : Lista de los administradores"
+cssm_grant =					"cssm_grant steamID : Añadir un administrador para un mapa"
+cssm_revoke =					"cssm_revoke steamID : Revocar un administrador en un mapa"
+cssm_teamt =					"cssm_teamt nombre equipo terrorista : Editar el nombre del equipo terrorista"
+cssm_teamct =					"cssm_teamct nombre equipo antiterrorista : Editar el nombre del equipo antiterrorista"
+cssm_swap =						"cssm_swap ID : Mover jugador"
+cssm_spec =						"cssm_spec ID : Mover jugador a espectador"
+
+// ConVars
+cssmatch_version =				"CSSMatch : Versión Plugin"
+cssmatch_advanced =				"CSSMatch : "1" = menú completo de administración de servidor, "0" = solo menú de administración de war"
+cssmatch_language =				"CSSMatch : Lenguaje por defecto de CSSMatch (e.j. : "spanish" se usará el archivo  cfg/cssmatch/languages/spanish.txt)"
+cssmatch_report = 				"CSSMatch : "1" = Después de cada War, un informe nuevo será creado, "0" = No se creará ningún informe"
+cssmatch_kniferound =			"CSSMatch : "1" = Habilita ronda de cuchillo, "0" = No"
+cssmatch_kniferound_money =		"CSSMatch : Cantidad de dinero disponible para la ronda de cuchillo"
+cssmatch_kniferound_allows_c4 =	"CSSMatch : "1" = Habilita plantar la bomba durante la ronda de cuchillo, "0" = No"
+cssmatch_end_kniferound =		"CSSMatch : Tiempo (en segundos) entre el final de la ronda de cuchillo y el principio del calentamiento"
+cssmatch_rounds =				"CSSMatch : Número de rondas por juego"
+cssmatch_sets =					"CSSMatch : Número de juegos por War"
+cssmatch_end_set =				"CSSMatch : Tiempo (en segundos) entre el final de la primera parte y el principio de la segunda"
+cssmatch_sourcetv =				"CSSMatch : "1" = La SourceTV empezará a grabar si está habilitada, "0" = No"
+cssmatch_sourcetv_path =		"CSSMatch : Archivo destino que apunta los registros de la sourceTV"
+cssmatch_warmup_time =			"CSSMatch : Tiempo límite (en minutos) para el calentamiento ("0" = No)"
+cssmatch_hostname =				"CSSMatch : El nombre del Host durante la War (%s cambia por le nombre de los equipos)"
+cssmatch_password =				"CSSMatch : Contraseña del servidor durante la War"
+cssmatch_default_config =		"CSSMatch : Archivo de configuración por defecto del Servidor"
+
+// Warnings
+sv_alltalk =					"Micros abiertos"
+sv_cheats =						"Sv_Cheats Activos"
+tv_enable =						"El mapa se reiniciará para conectar la SourceTV al servidor"
+
+// Knife Round
+kniferound_announcement =		"¡ Ronda Cuchillo ! ¡ GO ! ¡ GO ! ¡ GO !"
+kniferound_c4 =					"¡ Plantar la bomba durante la ronda de cuchillo está prohibido !"
+kniferound_restarts =			"¡ 3 reinicios, luego empieza la ronda a cuchillo !"
+kniferound_winner =				"¡ KnifeRound ganada por el equipo $team !"
+kniferound_dead_time =			"$team tiene $time segundos para elegir un lado, el otro equipo espera como espectador."
+
+// Warmup
+warmup_announcement =			"¡ Estrategia !"
+warmup_c4 =						"¡ Plantar la bomba durante la ronda de estrategia está prohibido !"
+warmup_ready =					"$team está listo"
+warmup_already_ready =			"$team ya avisó que está listo"
+warmup_all_ready =				"¡ Los dos equipos están listos para empezar !"
+warmup_disable =				"Esta función sólo puede utilizarse durante la estrategia"
+warmup_end =					"¡ Fin Estrategia !"
+
+// Match
+match_in_progress =				"La War ya está en proceso..."
+match_not_in_progress =			"La War no está en proceso..."
+match_round_popup =				"Ronda $current / $total\n$team1 : $score1\n$team2 : $score2"
+match_retag =					"Un cambio se ha producido, detección de un nuevo nombre del equipo..."
+match_plugin_list =				"Instalado Estado y Lista de Plugin :"
+match_password_popup =			"Contraseña Servidor : $password"
+match_password_remember =		"¡ RECUERDA ! La contraseña del servidor es $password"
+match_started_by =				"War iniciada por $admin..."
+match_started =					"La War comenzó..."
+match_name =					"$team1 VS $team2"
+match_config_error =			"¡ Error : el archivo de configuración no tiene la información de war !"
+match_scores =					"Scores :"
+match_scores_team =				"$team : $score"
+match_winner =					"Ganador : $team"
+match_no_winner =				"Ganador : Ninguno"
+match_dead_time =				"¡ $time segundos para hacer las capturas de pantalla !"
+match_please_changelevel =		"Cambiar mapa para restaurar la configuración por defecto"
+match_start_manche =			"Empezando acto $current / $total"
+match_restarts =				"3 reinicios, luego ¡ GO ! ¡ GO ! ¡ GO !"
+match_end_manche_popup =		"¡ Final del acto $current !\n\nScores :\n$team1 : $score1\n$team2 : $score2"
+match_end_current_manche =		"¡ Acto $current completado !"
+match_end =						"¡ Fin de la War !"
+match_end_popup =				"¡ Fin de la War !\n\nScores :\n$team1 : $score1\n$team2 : $score2"
+
+// Administration
+admin_adminlist =				"Lista Admins steamID:"
+admin_new_admin =				"SteamID $steamid es ahora Admin para un mapa"
+admin_is_already_admin =		"SteamID $steamid es Admin"
+admin_old_admin =				"SteamID $steamid no es más Admin"
+admin_is_not_admin =			"SteamID $steamid no es Admin"
+admin_new_t_team_name =			"Nuevo nombre del equipo Terrorista $team"
+admin_new_ct_team_name =		"Nuevo nombre del equipo Antiterrorista $team"
+admin_spectator_player =		"Este jugador es un espectador"
+admin_map_not_found =			"¡ Mapa $map no se puede cargar !"
+admin_swap =					"$username movido por $admin"
+admin_is_not_connected =		"$username desconectado"
+admin_spec =					"$admin mueve a $username a espectador"
+admin_kick =					"Expulsado por Admin"
+admin_kick_by =					"$username expulsado por $admin"
+admin_ban =						"Baneado por Admin"
+admin_temporaly_ban =			"$username temporalmente baneado por $admin"
+admin_permanently_ban =			"$username baneado por $admin"	
+admin_new_tag =					"Por favor, especifica el nuevo tag"
+admin_please_specify_tag =		"Por favor añade el nuevo tag del clan"
+admin_round_restarted_by =		"La ronda ha sido reiniciada por $admin"
+admin_round_restarted =			"La ronda ha sido reiniciada por el Admin"
+admin_manche_restarted_by =		"El juego ha sido reiniciado por $admin"
+admin_manche_restarted =		"El juego ha sido reiniciado por el Admin"
+admin_unable_to_force_go =		"No puedes usar !go, la ronda de Estrategia no ha empezado"
+admin_no_warmup_started	=		"La ronda de Estrategia no ha empezado"
+admin_all_teams_say_ready_by =	"Ambos equipos han sido preparados por $admin"
+admin_all_teams_say_ready =		"Ambos equipos han sido preparados por el Admin"
+
+// Menus
+menu_play_kniferound =			"CSSMatch : ¿ Quiéres jugar ronda de cuchillo ?"
+menu_yes =						"Sí"
+menu_no	=						"No"
+menu_back =						"Volver"
+menu_more =						"Siguiente"
+menu_play_warmup =				"CSSMatch : ¿ Poner ronda de Estrategia ?"
+menu_alltalk =					"$action micros abiertos"
+menu_enable =					"Habilitar"
+menu_disable =					"Deshabilitar"
+menu_no_match =					"CSSMatch : La War no está en proceso"
+menu_start =					"Iniciar War"
+menu_kniferound =				"CSSMatch : Inicio Ronda de Cuchillo"
+menu_restart =					"Reiniciar"
+menu_stop =						"Finalizar War"
+menu_retag =					"Detección nuevos nombres de equipo"
+menu_warmup =					"CSSMatch : Estrategia"
+menu_go =						"Ejecutar !go para los dos equipos"
+menu_match =					"CSSMatch : War"
+menu_restart_manche =			"Reiniciar este acto"
+menu_config =					"CSSMatch : Seleccionar configuración"
+menu_administration =			"CSSMatch : Menú Admin"
+menu_changelevel =				"Cambiar mapa"
+menu_swap =						"Mover jugador"
+menu_spec =						"Mover jugador a espectador"
+menu_kick =						"Expulsar jugador"
+menu_ban =						"Banear jugador"
+menu_map =						"CSSMatch : Elegir mapa"
+menu_player =					"CSSMatch : Elegir jugador"
+menu_ban_time =					"CSSMatch : Elegir tiempo de baneo"
+menu_5_min =					"5 min"
+menu_1_h =						"1 h"
+menu_permanent =				"Permanente"
+menu_administration_options =	"Opciones de Administración"
+menu_cant_display =				" ¡Esta parte del menú no se puede mostrar ! ¡ Por favor informe al autor del plugin en $site !"
+menu_empty =					"Esta lista está vacía :-("
+menu_close =					"Cerrar"
+
+// Errors
+error_default.cfg =				"default.cfg no se encuentra, por favor, especifique un nombre de archivo"
+error_file_not_found =			"Archivo $file no se encuentra"
+error_command_not_found =		"Comando "$command" no se encuentra"
+error_cmd =						"Error utilizando comando"
+error_invalid_player =			"Jugador no válido"
+error_general =					"Ha ocurrido un error, por favor, póngase en contacto con el autor del plugin en $site"
+error_tv_not_connected =		"SourceTV no puede iniciarse porque no está conectada en el servidor"
+
+// Players
+player_join_game =				"$username se une a la partida"
+player_match_hosted_popup =		"¡ La Wat está en proceso en este servidor !\n \nSi no eres una de las personas que forman parte, por favor, váyase"
+player_no_swap_in_match =		"Sólo CSSMatch y admins pueden mover jugadores"
+player_you_not_admin =			"¡ Tú no eres un Admin !"
+player_leave_game =				"¡ $username abandonó el juego ! (razón : $reason)"
+player_username =				"Nickname del jugador"
+player_nobody =					"Nadie"
+player_thetime =				"$hoursh$minutes"

@@ -21,7 +21,7 @@
 #
 
 # Dossier de travail
-BASE_DIR = ../hl2sdk
+BASE_DIR = ../hl2sdk-ob
 
 # Compilateur
 #CXX = g++-3.4
@@ -41,7 +41,7 @@ DEBUG_DIR = Debug/linux
 SRCDS_BIN_DIR = bin
 
 # Dossier contenant les librairies statiques
-SRCDS_A_DIR = $(SDK_SRC_DIR)/linux_sdk
+SRCDS_A_DIR = $(SDK_SRC_DIR)/lib/linux
 
 ###############
 # Options de compilation
@@ -51,14 +51,11 @@ SRCDS_A_DIR = $(SDK_SRC_DIR)/linux_sdk
 ARCH_CFLAGS = 	-mtune=i686 \
 				-march=pentium \
 				-mmmx
-ARCH = i486
 ARCH_BIN = .so
 
 # Options du compilateur
 USER_CFLAGS =
-BASE_CFLAGS = 	-fno-rtti \
-				-msse \
-				-fpermissive \
+BASE_CFLAGS =	-fpermissive \
 				-D_LINUX \
 				-DNDEBUG \
 				-Dstricmp=strcasecmp \
@@ -73,14 +70,13 @@ BASE_CFLAGS = 	-fno-rtti \
 				-Wno-deprecated \
 				-msse 
 OPT_FLAGS = -O3 \
-			-fno-rtti \
 			-funroll-loops \
 			-s \
 			-pipe
 DEBUG_FLAGS = 	-g \
 				-ggdb3 \
 				-O0 \
-				-D_DeBuG
+				-D_DEBUG
 
 
 ############
@@ -93,10 +89,15 @@ SRC= $(wildcard *.cpp) $(wildcard */*.cpp) $(wildcard */*/*.cpp)
 # Librairies à lier			
 ###########
 
-LINK_SO =	$(SRCDS_BIN_DIR)/tier0_i486.so \
-			$(SRCDS_BIN_DIR)/vstdlib_i486.so
+LINK_SO =	$(SRCDS_BIN_DIR)/libtier0.so \
+			$(SRCDS_BIN_DIR)/libvstdlib.so \
+			$(SRCDS_BIN_DIR)/libsteam_api.so			
 LINK_A = 	$(SRCDS_A_DIR)/tier1_i486.a \
 			$(SRCDS_A_DIR)/mathlib_i486.a \
+			$(SRCDS_A_DIR)/dmxloader_i486.a \
+			$(SRCDS_A_DIR)/tier2_i486.a \
+			$(SRCDS_A_DIR)/tier3_i486.a \
+			$(SRCDS_A_DIR)/particles_i486.a \
 			$(SRCDS_A_DIR)/choreoobjects_i486.a
 			
 
@@ -108,21 +109,22 @@ LINK = -lm -ldl $(LINK_A) $(LINK_SO)
 
 INCLUDE = 	-I. \
 			-I$(SDK_PUBLIC_DIR) \
-			-I$(SDK_PUBLIC_DIR)/dlls \
 			-I$(SDK_PUBLIC_DIR)/engine \
-			-I$(SDK_PUBLIC_DIR)tier0 \
+			-I$(SDK_PUBLIC_DIR)/tier0 \
 			-I$(SDK_PUBLIC_DIR)/tier1 \
 			-I$(SDK_PUBLIC_DIR)/vstdlib \
+			-I$(SDK_PUBLIC_DIR)/game/server \
 			-I$(SDK_SRC_DIR)/tier1 \
-			-I$(SDK_SRC_DIR)/game_shared \
-			-I$(SDK_SRC_DIR)/dlls
+			-I$(SDK_SRC_DIR)/game \
+			-I$(SDK_SRC_DIR)/game/server \
+			-I$(SDK_SRC_DIR)/game/shared
 
 ###################
 # Cibles et règles de compilation
 ###################
 
 # Nom du fichier binaire de sortie
-BINARY_NAME = cssmatch_$(ARCH)$(ARCH_BIN)
+BINARY_NAME = cssmatch$(ARCH_BIN)
 
 # Dossier de sortie du fichier binaire
 BINARY_DIR = zip/addons

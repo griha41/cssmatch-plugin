@@ -268,12 +268,13 @@ public:
 	/**	Appelé par le jeu lorsqu'un joueur tape une commande (non CON_COMMAND) dans sa console
 	 *
 	 * @param pEntity L'entité correspondant au joueur
+	 * @param args Accès au arguments
 	 * @return La décision PLUGIN_RESULT du plugin
 	 * @see IServerPluginCallbacks#ClientCommand
 	 * @see L'énumération PLUGIN_RESULT (iserverplugin.h)
 	 *
 	 */
-	PLUGIN_RESULT ClientCommand(edict_t *pEntity);
+	PLUGIN_RESULT ClientCommand(edict_t *pEntity, const CCommand &args);
 
 	/**	Appelé par le jeu lorsque le steamID d'un joueur qui s'est connecté au serveur est authentifié
 	 *
@@ -285,6 +286,9 @@ public:
 	 *
 	 */
 	PLUGIN_RESULT NetworkIDValidated(const char * pszUserName, const char * pszNetworkID);
+	
+	/** Une demande d'accès à une variable cliente a abouti */
+	void OnQueryCvarValueFinished(QueryCvarCookie_t iCookie, edict_t * pPlayerEntity, EQueryCvarValueStatus eStatus, const char * pCvarName, const char * pCvarValue);
 
 	IVEngineServer * getEngine();
 

@@ -49,7 +49,7 @@ public:
 	 *
 	 * @see ConCommand::Dispatch
 	 */
-	void Dispatch();
+	void Dispatch(const CCommand & args);
 }; 
 
 #endif // __SAYTEAMHOOK_H__

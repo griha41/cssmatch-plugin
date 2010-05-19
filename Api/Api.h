@@ -47,7 +47,7 @@
  */
 #include "filesystem.h"
 #include "engine/iserverplugin.h"
-#include "dlls/iplayerinfo.h"
+#include "iplayerinfo.h"
 #include "eiface.h"
 #include "igameevents.h"
 #include "convar.h"
@@ -523,15 +523,15 @@ void InitCVars(CreateInterfaceFn cvarFactory);
 //inline bool FStrEq(const char *sz1, const char *sz2);
 
 /** Nom du fichier contenant la liste des arbitres */
-#define FICHIER_ADMINLIST "cstrike/cfg/cssmatch/adminlist.txt"
+#define FICHIER_ADMINLIST "cstrike_beta/cfg/cssmatch/adminlist.txt"
 
 /** Nom du fichier contenant la liste des maps à lister dans le menu */
-#define FICHIER_MAPLIST "cstrike/cfg/cssmatch/maplist.txt"
+#define FICHIER_MAPLIST "cstrike_beta/cfg/cssmatch/maplist.txt"
 
 /** Dossier dans lequel sont recherchés les configurations de match */
 #define DOSSIER_CONFIGURATIONS_MATCH "cfg/cssmatch/configurations"
 
 /** Dossier dans lequel sont enregistrés les rapports de match */
-#define DOSSIER_RAPPORTS_MATCH "cstrike/cfg/cssmatch/reports"
+#define DOSSIER_RAPPORTS_MATCH "cstrike_beta/cfg/cssmatch/reports"
 
 #endif // __API_H__

@@ -7,37 +7,27 @@
 //=============================================================================//
 
 #include "icvar.h"
-
-// memdbgon must be the last include file in a .cpp file!!!
-#include "tier0/memdbgon.h"
-
-static ICvar *s_pCVar;
+#include "convar.h"
 
 class CPluginConVarAccessor : public IConCommandBaseAccessor
 {
 public:
 	virtual bool	RegisterConCommandBase( ConCommandBase *pCommand )
 	{
-		pCommand->AddFlags( FCVAR_PLUGIN );
-
-		// Unlink from plugin only list
-		pCommand->SetNext( 0 );
-
-		// Link to engine's list instead
-		s_pCVar->RegisterConCommandBase( pCommand );
+		// Link to engine's list
+		g_pCVar->RegisterConCommand( pCommand );
 		return true;
 	}
 
 };
 
 CPluginConVarAccessor g_ConVarAccessor;
-
 void InitCVars( CreateInterfaceFn cvarFactory )
 {
-	s_pCVar = (ICvar*)cvarFactory( VENGINE_CVAR_INTERFACE_VERSION, NULL );
-	if ( s_pCVar )
+	g_pCVar = (ICvar*)cvarFactory( CVAR_INTERFACE_VERSION, NULL );
+	if ( g_pCVar )
 	{
-		ConCommandBaseMgr::OneTimeInit( &g_ConVarAccessor );
+		ConVar_Register(0, &g_ConVarAccessor );
 	}
 }
 

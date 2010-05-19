@@ -85,9 +85,9 @@ CON_COMMAND(cssm_help, "CSSMatch : Please use cssm_help")
 	CSSMatch * cssmatch = CSSMatch::getInstance();
 	IVEngineServer * engine = cssmatch->getEngine();
 
-	if (engine->Cmd_Argc()>1)
+	if (args.ArgC()>1)
 	{
-		string command = engine->Cmd_Argv(1);
+		string command = args.Arg(1);
 		string traduction;
 		try
 		{
@@ -117,7 +117,7 @@ CON_COMMAND(cssm_start, "CSSMatch : Please use cssm_help")
 	{
 		// Si aucun fichier de configuration n'a été spécifié en argument
 		//		le fichier default.cfg est exécuté
-		if (engine->Cmd_Argc()==1)
+		if (args.ArgC()==1)
 		{
 			// ... on tente de lancer le match avec le fichier default.cfg
 			if (filesystem->FileExists("cfg/cssmatch/configurations/default.cfg", "MOD"))
@@ -131,7 +131,7 @@ CON_COMMAND(cssm_start, "CSSMatch : Please use cssm_help")
 		{
 			// Sinon nous supposons que le premier argument est un nom de fichier de configuration
 
-			const char * arg1 = engine->Cmd_Argv(1);
+			const char * arg1 = args.Arg(1);
 			if (arg1 != NULL)
 			{
 				string pathFichier("cfg/cssmatch/configurations/" + string(arg1));
@@ -211,9 +211,9 @@ CON_COMMAND(cssm_grant, "CSSMatch : Please use cssm_help")
 	// La différence de traitement des guillemets dans la console Windows et la console Linux nous oblige à 
 	// opter pour une capture de tous les arguments
 
-	if (engine->Cmd_Argc()>1)
+	if (args.ArgC()>1)
 	{
-		const char * steamIDvalve = engine->Cmd_Args();
+		const char * steamIDvalve = args.ArgS();
 		if (steamIDvalve != NULL)
 		{
 			string sSteamId(steamIDvalve);
@@ -257,9 +257,9 @@ CON_COMMAND(cssm_revoke, "CSSMatch : Please use cssm_help")
 	// La différence de traitement des guillemets dans la console Windows et la console Linux nous oblige à 
 	// opter pour une capture de tous les arguments
 
-	if (engine->Cmd_Argc()>1)
+	if (args.ArgC()>1)
 	{
-		const char * steamIDvalve = engine->Cmd_Args();
+		const char * steamIDvalve = args.ArgS();
 		if (steamIDvalve != NULL)
 		{
 			string sSteamId(steamIDvalve);
@@ -297,7 +297,7 @@ CON_COMMAND(cssm_teamt, "CSSMatch : Please use cssm_help")
 	IVEngineServer * engine = cssmatch->getEngine();
 	Match * match = cssmatch->getMatch();
 
-	const char * tag = engine->Cmd_Args();
+	const char * tag = args.ArgS();
 	if (tag != NULL)
 	{
 		if (match->getPhase() != PHASE_OFF)
@@ -321,7 +321,7 @@ CON_COMMAND(cssm_teamct, "CSSMatch : Please use cssm_help")
 	IVEngineServer * engine = cssmatch->getEngine();
 	Match * match = cssmatch->getMatch();
 
-	const char * tag = engine->Cmd_Args();
+	const char * tag = args.ArgS();
 	if (tag != NULL)
 	{	
 		if (match->getPhase() == PHASE_OFF)
@@ -345,9 +345,9 @@ CON_COMMAND(cssm_swap, "CSSMatch : Please use cssm_help")
 	CSSMatch * cssmatch = CSSMatch::getInstance();
 	IVEngineServer * engine = cssmatch->getEngine();
 
-	if (engine->Cmd_Argc()>1)
+	if (args.ArgC()>1)
 	{
-		const char * userid = engine->Cmd_Argv(1);
+		const char * userid = args.Arg(1);
 		if (userid != NULL)
 		{
 			try
@@ -377,9 +377,9 @@ CON_COMMAND(cssm_spec, "CSSMatch : Please use cssm_help")
 	CSSMatch * cssmatch = CSSMatch::getInstance();
 	IVEngineServer * engine = cssmatch->getEngine();
 
-	if (engine->Cmd_Argc()>1)
+	if (args.ArgC()>1)
 	{
-		const char * userid = engine->Cmd_Argv(1);
+		const char * userid = args.Arg(1);
 		if (userid != NULL)
 		{
 			try

@@ -33,10 +33,11 @@ using std::string;
  * @see ConVars::cssmatch_version
  *
  */
-static void versionConstante(ConVar * var, const char * pOldString)
+static void versionConstante(IConVar * var, const char * pOldValue, float flOldValue)
 {
-	if (string(var->GetString()) != CSSMATCH_VERSION_LIGHT)
-		var->SetValue(CSSMATCH_VERSION_LIGHT);
+    ConVar * versionVar = static_cast<ConVar *>(var);
+	if (string(versionVar->GetString()) != CSSMATCH_VERSION_LIGHT)
+		versionVar->SetValue(CSSMATCH_VERSION_LIGHT);
 }
 
 /*static void debugLogOn(ConVar * var, const char * pOldString)
@@ -52,10 +53,11 @@ static void versionConstante(ConVar * var, const char * pOldString)
  * @see ConVars::cssmatch_advanced
  *
  */
-static void swapAdvanced(ConVar * var, const char * pOldString)
+static void swapAdvanced(IConVar * var, const char * pOldValue, float flOldValue)
 {
+    ConVar * advancedVar = static_cast<ConVar *>(var);
 	GestionMenus * menus = GestionMenus::getInstance();
-	if (var->GetBool())
+	if (advancedVar->GetBool())
 		menus->initialiseMenusAvecAdministration();
 	else
 		menus->initialiseMenus();
@@ -67,27 +69,27 @@ ConVar * ConVars::hostname = NULL;
 ConVar * ConVars::sv_password = NULL;
 ConVar * ConVars::tv_enable = NULL;
 
-ConVar ConVars::cssmatch_version = ConVar("cssmatch_version", CSSMATCH_VERSION_LIGHT, FCVAR_PLUGIN|FCVAR_NOTIFY|FCVAR_REPLICATED, "CSSMatch : Please use cssm_help", versionConstante);
-ConVar ConVars::cssmatch_advanced = ConVar("cssmatch_advanced", "0", FCVAR_PLUGIN, "CSSMatch : Please use cssm_help", true, 0.0f, true, 1.0f,swapAdvanced);
-ConVar ConVars::cssmatch_language = ConVar("cssmatch_language", "english", FCVAR_PLUGIN, "CSSMatch : Please use cssm_help");
-ConVar ConVars::cssmatch_report = ConVar("cssmatch_report", "1", FCVAR_PLUGIN, "CSSMatch : Please use cssm_help", true, 0.0f, true, 1.0f);
+ConVar ConVars::cssmatch_version = ConVar("cssmatch_version", CSSMATCH_VERSION_LIGHT, FCVAR_NOTIFY|FCVAR_REPLICATED, "CSSMatch : Please use cssm_help", versionConstante);
+ConVar ConVars::cssmatch_advanced = ConVar("cssmatch_advanced", "0", FCVAR_NONE, "CSSMatch : Please use cssm_help", true, 0.0f, true, 1.0f,swapAdvanced);
+ConVar ConVars::cssmatch_language = ConVar("cssmatch_language", "english", FCVAR_NONE, "CSSMatch : Please use cssm_help");
+ConVar ConVars::cssmatch_report = ConVar("cssmatch_report", "1", FCVAR_NONE, "CSSMatch : Please use cssm_help", true, 0.0f, true, 1.0f);
 
-ConVar ConVars::cssmatch_kniferound = ConVar("cssmatch_kniferound", "1", FCVAR_PLUGIN, "CSSMatch : Please use cssm_help", true, 0.0f, true, 1.0f);
-ConVar ConVars::cssmatch_kniferound_money = ConVar("cssmatch_kniferound_money", "0", FCVAR_PLUGIN, "CSSMatch : Please use cssm_help", true, 0.0f, true, 16000.0f);
-ConVar ConVars::cssmatch_kniferound_allows_c4 = ConVar("cssmatch_kniferound_allows_c4", "1", FCVAR_PLUGIN, "CSSMatch : Please use cssm_help", true, 0.0f, true, 1.0f);
-ConVar ConVars::cssmatch_end_kniferound = ConVar("cssmatch_end_kniferound", "20", FCVAR_PLUGIN, "CSSMatch : Please use cssm_help", true, 5.0f, false, 0.0f);
+ConVar ConVars::cssmatch_kniferound = ConVar("cssmatch_kniferound", "1", FCVAR_NONE, "CSSMatch : Please use cssm_help", true, 0.0f, true, 1.0f);
+ConVar ConVars::cssmatch_kniferound_money = ConVar("cssmatch_kniferound_money", "0", FCVAR_NONE, "CSSMatch : Please use cssm_help", true, 0.0f, true, 16000.0f);
+ConVar ConVars::cssmatch_kniferound_allows_c4 = ConVar("cssmatch_kniferound_allows_c4", "1", FCVAR_NONE, "CSSMatch : Please use cssm_help", true, 0.0f, true, 1.0f);
+ConVar ConVars::cssmatch_end_kniferound = ConVar("cssmatch_end_kniferound", "20", FCVAR_NONE, "CSSMatch : Please use cssm_help", true, 5.0f, false, 0.0f);
 
-ConVar ConVars::cssmatch_rounds = ConVar("cssmatch_rounds", "12", FCVAR_PLUGIN, "CSSMatch : Please use cssm_help",true,0.0f,false,0.0f);;
-ConVar ConVars::cssmatch_sets = ConVar("cssmatch_sets", "2", FCVAR_PLUGIN, "CSSMatch : Please use cssm_help",true,0.0f,false,0.0f);;
-ConVar ConVars::cssmatch_end_set = ConVar("cssmatch_end_set", "10", FCVAR_PLUGIN, "CSSMatch : Please use cssm_help", true, 5.0f, false, 0.0f);
-ConVar ConVars::cssmatch_sourcetv = ConVar("cssmatch_sourcetv", "1", FCVAR_PLUGIN, "CSSMatch : Please use cssm_help", true, 0.0f, true, 1.0f);
-ConVar ConVars::cssmatch_sourcetv_path = ConVar("cssmatch_sourcetv_path", "cfg/cssmatch/sourcetv", FCVAR_PLUGIN, "CSSMatch : Please use cssm_help");
+ConVar ConVars::cssmatch_rounds = ConVar("cssmatch_rounds", "12", FCVAR_NONE, "CSSMatch : Please use cssm_help",true,0.0f,false,0.0f);;
+ConVar ConVars::cssmatch_sets = ConVar("cssmatch_sets", "2", FCVAR_NONE, "CSSMatch : Please use cssm_help",true,0.0f,false,0.0f);;
+ConVar ConVars::cssmatch_end_set = ConVar("cssmatch_end_set", "10", FCVAR_NONE, "CSSMatch : Please use cssm_help", true, 5.0f, false, 0.0f);
+ConVar ConVars::cssmatch_sourcetv = ConVar("cssmatch_sourcetv", "1", FCVAR_NONE, "CSSMatch : Please use cssm_help", true, 0.0f, true, 1.0f);
+ConVar ConVars::cssmatch_sourcetv_path = ConVar("cssmatch_sourcetv_path", "cfg/cssmatch/sourcetv", FCVAR_NONE, "CSSMatch : Please use cssm_help");
 
-ConVar ConVars::cssmatch_warmup_time = ConVar("cssmatch_warmup_time", "5", FCVAR_PLUGIN, "CSSMatch : Please use cssm_help", true, 0.0f, false, 0.0f);
+ConVar ConVars::cssmatch_warmup_time = ConVar("cssmatch_warmup_time", "5", FCVAR_NONE, "CSSMatch : Please use cssm_help", true, 0.0f, false, 0.0f);
 
-ConVar ConVars::cssmatch_hostname = ConVar("cssmatch_hostname", "CSSMatch : %s VS %s", FCVAR_PLUGIN, "CSSMatch : Please use cssm_help");
-ConVar ConVars::cssmatch_password = ConVar("cssmatch_password", "inwar", FCVAR_PLUGIN, "CSSMatch : Please use cssm_help");
-ConVar ConVars::cssmatch_default_config = ConVar("cssmatch_default_config", "server.cfg", FCVAR_PLUGIN, "CSSMatch : Please use cssm_help");
+ConVar ConVars::cssmatch_hostname = ConVar("cssmatch_hostname", "CSSMatch : %s VS %s", FCVAR_NONE, "CSSMatch : Please use cssm_help");
+ConVar ConVars::cssmatch_password = ConVar("cssmatch_password", "inwar", FCVAR_NONE, "CSSMatch : Please use cssm_help");
+ConVar ConVars::cssmatch_default_config = ConVar("cssmatch_default_config", "server.cfg", FCVAR_NONE, "CSSMatch : Please use cssm_help");
 
 void ConVars::initialise()
 {

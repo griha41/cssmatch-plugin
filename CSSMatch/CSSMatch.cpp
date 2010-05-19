@@ -89,7 +89,7 @@ bool CSSMatch::initialisation(CreateInterfaceFn interfaceFactory, CreateInterfac
 					getInterface<IServerPluginHelpers>(interfaceFactory,helpers,INTERFACEVERSION_ISERVERPLUGINHELPERS)			&&
 					//getInterface<IEngineTrace>(interfaceFactory,enginetrace,INTERFACEVERSION_ENGINETRACE_SERVER)				&&
 					//getInterface<IUniformRandomStream>(interfaceFactory,randomStr,VENGINE_SERVER_RANDOM_INTERFACE_VERSION)	&&
-					getInterface<ICvar>(interfaceFactory,cvars,VENGINE_CVAR_INTERFACE_VERSION)									&&
+					getInterface<ICvar>(interfaceFactory,cvars,CVAR_INTERFACE_VERSION)									        &&
 					//getInterface<IServerGameDLL>(gameServerFactory,serverDll,INTERFACEVERSION_SERVERGAMEDLL)					&&
 					getInterface<IServerGameDLL>(gameServerFactory,serverDll,"ServerGameDLL006");
 
@@ -271,19 +271,19 @@ PLUGIN_RESULT CSSMatch::ClientConnect(bool * bAllowConnect,
 	return decision;
 }
 
-PLUGIN_RESULT CSSMatch::ClientCommand(edict_t * pEntity)
+PLUGIN_RESULT CSSMatch::ClientCommand(edict_t * pEntity, const CCommand &args)
 {
 	PLUGIN_RESULT decision = PLUGIN_CONTINUE;
 
 	// Récupération du nom de la commande exécutée
-	const char * pcmd = engine->Cmd_Argv(0);
+	const char * pcmd = args.Arg(0);
 
 	int indexJoueur = Api::getIndexFromPEntity(pEntity);
 
 	const char * steamIDvalve = engine->GetPlayerNetworkIDString(pEntity);
 
 	// Récupération des arguments de la commande (peut être NULL)
-	const char * args = engine->Cmd_Args();
+	const char * commandline = args.ArgS();
 
 	CodePhase phase = match.getPhase();
 
@@ -299,7 +299,7 @@ PLUGIN_RESULT CSSMatch::ClientCommand(edict_t * pEntity)
 		{
 			string commande(pcmd);
 			string steamID(steamIDvalve);
-			string arguments(args != NULL ? args : "");
+			string arguments(commandline != NULL ? commandline : "");
 
 			/*// Si nous sommes en match nous loguons toutes les commandes passant dans la console des joueurs
 			if (phase != PHASE_OFF)
@@ -321,7 +321,7 @@ PLUGIN_RESULT CSSMatch::ClientCommand(edict_t * pEntity)
 			// *********************
 			if (commande == "menuselect")
 			{
-				const char * parametre = engine->Cmd_Argv(1);
+				const char * parametre = args.Arg(1);
 				if (parametre != NULL)
 				{
 					// Récupération du choix du joueur dans le menu
@@ -418,6 +418,10 @@ PLUGIN_RESULT CSSMatch::ClientCommand(edict_t * pEntity)
 PLUGIN_RESULT CSSMatch::NetworkIDValidated(const char * pszUserName, const char * pszNetworkID)
 {
 	return PLUGIN_CONTINUE;
+}
+
+void CSSMatch::OnQueryCvarValueFinished(QueryCvarCookie_t iCookie, edict_t * pPlayerEntity, EQueryCvarValueStatus eStatus, const char * pCvarName, const char * pCvarValue)
+{
 }
 
 /*void CSSMatch::FireGameEvent(IGameEvent * event)

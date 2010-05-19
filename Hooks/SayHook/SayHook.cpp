@@ -28,7 +28,7 @@ using std::exception;
 using std::istringstream;
 using std::map;
 
-SayHook::SayHook() : ConCommand("say", NULL, "[CSSMatch] : say hook command", FCVAR_GAMEDLL)
+SayHook::SayHook() : ConCommand("say", (FnCommandCallback_t)NULL, "[CSSMatch] : say hook command", FCVAR_GAMEDLL)
 {
 	say = NULL;
 	succes = false;
@@ -63,20 +63,19 @@ void SayHook::Init()
 		Api::debug("Unable to hook the command \"say\" : the interface is not ready");
 } 
 
-void SayHook::Dispatch() 
+void SayHook::Dispatch(const CCommand & args) 
 {
 	CSSMatch * cssmatch = CSSMatch::getInstance();
-	IVEngineServer * engine = cssmatch->getEngine();
 	int index = cssmatch->GetCommandIndex()+1; 
 
 	try
 	{
 		// Récupération du message sans les guillemets qui l'entoure
 		string ligneMessage;
-		int argc = engine->Cmd_Argc();
+		int argc = args.ArgC();
 		for(int i=1;i<argc;i++)
 		{
-			ligneMessage += engine->Cmd_Argv(i);
+			ligneMessage += args.Arg(i);
 		}
 		
 		istringstream message(ligneMessage);
@@ -100,12 +99,12 @@ void SayHook::Dispatch()
 			cmdTeamct(index,message);
 		}
 		else
-			say->Dispatch();
+			say->Dispatch(args);
 	}
 	catch(const CSSMatchApiException & e)
 	{
 		Api::debug(e.what());
-		say->Dispatch();
+		say->Dispatch(args);
 	}
 }
 

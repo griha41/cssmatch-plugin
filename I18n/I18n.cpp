@@ -77,12 +77,12 @@ I18n * I18n::getInstance()
 std::string I18n::getNomFichier(const std::string & nomLangage)
 {
 	// Est-ce qu'une traduction correspond à ce langage ?
-	string nomFichier = string("cstrike/cfg/cssmatch/languages/") + nomLangage + ".txt";
+	string nomFichier = string("cstrike_beta/cfg/cssmatch/languages/") + nomLangage + ".txt";
 	ifstream fichierEnLecture(nomFichier.c_str());
 	if (fichierEnLecture.fail())
 	{
 		// On utilisera le langage par défaut
-		nomFichier = string("cstrike/cfg/cssmatch/languages/") + ConVars::cssmatch_language.GetString() + ".txt";
+		nomFichier = string("cstrike_beta/cfg/cssmatch/languages/") + ConVars::cssmatch_language.GetString() + ".txt";
 	}
 
 	return nomFichier;

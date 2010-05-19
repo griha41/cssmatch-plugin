@@ -49,7 +49,7 @@ public:
 	 *
 	 * @see ConCommand::Dispatch
 	 */
-	void Dispatch();
+	void Dispatch(const CCommand & args);
 
 	/** Commande d'appel du menu d'arbitrage 
 	 *

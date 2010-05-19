@@ -30,7 +30,7 @@
 			<Tool
 				Name="VCCustomBuildTool"
 				CommandLine="attrib -r ..\zip\addons\cssmatch.dll&#x0D;&#x0A;"
-				Outputs="..\zip\addons\cssmatch.dll"
+				Outputs="zip\addons\cssmatch.dll"
 			/>
 			<Tool
 				Name="VCXMLDataGeneratorTool"
@@ -50,7 +50,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\hl2sdk\public,..\hl2sdk\public\tier0,..\hl2sdk\public\tier1,..\hl2sdk\dlls,..\hl2sdk\game_shared"
+				AdditionalIncludeDirectories="..\hl2sdk-ob\public,..\hl2sdk-ob\public\engine,..\hl2sdk-ob\public\tier0,..\hl2sdk-ob\public\tier1,..\hl2sdk-ob\public\vstdlib,..\hl2sdk-ob\public\game\server,..\hl2sdk-ob\tier1,..\hl2sdk-ob\game,..\hl2sdk-ob\game\server,..\hl2sdk-ob\game\shared"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;serverplugin_emptyONLY"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
@@ -82,7 +82,7 @@
 				OutputFile="zip\addons\cssmatch.dll"
 				LinkIncremental="2"
 				SuppressStartupBanner="true"
-				AdditionalLibraryDirectories="..\hl2sdk\lib\public,..\hl2sdk\lib\common"
+				AdditionalLibraryDirectories="..\hl2sdk-ob\lib\public"
 				IgnoreDefaultLibraryNames="LIBC,libcmt"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile=".\Debug/serverplugin_empty.pdb"
@@ -156,7 +156,7 @@
 				InlineFunctionExpansion="2"
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
-				AdditionalIncludeDirectories="..\hl2sdk\public,..\hl2sdk\public\tier0,..\hl2sdk\public\tier1,..\hl2sdk\dlls,..\hl2sdk\game_shared"
+				AdditionalIncludeDirectories="..\hl2sdk-ob\public,..\hl2sdk-ob\public\engine,..\hl2sdk-ob\public\tier0,..\hl2sdk-ob\public\tier1,..\hl2sdk-ob\public\vstdlib,..\hl2sdk-ob\public\game\server,..\hl2sdk-ob\tier1,..\hl2sdk-ob\game,..\hl2sdk-ob\game\server,..\hl2sdk-ob\public\game\shared"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;serverplugin_emptyONLY"
 				StringPooling="true"
 				RuntimeLibrary="0"
@@ -189,7 +189,7 @@
 				OutputFile="zip\addons\cssmatch.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
-				AdditionalLibraryDirectories="..\hl2sdk\lib\public,..\hl2sdk\lib\common"
+				AdditionalLibraryDirectories="..\hl2sdk-ob\lib\public"
 				IgnoreDefaultLibraryNames="libcmtd.lib"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile=".\Release/serverplugin_empty.pdb"
@@ -237,6 +237,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\hl2sdk-ob\public\networkvar.cpp"
+				>
+			</File>
+			<File
 				RelativePath="serverplugin_convar.cpp"
 				>
 				<FileConfiguration
@@ -267,19 +271,27 @@
 			Name="Link Libraries"
 			>
 			<File
-				RelativePath="..\hl2sdk\lib\public\mathlib.lib"
+				RelativePath="..\hl2sdk-ob\lib\public\mathlib.lib"
 				>
 			</File>
 			<File
-				RelativePath="..\hl2sdk\lib\public\tier0.lib"
+				RelativePath="..\hl2sdk-ob\lib\public\tier0.lib"
 				>
 			</File>
 			<File
-				RelativePath="..\hl2sdk\lib\public\tier1.lib"
+				RelativePath="..\hl2sdk-ob\lib\public\tier1.lib"
 				>
 			</File>
 			<File
-				RelativePath="..\hl2sdk\lib\public\vstdlib.lib"
+				RelativePath="..\hl2sdk-ob\lib\public\tier2.lib"
+				>
+			</File>
+			<File
+				RelativePath="..\hl2sdk-ob\lib\public\tier3.lib"
+				>
+			</File>
+			<File
+				RelativePath="..\hl2sdk-ob\lib\public\vstdlib.lib"
 				>
 			</File>
 		</Filter>

@@ -50,7 +50,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\SDKEP1\public,..\SDKEP1\public\tier0,..\SDKEP1\public\tier1,..\SDKEP1\dlls,..\SDKEP1\game_shared"
+				AdditionalIncludeDirectories="..\hl2sdk\public,..\hl2sdk\public\tier0,..\hl2sdk\public\tier1,..\hl2sdk\dlls,..\hl2sdk\game_shared"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;serverplugin_emptyONLY"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
@@ -79,10 +79,10 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="odbc32.lib odbccp32.lib"
-				OutputFile="..\zip\addons\cssmatch.dll"
+				OutputFile="zip\addons\cssmatch.dll"
 				LinkIncremental="2"
 				SuppressStartupBanner="true"
-				AdditionalLibraryDirectories="..\SDK1\lib\public,SDK1\lib\common"
+				AdditionalLibraryDirectories="..\hl2sdk\lib\public,..\hl2sdk\lib\common"
 				IgnoreDefaultLibraryNames="LIBC,libcmt"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile=".\Debug/serverplugin_empty.pdb"

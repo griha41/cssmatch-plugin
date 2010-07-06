@@ -9,9 +9,9 @@
 	The style.css and cssmatch.xsl are used to display the reports.
 	To open the reports, open them with your Internet browser.
 	
-	These files don't need to stay on your game server. You can send them on your site. 
-	All your reports have to be placed in the same folder than the style.css and cssmatch.xsl to be displayed. 
-	Once your reports and these files sent on your Internet site, distribute the links corresponding to 
+	These files don't need to stay on your game server. You can send them on your website. 
+	All your reports have to be placed in the same folder than style.css and cssmatch.xsl to be displayed. 
+	Once your reports and these files on your website, distribute the links corresponding to 
 	your reports : everybody can see them :-)
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
@@ -97,7 +97,7 @@
 			<span class="note"><sup>*</sup> Knife round winner (optionnal)</span>
 			<xsl:if test="../spectateurs">
 				<br/>	
-				<span class="note">Some players wad spectators at the end of the match, <a href="#spectateurs">click gere to see them</a></span>
+				<span class="note">Some players were spectators at the end of the match, <a href="#spectateurs">click gere to see them</a></span>
 			</xsl:if>
 		</div>
 		<a name="participants"><h1>Members :</h1></a>

@@ -1,1 +1,1 @@
-This file make sure this folder will not be automatically deleted.
+This file makes sure this folder will not be automatically deleted.

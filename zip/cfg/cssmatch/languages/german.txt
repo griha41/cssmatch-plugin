@@ -5,9 +5,9 @@
 // Please ONLY TRANSLATE the sentences between QUOTES
 //
 // ABOUT THE KEYWORDS prefixed by $ 
-//	YOU CAN MOVE these keywords, but YOU MUST NOT MODIFY the name of the keyword
+//	YOU CAN MOVE them, but YOU MUST NOT MODIFY their name
 //
-// Keywords's message suffixed by _popup are the only which supports \n escape sequences
+// The messages whose the name ends with "_popup" are the only ones which supports \n escape sequences
 //
 // Chat messages can use some colors :
 //  (Alt+01) = orange
@@ -17,7 +17,7 @@
 [German]
 
 // ConCommands
-cssm_help =						"Listet alle cssmatch RCON Befehle in der Console auf"
+cssm_help =						"cssm_help : Listet alle cssmatch RCON Befehle in der Console auf"
 cssm_start =					"cssm_start [optional : config file] : Startet Match"
 cssm_stop =						"cssm_stop : Stoppt Match"
 cssm_retag =					"cssm_retag : Neuerkennung der ClanTags der Teams"
@@ -37,6 +37,8 @@ cssmatch_version =				"CSSMatch : Plugin version"
 cssmatch_advanced =				"CSSMatch : "1" = Volles Adminmenu, "0" = Nur das Warmenu"
 cssmatch_language =                "CSSMatch : Standardsprache von CSSMatch (z.B. "german" benutzt diese Datei  cfg/cssmatch/languages/german.txt)"
 cssmatch_report =                 "CSSMatch : "1" = Nach jedem Match wird eine Datei mit einem Bericht erstellt, "0" = Kein Bericht"
+cssmatch_usermessages =         "CSSMatch : Mod UserMessage count - Do not change without instructions"
+cssmatch_updatesite =           "CSSMatch : Used by the update notifier"
 cssmatch_kniferound =				"CSSMatch : "1" = Mit Messerrunde, "0" = ohne"
 cssmatch_kniferound_money =        "CSSMatch : Geld, das in der Messerrunde zur Verfügung steht"
 cssmatch_kniferound_allows_c4 =			"CSSMatch : "1" = Erlaubt das legen der Bombe während der Messerrunde, "0" = ohne"
@@ -54,18 +56,18 @@ cssmatch_default_config =			"CSSMatch : Standard Serverconfig"
 // Warnings
 sv_alltalk =					"AllTalk ist AN"
 sv_cheats =						"Sv_Cheats sind AN"
-tv_enable =						"Maprestart damit SourceTV auf den Server connecten kann"
+update_available =              "Update available! For more information type !update"
 
 // Knife Round
 kniferound_announcement =		"Messerrunde ! Knife ! Knife ! Knife !"
-kniferound_c4 =					"Das Legen der Bombe während der Messerrunde ist verboten !"
+//kniferound_c4 =					"Das Legen der Bombe während der Messerrunde ist verboten !"
 kniferound_restarts =			"3 Neustarts, dann beginnt die Messerrunde !"
 kniferound_winner =				" $team gewinnt die Messerrunde !"
 kniferound_dead_time =			"$team hat $time Sekunden Zeit um eine Seite zu wählen, das andere Team wartet als Zuschauer."
 
 // Warmup
 warmup_announcement =			"Warmup Time !"
-warmup_c4 =						"Das Legen der Bombe während des Warmups ist Verboten !"
+//warmup_c4 =						"Das Legen der Bombe während des Warmups ist Verboten !"
 warmup_ready =					"$team ist jetzt Bereit !"
 warmup_already_ready =			"$team ist schona als bereit markiert !"
 warmup_all_ready =				"Alle Teams sind bereit !"
@@ -76,12 +78,10 @@ warmup_end =					"Ende des Warmups !"
 match_in_progress =				"Match läuft schon..."
 match_not_in_progress =			"Kein laufendes Match..."
 match_round_popup =				"Runde $current / $total\n$team1 : $score1\n$team2 : $score2"
-match_retag =					"Eine Änderung wurde vorgenommen, überprüfe Clantags ..."
-match_plugin_list =				"Installierte Plugins und status :"
 match_password_popup =			"Server Passwort : $password"
 match_password_remember =		"ERINNERUNG ! Server Passwort ist $password"
-match_started_by =				"Match wurde von $admin gestartet..."
-match_started =					"Match wurde gestartet..."
+//match_started_by =				"Match wurde von $admin gestartet..."
+//match_started =					"Match wurde gestartet..."
 match_name =					"$team1 VS $team2"
 match_config_error =			"Error : config Datei hat keine Match Informationen !"
 match_scores =					"Scores :"
@@ -115,8 +115,8 @@ admin_kick_by =					"$username wurde von $admin gekickt"
 admin_ban =						"Gebannt vom Admin"
 admin_temporaly_ban =			"$username wurde temporär gebannt von $admin"
 admin_permanently_ban =			"$username wurde gebannt von $admin"	
-admin_new_tag =				"Bitte neues Tag angeben"
 admin_please_specify_tag =		"Bitte das neue Tag spezifizieren"
+admin_please_specify_password =	"Please add new server password"
 admin_round_restarted_by =		"Die Runde wurde neugestartet von $admin"
 admin_round_restarted =			"Die Runde wurde neugestartet vom Admin"
 admin_manche_restarted_by =		"Die Hälfte wurde Neugestartet von $admin"
@@ -148,6 +148,7 @@ menu_match =					"CSSMatch : Match"
 menu_restart_manche =			"Starte Hälfte neu"
 menu_config =					"CSSMatch : Wähle config"
 menu_administration =			"CSSMatch : Admin Menu"
+menu_time-out =                "CSSMatch : Auszeit"
 menu_changelevel =				"Wechsle Map"
 menu_swap =						"Spieler swappen"
 menu_spec =						"Spieler zu den Zuschauern schieben"
@@ -165,20 +166,18 @@ menu_empty =					"Diese Liste ist leer :-("
 menu_close =					"Schliessen"
 
 // Errors
-error_default.cfg =				"default.cfg nicht gefunden, bitte Dateinamen angeben"
 error_file_not_found =			"Datei $file kann nicht gefunden werden"
 error_command_not_found =		"Befehl "$command" wurde nicht gefunden"
-error_cmd =						"Fehler bei der Bearbeitung des Befehls aufgetreten."
 error_invalid_player =			"Ungültiger Spieler"
-error_general =					"Ein Fehler ist aufgetreten, bitte den Autor auf $site informieren !"
+//error_general =					"Ein Fehler ist aufgetreten, bitte den Autor auf $site informieren !"
 error_tv_not_connected =		"SourceTV Aufnahme kann nicht gestartet werden weil SourceTV nicht mit dem Server verbunden ist."
 
 // Players
 player_join_game =				"$username tritt dem Spiel bei"
-player_match_hosted_popup =		"Ein Match läuft auf diesem Server !\n \nWenn du nicht teilnimmst, verlasse bitte den Server."
+//player_match_hosted_popup =		"Ein Match läuft auf diesem Server !\n \nWenn du nicht teilnimmst, verlasse bitte den Server."
 player_no_swap_in_match =		"Nur CSSMatch und Admins können Spieler swappen"
 player_you_not_admin =			"Du bist kein Admin !"
-player_leave_game =				"$username hat den Server verlassen ! (reason : $reason)"
+//player_leave_game =				"$username hat den Server verlassen ! (reason : $reason)"
 player_username =				"Spieler Nickname"
 player_nobody =					"Niemand"
 player_thetime =				"$hoursh$minutes"

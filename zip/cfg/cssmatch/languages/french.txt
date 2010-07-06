@@ -2,22 +2,22 @@
 // Nicolous
 // http://code.google.com/p/cssmatch-plugin-en/
 
-// Please ONLY TRANSLATE the sentences between QUOTES
+// Ne traduisez QUE les phrases entre guillemets
 //
-// ABOUT THE KEYWORDS prefixed by $ 
-//	YOU CAN MOVE these keywords, but YOU MUST NOT MODIFY the name of the keyword
+// A propos des mots-clés préfixés par $ 
+//	Vous pouvez les DEPLACER, mais vous NE devez PAS les MODIFIER
 //
-// Keywords's message suffixed by _popup are the only which supports \n escape sequences
+// Les messages dont le nom finit par _popup sont les seuls qui supportent le caractère d'échappement \n
 //
-// Chat messages can use some colors :
+// Les messages affichés dans le tchat peuvent être colorés :
 //  (Alt+01) = orange
-//  (Alt+03) = light green or team color
-//  (Alt+04) = green
+//  (Alt+03) = vert clair (ou couleur de la team)
+//  (Alt+04) = vert
 
 [French]
 
 // ConCommands
-cssm_help =						"Liste et décrit les commandes RCON du plugin dans la console"
+cssm_help =						"cssm_help : Liste et décrit les commandes RCON du plugin dans la console"
 cssm_start =					"cssm_start [fichier de config optionnel] : lance un match"
 cssm_stop =						"cssm_stop : stoppe un match"
 cssm_retag =					"cssm_retag : lance la redétection des tags des teams"
@@ -37,6 +37,8 @@ cssmatch_version =				"CSSMatch : Version du plugin"
 cssmatch_advanced =				"CSSMatch : "1" = Les menus sont construits et gérés avec des options d'administration, "0" = Les menus sont normaux"
 cssmatch_language =				"CSSMatch : Détermine le langage par défaut utilisé par CSSMatch (ex : "french" désignera le fichier cfg/cssmatch/languages/french.txt)"
 cssmatch_report = 				"CSSMatch : "1" = Un fichier de rapport est généré à la fin de chaque match, "0" = Aucun rapport n'est généré à la fin des matchs"
+cssmatch_usermessages =         "CSSMatch : Nombre de UserMessage du jeu - Ne pas modifier sans instructions"
+cssmatch_updatesite =           "CSSMatch : Utilisé par le notificateur de mise à jour"
 cssmatch_kniferound =			"CSSMatch : "1" = Faire un round au couteau, "0" = off"
 cssmatch_kniferound_money =		"CSSMatch : Quantité d'argent autorisée pendant le round au couteau"
 cssmatch_kniferound_allows_c4 =	"CSSMatch : "1" = Autoriser la pose du C4 pendant le round au couteau, "0" = off"
@@ -54,57 +56,55 @@ cssmatch_default_config =		"CSSMatch : Fichier de remise par défaut de la confi
 // Warnings
 sv_alltalk =					"Le AllTalk est actif"
 sv_cheats =						"Sv_Cheats est actif"
-tv_enable =						"La map va être relancée afin de connecter SourceTV au serveur"
+update_available =              "Mise à jour disponible ! Pour plus d'info tapez !update"
 
 // Knife Round
-kniferound_announcement =		"CutRound ! GO ! GO ! GO !"
-kniferound_c4 =					"La pose du C4 pendant le round au couteau est interdite !"
+kniferound_announcement =		"CutRound !"
+//kniferound_c4 =					"La pose de la bombe est interdite !"
 kniferound_restarts =			"3 restarts puis CutRound !"
 kniferound_winner =				"Le round au couteau a été remporté par la team $team !"
 kniferound_dead_time =			"Les $team ont $time secondes pour choisir leur camp, les autres attendent en spectateur"
 
 // Warmup
 warmup_announcement =			"Strats Time !"
-warmup_c4 =						"La pose du C4 pendant le Strats Time est interdite !"
+//warmup_c4 =						"La pose du C4 est interdite !"
 warmup_ready =					"Les $team sont prêts"
 warmup_already_ready =			"Les $team sont déjà déclarés prêts"
 warmup_all_ready =				"Toutes les teams sont prêtes !"
 warmup_disable =				"Cette fonctionnalité n'est disponible qu'en Strats Time"
-warmup_end =					"Fin du Strats Time !"
+//warmup_end =					"Fin du Strats Time !"
 
 // Match
 match_in_progress =				"Un match est déjà en cours..."
 match_not_in_progress =			"Il n'y a aucun match en cours..."
 match_round_popup =				"Round $current / $total\n$team1 : $score1\n$team2 : $score2"
-match_retag =					"Changement de situation, redétection des tags..."
-match_plugin_list =				"Liste des plugins installés et leur statut :"
 match_password_popup =			"Mot de passe du serveur : $password"
-match_password_remember =		"RAPPEL ! Le mot de passe du serveur est $password"
-match_started_by =				"Un match est lancé par $admin..."
-match_started =					"Un match est lancé..."
+match_password_remember =		"RAPPEL : Le mot de passe du serveur est $password"
+//match_started_by =				"Un match est lancé par $admin..."
+//match_started =					"Un match est lancé..."
 match_name =					"$team1 VS $team2"
 match_config_error =			"Erreur : le fichier de configuration n'impose aucune phase de match !"
 match_scores =					"Scores :"
 match_scores_team =				"$team : $score"
 match_winner =					"Team gagnante : $team"
-match_no_winner =				"Team gagnante : aucune"
+match_no_winner =				"Team gagnante : égalité"
 match_dead_time =				"$time secondes de temps mort, prenez vos screenshots !"
 match_please_changelevel =		"Changez de map pour restaurer au maximum la configuration par défaut"
 match_start_manche =			"Lancement de la manche $current / $total"
-match_restarts =				"3 restarts puis GO ! GO ! GO !"
+match_restarts =				"3 restarts puis GO !"
 match_end_manche_popup =		"Fin de la manche $current !\n\nScores :\n$team1 : $score1\n$team2 : $score2"
 match_end_current_manche =		"Fin de la manche $current !"
 match_end =						"Fin du match !"
 match_end_popup =				"Fin du match !\n\nScores :\n$team1 : $score1\n$team2 : $score2"
 
 // Administration
-admin_adminlist =				"Liste des steamID arbitre :"
+admin_adminlist =				"Liste des steamID des arbitres :"
 admin_new_admin =				"Le steamID $steamid est maintenant arbitre le temps d'une map"
 admin_is_already_admin =		"Le steamID $steamid est arbitre"
 admin_old_admin =				"Le steamID $steamid n'est maintenant plus arbitre"
 admin_is_not_admin =			"Le steamID $steamid n'est pas arbitre"
 admin_new_t_team_name =			"Le nouveau tag de la team terroriste est $team"
-admin_new_ct_team_name =		"Le nouveau tag de la team anti-terroriste est $team"
+admin_new_ct_team_name =		"Le nouveau tag de la team anti-terroriste est $team" 
 admin_spectator_player =		"Ce joueur est spectateur"
 admin_map_not_found =			"Impossible de charger la map $map !"
 admin_swap =					"$username est swappé par $admin"
@@ -115,8 +115,8 @@ admin_kick_by =					"$username est kické par $admin"
 admin_ban =						"Ban par un arbitre"
 admin_temporaly_ban =			"$username est temporairement banni par $admin"
 admin_permanently_ban =			"$username est banni de façon permanente par $admin"	
-admin_new_tag =					"Veuillez préciser le nouveau tag"
 admin_please_specify_tag =		"Veuillez spécifier le nouveau tag de la team"
+admin_please_specify_password =	"euillez spécifier le nouveau mot de passe du serveur"
 admin_round_restarted_by =		"Le round a été relancé par $admin"
 admin_round_restarted =			"Le round a été relancé par un arbitre"
 admin_manche_restarted_by =		"La manche a été relancée par $admin"
@@ -127,12 +127,12 @@ admin_all_teams_say_ready_by =	"Toutes les teams ont été déclarées prêtes p
 admin_all_teams_say_ready =		"Toutes les teams ont été déclarées prêtes par un arbitre"
 
 // Menus
-menu_play_kniferound =			"CSSMatch : Voulez-vous jouer un round au couteau ?"
+menu_play_kniferound =			"CSSMatch : Jouer un round au couteau ?"
 menu_yes =						"Oui"
 menu_no	=						"Non"
 menu_back =						"Retour"
 menu_more =						"Suivant"
-menu_play_warmup =				"CSSMatch : Des strats devront-ils être joués ?"
+menu_play_warmup =				"CSSMatch : Jouer des strats ?"
 menu_alltalk =					"$action le alltalk"
 menu_enable =					"Activer"
 menu_disable =					"Désactiver"
@@ -147,6 +147,7 @@ menu_go =						"Forcer le !go de toutes les teams"
 menu_match =					"CSSMatch : Match"
 menu_restart_manche =			"Recommencer la manche"
 menu_config =					"CSSMatch : Choix d'une configuration"
+menu_time-out =                "CSSMatch : Temps mort"
 menu_administration =			"CSSMatch : Administration"
 menu_changelevel =				"Changer de map"
 menu_swap =						"Swapper un joueur"
@@ -155,7 +156,7 @@ menu_kick =						"Kicker un joueur"
 menu_ban =						"Bannir un joueur"
 menu_map =						"CSSMatch : Choisissez une map"
 menu_player =					"CSSMatch : Choix d'un joueur"
-menu_ban_time =					"CSSMatch : Choix d'une durée pour le ban"
+menu_ban_time =					"CSSMatch : Durée du ban"
 menu_5_min =					"5 min"
 menu_1_h =						"1 h"
 menu_permanent =				"Permanent"
@@ -165,20 +166,18 @@ menu_empty =					"Cette liste est vide :-("
 menu_close =					"Fermer ce menu"
 
 // Errors
-error_default.cfg =				"default.cfg absent, veuillez préciser un nom de fichier"
 error_file_not_found =			"Impossible de trouver le fichier $file"
 error_command_not_found =		"Impossible de trouver la commande "$command""
-error_cmd =						"Erreur dans le traitement de la commande"
 error_invalid_player =			"Joueur invalide"
-error_general =					"Une erreur est survenue, veuillez en avertir l'auteur sur $site"
+//error_general =					"Une erreur est survenue, demandez de l'aide sur $site"
 error_tv_not_connected =		"Impossible de lancer l'enregistrement sourceTV car celle-ci n'est pas sur le serveur"
 
 // Players
 player_join_game =				"$username rejoint la partie"
-player_match_hosted_popup =		"Ce serveur héberge actuellement un match !\n \nSi vous n'en faite pas partie, quittez le serveur STP"
-player_no_swap_in_match =		"Seuls CSSMatch et les arbitres peuvent changer un joueur de camp"
+//player_match_hosted_popup =		"Ce serveur héberge actuellement un match !\n \nSi vous n'en faite pas partie, quittez le serveur STP"
+player_no_swap_in_match =		"Seuls les arbitres peuvent changer un joueur de camp"
 player_you_not_admin =			"Vous n'êtes pas arbitre !"
-player_leave_game =				"$username quitte le match ! (motif : $reason)"
+//player_leave_game =				"$username quitte le match ! (motif : $reason)"
 player_username =				"Pseudo du joueur"
 player_nobody =					"Personne"
 player_thetime =				"$hoursh$minutes"

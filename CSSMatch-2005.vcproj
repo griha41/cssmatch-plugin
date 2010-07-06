@@ -29,7 +29,7 @@
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
-				CommandLine="attrib -r ..\zip\addons\cssmatch.dll&#x0D;&#x0A;"
+				CommandLine="attrib -r zip\addons\cssmatch.dll&#x0D;&#x0A;"
 				Outputs="zip\addons\cssmatch.dll"
 			/>
 			<Tool
@@ -50,8 +50,8 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\hl2sdk-ob\public,..\hl2sdk-ob\public\engine,..\hl2sdk-ob\public\tier0,..\hl2sdk-ob\public\tier1,..\hl2sdk-ob\public\vstdlib,..\hl2sdk-ob\public\game\server,..\hl2sdk-ob\tier1,..\hl2sdk-ob\game,..\hl2sdk-ob\game\server,..\hl2sdk-ob\game\shared"
-				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;serverplugin_emptyONLY"
+				AdditionalIncludeDirectories="..\hl2sdk\public,..\hl2sdk\public\tier0,..\hl2sdk\public\tier1,..\hl2sdk\dlls,..\hl2sdk\game_shared"
+				PreprocessorDefinitions="TIXML_USE_TICPP"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
 				RuntimeTypeInfo="true"
@@ -82,7 +82,7 @@
 				OutputFile="zip\addons\cssmatch.dll"
 				LinkIncremental="2"
 				SuppressStartupBanner="true"
-				AdditionalLibraryDirectories="..\hl2sdk-ob\lib\public"
+				AdditionalLibraryDirectories="..\hl2sdk\lib\public,..\hl2sdk\lib\common"
 				IgnoreDefaultLibraryNames="LIBC,libcmt"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile=".\Debug/serverplugin_empty.pdb"
@@ -156,8 +156,8 @@
 				InlineFunctionExpansion="2"
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
-				AdditionalIncludeDirectories="..\hl2sdk-ob\public,..\hl2sdk-ob\public\engine,..\hl2sdk-ob\public\tier0,..\hl2sdk-ob\public\tier1,..\hl2sdk-ob\public\vstdlib,..\hl2sdk-ob\public\game\server,..\hl2sdk-ob\tier1,..\hl2sdk-ob\game,..\hl2sdk-ob\game\server,..\hl2sdk-ob\public\game\shared"
-				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;serverplugin_emptyONLY"
+				AdditionalIncludeDirectories="..\hl2sdk\public,..\hl2sdk\public\tier0,..\hl2sdk\public\tier1,..\hl2sdk\dlls,..\hl2sdk\game_shared"
+				PreprocessorDefinitions="TIXML_USE_TICPP"
 				StringPooling="true"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
@@ -189,8 +189,9 @@
 				OutputFile="zip\addons\cssmatch.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
-				AdditionalLibraryDirectories="..\hl2sdk-ob\lib\public"
+				AdditionalLibraryDirectories="..\hl2sdk\lib\public,..\hl2sdk\lib\common"
 				IgnoreDefaultLibraryNames="libcmtd.lib"
+				DelayLoadDLLs=""
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile=".\Release/serverplugin_empty.pdb"
 				GenerateMapFile="true"
@@ -229,450 +230,400 @@
 	</References>
 	<Files>
 		<Filter
-			Name="Source Files"
+			Name="plugin"
 			Filter="cpp;c;cxx;rc;def;r;odl;idl;hpj;bat"
+			>
+			<File
+				RelativePath=".\plugin\BaseTimer.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\plugin\BaseTimer.h"
+				>
+			</File>
+			<File
+				RelativePath=".\plugin\ServerPlugin.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\plugin\ServerPlugin.h"
+				>
+			</File>
+			<File
+				RelativePath=".\plugin\UpdateNotifier.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\plugin\UpdateNotifier.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="valve"
 			>
 			<File
 				RelativePath="..\hl2sdk\public\tier0\memoverride.cpp"
 				>
 			</File>
-			<File
-				RelativePath="..\hl2sdk-ob\public\networkvar.cpp"
-				>
-			</File>
-			<File
-				RelativePath="serverplugin_convar.cpp"
-				>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="0"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_MBCS;serverplugin_emptyONLY;$(NoInherit)"
-						BasicRuntimeChecks="3"
-						BrowseInformation="1"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="2"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_MBCS;serverplugin_emptyONLY;$(NoInherit)"
-					/>
-				</FileConfiguration>
-			</File>
 		</Filter>
 		<Filter
-			Name="Link Libraries"
+			Name="link"
 			>
 			<File
-				RelativePath="..\hl2sdk-ob\lib\public\mathlib.lib"
+				RelativePath="..\hl2sdk\lib\public\mathlib.lib"
 				>
 			</File>
 			<File
-				RelativePath="..\hl2sdk-ob\lib\public\tier0.lib"
+				RelativePath="..\hl2sdk\lib\public\tier0.lib"
 				>
 			</File>
 			<File
-				RelativePath="..\hl2sdk-ob\lib\public\tier1.lib"
+				RelativePath="..\hl2sdk\lib\public\tier1.lib"
 				>
 			</File>
 			<File
-				RelativePath="..\hl2sdk-ob\lib\public\tier2.lib"
-				>
-			</File>
-			<File
-				RelativePath="..\hl2sdk-ob\lib\public\tier3.lib"
-				>
-			</File>
-			<File
-				RelativePath="..\hl2sdk-ob\lib\public\vstdlib.lib"
+				RelativePath="..\hl2sdk\lib\public\vstdlib.lib"
 				>
 			</File>
 		</Filter>
 		<Filter
-			Name="API"
+			Name="convars"
 			>
 			<File
-				RelativePath=".\API\API.cpp"
+				RelativePath=".\convars\convar.h"
 				>
 			</File>
 			<File
-				RelativePath=".\API\API.h"
+				RelativePath=".\convars\ConVarCallbacks.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\convars\ConVarCallbacks.h"
+				>
+			</File>
+			<File
+				RelativePath=".\convars\ConvarsAccessor.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\convars\ConvarsAccessor.h"
+				>
+			</File>
+			<File
+				RelativePath=".\convars\I18nConVar.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\convars\I18nConVar.h"
 				>
 			</File>
 		</Filter>
 		<Filter
-			Name="MRecipientFilter"
+			Name="exceptions"
 			>
 			<File
-				RelativePath=".\MRecipientFilter\MRecipientFilter.cpp"
+				RelativePath=".\exceptions\BaseException.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\MRecipientFilter\MRecipientFilter.h"
+				RelativePath=".\exceptions\BaseException.h"
 				>
 			</File>
 		</Filter>
 		<Filter
-			Name="Match"
+			Name="misc"
 			>
 			<File
-				RelativePath=".\Match\Match.cpp"
+				RelativePath=".\misc\BaseSingleton.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\Match\Match.h"
+				RelativePath=".\misc\BaseSingleton.h"
+				>
+			</File>
+			<File
+				RelativePath=".\misc\CannotBeCopied.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\misc\CannotBeCopied.h"
+				>
+			</File>
+			<File
+				RelativePath=".\misc\common.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\misc\common.h"
 				>
 			</File>
 		</Filter>
 		<Filter
-			Name="Configuration"
+			Name="messages"
 			>
 			<File
-				RelativePath=".\Configuration\Configuration.cpp"
+				RelativePath=".\messages\Countdown.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\Configuration\Configuration.h"
+				RelativePath=".\messages\Countdown.h"
+				>
+			</File>
+			<File
+				RelativePath=".\messages\I18nManager.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\messages\I18nManager.h"
+				>
+			</File>
+			<File
+				RelativePath=".\messages\Menu.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\messages\Menu.h"
+				>
+			</File>
+			<File
+				RelativePath=".\messages\RecipientFilter.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\messages\RecipientFilter.h"
+				>
+			</File>
+			<File
+				RelativePath=".\messages\UserMessagesManager.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\messages\UserMessagesManager.h"
 				>
 			</File>
 		</Filter>
 		<Filter
-			Name="CSSMatch"
+			Name="match"
 			>
 			<File
-				RelativePath=".\CSSMatch\CSSMatch.cpp"
+				RelativePath=".\match\BaseMatchState.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\CSSMatch\CSSMatch.h"
+				RelativePath=".\match\BaseMatchState.h"
+				>
+			</File>
+			<File
+				RelativePath=".\match\DisabledMatchState.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\match\DisabledMatchState.h"
+				>
+			</File>
+			<File
+				RelativePath=".\match\HalfMatchState.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\match\HalfMatchState.h"
+				>
+			</File>
+			<File
+				RelativePath=".\match\KnifeRoundMatchState.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\match\KnifeRoundMatchState.h"
+				>
+			</File>
+			<File
+				RelativePath=".\match\MatchManager.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\match\MatchManager.h"
+				>
+			</File>
+			<File
+				RelativePath=".\match\TimeoutMatchState.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\match\TimeoutMatchState.h"
+				>
+			</File>
+			<File
+				RelativePath=".\match\WarmupMatchState.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\match\WarmupMatchState.h"
 				>
 			</File>
 		</Filter>
 		<Filter
-			Name="ConVars"
+			Name="player"
 			>
 			<File
-				RelativePath=".\ConVars\ConVars.cpp"
+				RelativePath=".\player\ClanMember.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\ConVars\ConVars.h"
+				RelativePath=".\player\ClanMember.h"
+				>
+			</File>
+			<File
+				RelativePath=".\player\MatchClan.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\player\MatchClan.h"
+				>
+			</File>
+			<File
+				RelativePath=".\player\Player.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\player\Player.h"
 				>
 			</File>
 		</Filter>
 		<Filter
-			Name="EnregistrementTV"
+			Name="configuration"
 			>
 			<File
-				RelativePath=".\EnregistrementTV\EnregistrementTV.cpp"
+				RelativePath=".\configuration\ConfigurationFile.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\EnregistrementTV\EnregistrementTV.h"
+				RelativePath=".\configuration\ConfigurationFile.h"
+				>
+			</File>
+			<File
+				RelativePath=".\configuration\RunnableConfigurationFile.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\configuration\RunnableConfigurationFile.h"
+				>
+			</File>
+			<File
+				RelativePath=".\configuration\TranslationFile.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\configuration\TranslationFile.h"
 				>
 			</File>
 		</Filter>
 		<Filter
-			Name="Joueur"
+			Name="commands"
 			>
 			<File
-				RelativePath=".\Joueur\Joueur.cpp"
+				RelativePath=".\commands\ClientCommandCallbacks.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\Joueur\Joueur.h"
+				RelativePath=".\commands\ClientCommandCallbacks.h"
+				>
+			</File>
+			<File
+				RelativePath=".\commands\ConCommandCallbacks.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\commands\ConCommandCallbacks.h"
+				>
+			</File>
+			<File
+				RelativePath=".\commands\ConCommandHook.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\commands\ConCommandHook.h"
+				>
+			</File>
+			<File
+				RelativePath=".\commands\I18nConCommand.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\commands\I18nConCommand.h"
 				>
 			</File>
 		</Filter>
 		<Filter
-			Name="Menu"
+			Name="entity"
 			>
 			<File
-				RelativePath=".\Menu\Ligne.cpp"
+				RelativePath=".\entity\EntityProp.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\Menu\Ligne.h"
-				>
-			</File>
-			<File
-				RelativePath=".\Menu\Menu.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\Menu\Menu.h"
+				RelativePath=".\entity\EntityProp.h"
 				>
 			</File>
 		</Filter>
 		<Filter
-			Name="Team"
+			Name="sourcetv"
 			>
 			<File
-				RelativePath=".\Team\Team.cpp"
+				RelativePath=".\sourcetv\TvRecord.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\Team\Team.h"
+				RelativePath=".\sourcetv\TvRecord.h"
 				>
 			</File>
 		</Filter>
 		<Filter
-			Name="Messages"
+			Name="ticpp"
 			>
 			<File
-				RelativePath=".\Messages\Messages.cpp"
+				RelativePath=".\ticpp\ticpp.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\Messages\Messages.h"
+				RelativePath=".\ticpp\tinystr.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\ticpp\tinyxml.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\ticpp\tinyxmlerror.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\ticpp\tinyxmlparser.cpp"
 				>
 			</File>
 		</Filter>
 		<Filter
-			Name="Timer"
+			Name="report"
 			>
 			<File
-				RelativePath=".\Timer\Timer.cpp"
+				RelativePath=".\report\BaseReport.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\Timer\Timer.h"
-				>
-			</File>
-		</Filter>
-		<Filter
-			Name="GestionTimers"
-			>
-			<File
-				RelativePath=".\GestionTimers\GestionTimers.cpp"
+				RelativePath=".\report\BaseReport.h"
 				>
 			</File>
 			<File
-				RelativePath=".\GestionTimers\GestionTimers.h"
-				>
-			</File>
-		</Filter>
-		<Filter
-			Name="Authentification"
-			>
-			<File
-				RelativePath=".\Authentification\Authentification.cpp"
+				RelativePath=".\report\XmlReport.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\Authentification\Authentification.h"
+				RelativePath=".\report\XmlReport.h"
 				>
 			</File>
-		</Filter>
-		<Filter
-			Name="GestionMenus"
-			>
-			<File
-				RelativePath=".\GestionMenus\GestionMenus.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\GestionMenus\GestionMenus.h"
-				>
-			</File>
-		</Filter>
-		<Filter
-			Name="Decompte"
-			>
-			<File
-				RelativePath=".\Decompte\Decompte.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\Decompte\Decompte.h"
-				>
-			</File>
-		</Filter>
-		<Filter
-			Name="GestionJoueurs"
-			>
-			<File
-				RelativePath=".\GestionJoueurs\GestionJoueurs.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\GestionJoueurs\GestionJoueurs.h"
-				>
-			</File>
-		</Filter>
-		<Filter
-			Name="ConCommands"
-			>
-			<File
-				RelativePath=".\ConCommands\ConCommands.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\ConCommands\ConCommands.h"
-				>
-			</File>
-		</Filter>
-		<Filter
-			Name="Rapport"
-			>
-			<File
-				RelativePath=".\Rapport\Rapport.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\Rapport\Rapport.h"
-				>
-			</File>
-			<Filter
-				Name="RapportXml"
-				>
-				<File
-					RelativePath=".\Rapport\RapportXml\RapportXml.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\Rapport\RapportXml\RapportXml.h"
-					>
-				</File>
-			</Filter>
-		</Filter>
-		<Filter
-			Name="I18n"
-			>
-			<File
-				RelativePath=".\I18n\I18n.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\I18n\I18n.h"
-				>
-			</File>
-		</Filter>
-		<Filter
-			Name="EventListener"
-			>
-			<File
-				RelativePath=".\EventListener\EventListener.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\EventListener\EventListener.h"
-				>
-			</File>
-		</Filter>
-		<Filter
-			Name="Hooks"
-			>
-			<Filter
-				Name="SayHook"
-				>
-				<File
-					RelativePath=".\Hooks\SayHook\SayHook.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\Hooks\SayHook\SayHook.h"
-					>
-				</File>
-			</Filter>
-			<Filter
-				Name="SayTeamHook"
-				>
-				<File
-					RelativePath=".\Hooks\SayTeamHook\SayTeamHook.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\Hooks\SayTeamHook\SayTeamHook.h"
-					>
-				</File>
-			</Filter>
-		</Filter>
-		<Filter
-			Name="PlayerProp"
-			>
-			<File
-				RelativePath=".\PlayerProp\PlayerProp.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\PlayerProp\PlayerProp.h"
-				>
-			</File>
-		</Filter>
-		<Filter
-			Name="Outils"
-			>
-			<File
-				RelativePath=".\Outils\Outils.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\Outils\Outils.h"
-				>
-			</File>
-			<Filter
-				Name="Incopiable"
-				>
-				<File
-					RelativePath=".\Outils\Incopiable\Incopiable.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\Outils\Incopiable\Incopiable.h"
-					>
-				</File>
-			</Filter>
-		</Filter>
-		<Filter
-			Name="CfgFile"
-			>
-			<File
-				RelativePath=".\CfgFile\CfgFile.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\CfgFile\CfgFile.h"
-				>
-			</File>
-			<Filter
-				Name="CfgFileException"
-				>
-				<File
-					RelativePath=".\CfgFile\CfgFileException\CfgFileException.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\CfgFile\CfgFileException\CfgFileException.h"
-					>
-				</File>
-			</Filter>
 		</Filter>
 		<File
 			RelativePath=".\changelog.txt"
-			>
-		</File>
-		<File
-			RelativePath=".\compile.sh"
-			>
-		</File>
-		<File
-			RelativePath=".\debug_make.txt"
-			>
-		</File>
-		<File
-			RelativePath=".\Makefile"
-			>
-		</File>
-		<File
-			RelativePath=".\todo.txt"
 			>
 		</File>
 	</Files>

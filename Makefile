@@ -21,7 +21,7 @@
 #
 
 # Dossier de travail
-BASE_DIR = ../hl2sdk-ob
+BASE_DIR = ../hl2sdk
 
 # Compilateur
 #CXX = g++-3.4
@@ -41,7 +41,7 @@ DEBUG_DIR = Debug/linux
 SRCDS_BIN_DIR = bin
 
 # Dossier contenant les librairies statiques
-SRCDS_A_DIR = $(SDK_SRC_DIR)/lib/linux
+SRCDS_A_DIR = $(SDK_SRC_DIR)/linux_sdk
 
 ###############
 # Options de compilation
@@ -51,11 +51,13 @@ SRCDS_A_DIR = $(SDK_SRC_DIR)/lib/linux
 ARCH_CFLAGS = 	-mtune=i686 \
 				-march=pentium \
 				-mmmx
+ARCH = i486
 ARCH_BIN = .so
 
 # Options du compilateur
-USER_CFLAGS =
-BASE_CFLAGS =	-fpermissive \
+USER_CFLAGS = -DTIXML_USE_TICPP
+BASE_CFLAGS = 	-msse \
+				-fpermissive \
 				-D_LINUX \
 				-DNDEBUG \
 				-Dstricmp=strcasecmp \
@@ -73,10 +75,11 @@ OPT_FLAGS = -O3 \
 			-funroll-loops \
 			-s \
 			-pipe
+#			-fno-rtti
 DEBUG_FLAGS = 	-g \
 				-ggdb3 \
 				-O0 \
-				-D_DEBUG
+				-D_DEBUG				
 
 
 ############
@@ -89,15 +92,10 @@ SRC= $(wildcard *.cpp) $(wildcard */*.cpp) $(wildcard */*/*.cpp)
 # Librairies à lier			
 ###########
 
-LINK_SO =	$(SRCDS_BIN_DIR)/libtier0.so \
-			$(SRCDS_BIN_DIR)/libvstdlib.so \
-			$(SRCDS_BIN_DIR)/libsteam_api.so			
+LINK_SO =	$(SRCDS_BIN_DIR)/tier0_i486.so \
+			$(SRCDS_BIN_DIR)/vstdlib_i486.so
 LINK_A = 	$(SRCDS_A_DIR)/tier1_i486.a \
 			$(SRCDS_A_DIR)/mathlib_i486.a \
-			$(SRCDS_A_DIR)/dmxloader_i486.a \
-			$(SRCDS_A_DIR)/tier2_i486.a \
-			$(SRCDS_A_DIR)/tier3_i486.a \
-			$(SRCDS_A_DIR)/particles_i486.a \
 			$(SRCDS_A_DIR)/choreoobjects_i486.a
 			
 
@@ -109,22 +107,21 @@ LINK = -lm -ldl $(LINK_A) $(LINK_SO)
 
 INCLUDE = 	-I. \
 			-I$(SDK_PUBLIC_DIR) \
+			-I$(SDK_PUBLIC_DIR)/dlls \
 			-I$(SDK_PUBLIC_DIR)/engine \
 			-I$(SDK_PUBLIC_DIR)/tier0 \
 			-I$(SDK_PUBLIC_DIR)/tier1 \
 			-I$(SDK_PUBLIC_DIR)/vstdlib \
-			-I$(SDK_PUBLIC_DIR)/game/server \
 			-I$(SDK_SRC_DIR)/tier1 \
-			-I$(SDK_SRC_DIR)/game \
-			-I$(SDK_SRC_DIR)/game/server \
-			-I$(SDK_SRC_DIR)/game/shared
+			-I$(SDK_SRC_DIR)/game_shared \
+			-I$(SDK_SRC_DIR)/dlls
 
 ###################
 # Cibles et règles de compilation
 ###################
 
 # Nom du fichier binaire de sortie
-BINARY_NAME = cssmatch$(ARCH_BIN)
+BINARY_NAME = cssmatch_$(ARCH)$(ARCH_BIN)
 
 # Dossier de sortie du fichier binaire
 BINARY_DIR = zip/addons
@@ -148,8 +145,6 @@ $(BIN_DIR)/%.o: %.cpp
 	@$(CXX) $(INCLUDE) $(CFLAGS) -o $@ -c $<
 
 all:
-	@mkdir -p $(BIN_DIR)
-	
 	@$(MAKE) release
 
 release: $(OBJ_LINUX)
@@ -160,4 +155,5 @@ debug:
 
 clean:
 	@rm -rf $(RELEASE_DIR)
-	@rm -rf $(DEBUG_DIR)	
+	@rm -rf $(DEBUG_DIR)
+

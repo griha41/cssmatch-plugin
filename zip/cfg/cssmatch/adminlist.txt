@@ -11,20 +11,19 @@
 // 1 steamID by line !
 //
 // All players have their own unique "steamID".
-// To known what is your steamid :
+// To known what is your steamid:
 // - connect you to a server
 // - type the following command in your console : status
-// (If you don't have the console, follow this tutorial : http://www.counter-script.net/index.php?id=66#faqsource_11 ,)
-// This command give you some informations about the server and the player connected.
+// (If you don't activated your console, google it)
+// This command gives you some information about the server and the player connected.
 // In front of your username (in the list) you will find your steamid (e.g. STEAM_0:1:4654565) ;
-// - copy-paste ALL your steamID (don't forget the STEAM_ prefix !) in this file.
+// - paste your steamID (don't forget the STEAM_ prefix !) in this file.
 // 
-// As you can see in the example below, that's possible to put a commentary after the steamID.
-// (e.g. to specify which owns the steamid.)
+// As you can see in the example below, it's possible to comment the steamID.
 //
-// For more informations : http://code.google.com/p/cssmatch-plugin-en/wiki/Referee .
-// That's also possible to manage a match via RCON : http://code.google.com/p/cssmatch-plugin-en/wiki/RCON .
-// Finally, to don't have to install a complex and huge administration plugin, on your match server,
+// For more information : http://code.google.com/p/cssmatch-plugin-en/wiki/Referee .
+// It's also possible to manage a match by RCON : http://code.google.com/p/cssmatch-plugin-en/wiki/RCON .
+// Finally, in order to don't have to install a complex and huge administration plugin on your match server,
 //		some basics administration options can be enabled : http://code.google.com/p/cssmatch-plugin-en/wiki/Administration .
 
 STEAM_0:1:6822537 // Nicolous - please delete this line !

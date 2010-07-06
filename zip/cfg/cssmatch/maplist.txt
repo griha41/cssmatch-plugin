@@ -4,10 +4,10 @@
 
 // Français ? German ? http://www.cssmatch.com/translations/
 
-// ======================================================
-// List of the maps which are available in the admin menu
-// ======================================================
-// For more informations : http://code.google.com/p/cssmatch-plugin-en/wiki/maplist .
+// ==========================================
+// List of available maps in the admin menu
+// ==========================================
+// For more information : http://code.google.com/p/cssmatch-plugin-en/wiki/maplist .
 
 cpl_fire
 cpl_strike

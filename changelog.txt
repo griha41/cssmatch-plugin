@@ -1,0 +1,8 @@
+* Passage sur le moteur Source 2009, alias Orange Box. Cela nous a obligé à modifier le fonctionnement de certains choses sur lesquels vous pourrez concentrer vos tests :
+    - Le système de restriction des armes durant le round au couteau et durant les strats
+    - L'affichage des menus (par défaut sur Orange Box ils sont automatiquement refermés en 5 sec)
+    - Les messages centré en bas de l'écran (voyez-vous un caractère étrange au début des messages ?)
+    
+* Correction d'un accès incorrect à la mémoire pouvant engendrer un crash
+
+* Correction des scores dans les rapports

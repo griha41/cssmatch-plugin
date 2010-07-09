@@ -41,6 +41,7 @@
 #include "../convars/convar.h"
 #include "interface.h"
 #include "IEngineSound.h" 
+#include "toolframework/itoolentity.h"
 
 #include <sstream>
 
@@ -122,7 +123,8 @@ bool ServerPlugin::Load(CreateInterfaceFn interfaceFactory, CreateInterfaceFn ga
 			getInterface<IFileSystem>(interfaceFactory,interfaces.filesystem,FILESYSTEM_INTERFACE_VERSION) &&
 			getInterface<IServerPluginHelpers>(interfaceFactory,interfaces.helpers,INTERFACEVERSION_ISERVERPLUGINHELPERS) &&
 			getInterface<IServerGameDLL>(gameServerFactory,interfaces.serverGameDll,"ServerGameDLL006") &&
-			getInterface<IEngineSound>(interfaceFactory,interfaces.sounds,IENGINESOUND_SERVER_INTERFACE_VERSION);
+			getInterface<IEngineSound>(interfaceFactory,interfaces.sounds,IENGINESOUND_SERVER_INTERFACE_VERSION) &&
+			getInterface<IServerTools>(gameServerFactory,interfaces.serverTools,VSERVERTOOLS_INTERFACE_VERSION);
 
 		if (success)
 		{
@@ -138,6 +140,7 @@ bool ServerPlugin::Load(CreateInterfaceFn interfaceFactory, CreateInterfaceFn ga
 			adminMenu->addLine(true,"menu_spec");
 			adminMenu->addLine(true,"menu_kick");
 			adminMenu->addLine(true,"menu_ban");
+			adminMenu->addLine(true,"menu_back");
 
 			bantimeMenu = new Menu("menu_ban_time",
 				new MenuCallback<ServerPlugin>(this,&ServerPlugin::bantimeMenuCallback));
@@ -415,6 +418,9 @@ void ServerPlugin::adminMenuCallback(Player * player, int choice, MenuLine * sel
 	case 5:
 		showBanMenu(player);
 		break;	
+	case 6:
+		player->cexec("cssmatch\n");
+		break;
 	default:
 		player->quitMenu();
 	}

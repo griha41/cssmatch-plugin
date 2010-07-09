@@ -133,6 +133,7 @@ namespace cssmatch
 		// Entity prop handler
 		static EntityProp accountHandler;
 		static EntityProp lifeStateHandler;
+		static EntityProp playerStateHandler;
 		//static EntityProp vecOriginHandler;
 		//static EntityProp angRotationHandler;
 		//static EntityProp eyeAngles0Handler;
@@ -255,6 +256,11 @@ namespace cssmatch
 		/** Get the life state (returns -1 if it fails) */
 		int getLifeState();		
 
+		/** Set the player state */
+		void setPlayerState(int newState);
+		/** Get the player state (returns -1 if it fails) */
+		int getPlayerState();		
+
 		/** Set the player location */
 		void setVecOrigin(const Vector & vec);
 		/** Get the player location (x,y,z are VEC_T_NAN if it fails) */
@@ -269,6 +275,10 @@ namespace cssmatch
 		void setArmor(int newArmor);
 		/** Get the player armor value (returns -1 if it fails) */
 		int getArmor();
+
+
+		/** Spawn this player */
+		void spawn();
 
 
 		/** Give an named item to the player 

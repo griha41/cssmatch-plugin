@@ -24,6 +24,8 @@
 #include "../plugin/ServerPlugin.h"
 #include "../messages/Menu.h"
 
+#include "toolframework/itoolentity.h"
+
 #include <sstream>
 
 using namespace cssmatch;
@@ -34,6 +36,7 @@ using std::ostringstream;
 
 EntityProp Player::accountHandler("CCSPlayer","m_iAccount");
 EntityProp Player::lifeStateHandler("CBasePlayer","m_lifeState");
+EntityProp Player::playerStateHandler("CCSPlayer","m_iPlayerState");
 //EntityProp Player::vecOriginHandler("CCSPlayer","baseclass.baseclass.baseclass.baseclass.baseclass.baseclass.m_vecOrigin");
 //EntityProp Player::angRotationHandler("CBaseEntity","m_angRotation");
 //EntityProp Player::eyeAngles0Handler("CCSPlayer","m_angEyeAngles[0]");
@@ -259,26 +262,30 @@ void Player::ban(int duration, const string & reason) const
 
 bool Player::swap()
 {
+	ServerPlugin * plugin = ServerPlugin::getInstance();
+	I18nManager * i18n = plugin->getI18nManager();
+	RecipientFilter recipient;
+	recipient.addRecipient(identity.index);
+
 	bool success = true;
 
 	IPlayerInfo * pInfo = getPlayerInfo();
 	if (isValidPlayerInfo(pInfo))
 	{
-		if (pInfo->IsFakeClient())
-			kick("Swap Bot");
-		else
+		switch(pInfo->GetTeamIndex())
 		{
-			switch(pInfo->GetTeamIndex())
-			{
-			case T_TEAM:
-				pInfo->ChangeTeam((int)CT_TEAM);
-				break;
-			case CT_TEAM:
-				pInfo->ChangeTeam((int)T_TEAM);
-				break;
-			default:
-				success = false;
-			}
+		case T_TEAM:
+			pInfo->ChangeTeam((int)CT_TEAM);
+			i18n->showPanel(recipient,"class_ct",false);
+			spawn();
+			break;
+		case CT_TEAM:
+			pInfo->ChangeTeam((int)T_TEAM);
+			i18n->showPanel(recipient,"class_ter",false);
+			spawn();
+			break;
+		default:
+			success = false;
 		}
 	}
 
@@ -371,6 +378,34 @@ int Player::getLifeState()
 	}
 
 	return lifeState;
+}
+
+void Player::setPlayerState(int newState)
+{
+	try
+	{
+		playerStateHandler.getProp<int>(identity.pEntity) = newState;
+	}
+	catch(const EntityPropException & e)
+	{
+		CSSMATCH_PRINT_EXCEPTION(e);
+	}
+}
+
+int Player::getPlayerState()
+{
+	int playerState = -1;
+
+	try
+	{
+		playerState  = playerStateHandler.getProp<int>(identity.pEntity);
+	}
+	catch(const EntityPropException & e)
+	{
+		CSSMATCH_PRINT_EXCEPTION(e);
+	}
+
+	return playerState;
 }
 
 /*void Player::setVecOrigin(const Vector & vec)
@@ -480,6 +515,27 @@ int Player::getArmor()
 	}
 
 	return armor;
+}
+
+void Player::spawn()
+{
+	ServerPlugin * plugin = ServerPlugin::getInstance();
+	ValveInterfaces * interfaces = plugin->getInterfaces();
+
+	// CS:S DispatchSpawn workaround:
+	setPlayerState(0);
+	setLifeState(512); // review me
+	//
+
+	IServerUnknown * unknown = getServerUnknow(identity.pEntity);
+	if (isValidServerUnknown(unknown))
+	{
+		interfaces->serverTools->DispatchSpawn(unknown);
+	}
+	else
+	{
+		CSSMATCH_PRINT("Unable to find the player to spawn")
+	}
 }
 
 void Player::give(const string & item)

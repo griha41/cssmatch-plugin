@@ -157,9 +157,6 @@ void UserMessagesManager::hintSay(RecipientFilter & recipients, const string & m
 
 	bf_write * pWrite = engine->UserMessageBegin(&recipients,findMessageType("HintText"));
 
-	pWrite->WriteByte(1); // number of lines (WriteString)?
-	// What is the good value? http://code.google.com/p/cssmatch-plugin/issues/detail?id=99
-
 	pWrite->WriteString(message.c_str());
 
 	engine->MessageEnd();
@@ -189,6 +186,17 @@ void UserMessagesManager::motdSay(RecipientFilter recipients, MotdType type, con
 
 	pWrite->WriteString("msg");
 	pWrite->WriteString(message.c_str());
+
+	engine->MessageEnd();
+}
+
+void UserMessagesManager::showPanel(RecipientFilter recipients, const std::string & panelName, bool show)
+{
+	bf_write * pWrite = engine->UserMessageBegin(&recipients,findMessageType("VGUIMenu"));
+
+	pWrite->WriteString(panelName.c_str());
+	pWrite->WriteByte((int)show);
+	pWrite->WriteByte(0); // No more data
 
 	engine->MessageEnd();
 }

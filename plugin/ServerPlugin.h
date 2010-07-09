@@ -43,6 +43,7 @@ class IServerPluginHelpers;
 class CGlobalVars;
 class IServerGameDLL;
 class IEngineSound;
+class IServerTools;
 class ConVar;
 struct edict_t;
 class ConCommand;
@@ -73,6 +74,7 @@ namespace cssmatch
 		ConvarsAccessor * convars; // console vars
 		IServerGameDLL * serverGameDll; // Access to some DLL infos
 		IEngineSound * sounds;
+		IServerTools * serverTools;
 
 		ValveInterfaces()
 			:	engine(NULL),
@@ -83,7 +85,8 @@ namespace cssmatch
 				gpGlobals(NULL),
 				convars(NULL),
 				serverGameDll(NULL),
-				sounds(NULL){}
+				sounds(NULL),
+				serverTools(NULL){}
 	};
 
 	/** Client command */

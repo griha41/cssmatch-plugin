@@ -466,8 +466,8 @@ void MatchManager::stop() throw (MatchManagerException)
 		int timeoutDuration = plugin->getConVar("cssmatch_end_set")->GetInt();
 		if (timeoutDuration > 0)
 		{
-		    if (plugin->getPlayerCount() > 0) // if the server is empty, we can't add timers because GameFrame is no more executed
-		    {
+		    if (plugin->getPlayerCount() - 1 > 0) // if the server is empty, we can't add timers because GameFrame is no more executed
+		    {									  // - 1 : if a player quit the server the player is still count a while
 				map<string,string> timeoutParameters;
 				timeoutParameters["$time"] = toString(timeoutDuration);
 				plugin->addTimer(new TimerI18nChatSay(2.0f,recipients,"match_dead_time",timeoutParameters));

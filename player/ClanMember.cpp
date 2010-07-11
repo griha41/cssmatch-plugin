@@ -50,7 +50,7 @@ PlayerScore * ClanMember::getCurrentScore()
 
 void ClanMember::saveState(PlayerState * state)
 {
-	ServerPlugin * plugin = ServerPlugin::getInstance();
+	/*ServerPlugin * plugin = ServerPlugin::getInstance();
 	ValveInterfaces * interfaces = plugin->getInterfaces();
 
 	// Get the handle id of this player
@@ -77,13 +77,12 @@ void ClanMember::saveState(PlayerState * state)
 				}
 			}
 		}
-	}
+	}*/
 
 	state->score.deaths = currentScore.deaths;
 	state->score.kills = currentScore.kills;
 
-	state->armor = getArmor();
-	state->account = getAccount();
+	/*state->account = getAccount();*/
 
 	//state->vecOrigin = getVecOrigin();
 	//state->angle = getViewAngle();
@@ -94,17 +93,14 @@ void ClanMember::restoreState(PlayerState * state)
 	currentScore.deaths = state->score.deaths;
 	currentScore.kills = state->score.kills;
 
-	if (state->armor > 0)
-		setArmor(state->armor);
+	/*if (state->account > -1)
+		setAccount(state->account);*/
 
-	if (state->account > -1)
-		setAccount(state->account);
-
-	list<string>::const_iterator itObject;
+	/*list<string>::const_iterator itObject;
 	for(itObject = state->objects.begin(); itObject != state->objects.end(); itObject++)
 	{
 		give(*itObject);
-	}
+	}*/
 
 	/*if (state->vecOrigin.IsValid())
 		setVecOrigin(state->vecOrigin);*/

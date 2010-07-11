@@ -385,12 +385,19 @@ void KnifeRoundMatchState::round_end(IGameEvent * event)
 
 	if (infos->roundNumber > 0) // otherwise the restarts haven't even occured yet
 	{
-		// If the winner is T or CT, end the knife round
-
-		TeamCode winner = (TeamCode)event->GetInt("winner");
-		if (winner > SPEC_TEAM)
+		if ((plugin->getPlayerCount(T_TEAM) > 0) && (plugin->getPlayerCount(CT_TEAM) > 0))
 		{
-			endKniferound(winner);
+			// If the winner is T or CT, end the knife round
+
+			TeamCode winner = (TeamCode)event->GetInt("winner");
+			if (winner > SPEC_TEAM)
+			{
+				endKniferound(winner);
+			}
+		}
+		else
+		{
+			restartRound();
 		}
 	}
 }

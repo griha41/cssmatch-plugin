@@ -41,7 +41,7 @@ EntityProp Player::playerStateHandler("CCSPlayer","m_iPlayerState");
 //EntityProp Player::angRotationHandler("CBaseEntity","m_angRotation");
 //EntityProp Player::eyeAngles0Handler("CCSPlayer","m_angEyeAngles[0]");
 //EntityProp Player::eyeAngles1Handler("CCSPlayer","m_angEyeAngles[1]");
-EntityProp Player::armorHandler("CCSPlayer","m_ArmorValue");
+//EntityProp Player::armorHandler("CCSPlayer","m_ArmorValue");
 
 Player::Player(int index) throw (PlayerException) : lastCommandDate(0.0f), menuTimer(NULL)
 {
@@ -489,7 +489,7 @@ int Player::getPlayerState()
 	return view;
 }*/
 
-void Player::setArmor(int newArmor)
+/*void Player::setArmor(int newArmor)
 {
 	try
 	{
@@ -515,7 +515,7 @@ int Player::getArmor()
 	}
 
 	return armor;
-}
+}*/
 
 void Player::spawn()
 {

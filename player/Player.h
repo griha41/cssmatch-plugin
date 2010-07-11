@@ -138,7 +138,7 @@ namespace cssmatch
 		//static EntityProp angRotationHandler;
 		//static EntityProp eyeAngles0Handler;
 		//static EntityProp eyeAngles1Handler;
-		static EntityProp armorHandler;
+		//static EntityProp armorHandler;
 	
 		/** Menus handler */
 		PlayerMenuHandler menuHandler;
@@ -246,9 +246,9 @@ namespace cssmatch
 		*/
 		void sexec(const std::string & command) const;
 			
-		/** Set the player account */
+		/* Set the player account */
 		void setAccount(int newCash);
-		/** Get the player account (returns -1 if it fails) */
+		/* Get the player account (returns -1 if it fails) */
 		int getAccount();
 
 		/** Set the player life state */
@@ -261,20 +261,20 @@ namespace cssmatch
 		/** Get the player state (returns -1 if it fails) */
 		int getPlayerState();		
 
-		/** Set the player location */
-		void setVecOrigin(const Vector & vec);
-		/** Get the player location (x,y,z are VEC_T_NAN if it fails) */
-		Vector getVecOrigin();
+		/* Set the player location */
+		//void setVecOrigin(const Vector & vec);
+		/* Get the player location (x,y,z are VEC_T_NAN if it fails) */
+		//Vector getVecOrigin();
 
 		/* Get the player rotation angle (x,y,z are VEC_T_NAN if it fails) */
 		//Vector getAngRotation();
 		/* Get the player view angle (x,y,z are VEC_T_NAN if it fails) */
 		//QAngle getViewAngle(); 
 
-		/** Set the player armor value */
-		void setArmor(int newArmor);
-		/** Get the player armor value (returns -1 if it fails) */
-		int getArmor();
+		/* Set the player armor value */
+		//void setArmor(int newArmor);
+		/* Get the player armor value (returns -1 if it fails) */
+		//int getArmor();
 
 
 		/** Spawn this player */

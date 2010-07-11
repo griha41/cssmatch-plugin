@@ -489,14 +489,14 @@ void HalfMatchState::round_start(IGameEvent * event)
 
 			i18n->i18nChatSay(recipients,"match_go");
 
-			/*if (! halfRestarted)
+			if (! halfRestarted)
 			{
 				list<ClanMember *> * playerlist = plugin->getPlayerlist();
 				for_each(playerlist->begin(),playerlist->end(),SaveHalfPlayerState());
-			}*/
+			}
 		default:
 			{
-				/*// If there was a restart, restore the players equipement/score
+				// If there was a restart, restore the players equipement/score
 				if (roundRestarted)
 				{
 					for_each(playerlist->begin(),playerlist->end(),RestoreRoundPlayerState());
@@ -510,7 +510,7 @@ void HalfMatchState::round_start(IGameEvent * event)
 						halfRestarted = false;
 					}
 					for_each(playerlist->begin(),playerlist->end(),SaveRoundPlayerState());
-				}*/
+				}
 
 				parameters["$current"] = toString(infos->roundNumber);
 				parameters["$total"] = plugin->getConVar("cssmatch_rounds")->GetString();
@@ -534,25 +534,34 @@ void HalfMatchState::round_end(IGameEvent * event)
 
 	if (infos->roundNumber > 0) // otherwise the restarts haven't even occured yet
 	{
-		try
+		if ((plugin->getPlayerCount(T_TEAM) > 0) && (plugin->getPlayerCount(CT_TEAM) > 0)
+			&& (strcmp(event->GetString("message"),"#Round_Draw") != 0)
+			&& (strcmp(event->GetString("message"),"#Game_Commencing") != 0))
 		{
-			TeamCode winnerTeam = (TeamCode)event->GetInt("winner");
-			MatchClan * winner = match->getClan(winnerTeam);
-			switch(winnerTeam)
+			try
 			{
-			case T_TEAM:
-				winner->getStats()->scoreT++;
-				break;
-			case CT_TEAM:
-				winner->getStats()->scoreCT++;
-				break;
+				TeamCode winnerTeam = (TeamCode)event->GetInt("winner");
+				MatchClan * winner = match->getClan(winnerTeam);
+				switch(winnerTeam)
+				{
+				case T_TEAM:
+					winner->getStats()->scoreT++;
+					break;
+				case CT_TEAM:
+					winner->getStats()->scoreCT++;
+					break;
+				}
+				if (infos->roundNumber >= plugin->getConVar("cssmatch_rounds")->GetInt())
+					finish();
 			}
-			if (infos->roundNumber >= plugin->getConVar("cssmatch_rounds")->GetInt())
-				finish();
+			catch(const MatchManagerException & e)
+			{
+				// CSSMATCH_PRINT_EXCEPTION(e); // round draw
+			}
 		}
-		catch(const MatchManagerException & e)
+		else
 		{
-			// CSSMATCH_PRINT_EXCEPTION(e); // round draw
+			restartRound();
 		}
 	}
 }

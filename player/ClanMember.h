@@ -47,11 +47,10 @@ namespace cssmatch
 	{
 		PlayerScore score;
 
-		int armor;
-		int account;
+		//int account;
 
-		/** Weapons and items the player owns */
-		std::list<std::string> objects; 
+		/* Weapons and items the player owns */
+		//std::list<std::string> objects; 
 
 		/* Player coords */
 		//Vector vecOrigin;
@@ -59,8 +58,8 @@ namespace cssmatch
 		/* Player angle */
 		//QAngle angle;
 
-		PlayerState()
-			: armor(0), account(0){}
+		//PlayerState()
+		//	: account(0){}
 	};
 
 	/** CSSMatch player */

@@ -24,6 +24,7 @@
 
 #include "../plugin/ServerPlugin.h"
 #include "../match/MatchManager.h"
+#include "../configuration/ConfigurationFile.h" // ConfigurationFile.trim
 #include "ClanMember.h"
 
 #include <sstream>
@@ -168,6 +169,7 @@ void MatchClan::detectClanName(bool force)
 							}
 							else if (MatchClan::isValidClanName(newName))
 							{ // Found a coherent clan name
+								ConfigurationFile::trim(newName);
 								setName(newName);
 								foundNewName = true;
 

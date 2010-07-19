@@ -104,8 +104,8 @@ namespace cssmatch
 		/** {event => callback} map used in FireGameEvent */
 		std::map<std::string,EventCallback> eventCallbacks;
 
-		/** Update "hostname" according to the clan names */
-		void updateHostname();
+		/** hostname value when the match was launched */
+		std::string hostnameTemplate;
 
 		/** Initial state */
 		BaseMatchState * initialState;
@@ -163,6 +163,9 @@ namespace cssmatch
 		 * @throws MatchManagerException if no match is running
 		 */
 		void detectClanName(TeamCode code, bool force) throw(MatchManagerException);
+
+		/** Update "hostname" according to the clan names */
+		void updateHostname();
 
 		/** Set a new match state <br>
 		 * Call the endState method of the previous state, then the startState of the new state

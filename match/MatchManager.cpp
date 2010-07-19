@@ -277,18 +277,7 @@ void MatchManager::updateHostname()
 	ServerPlugin * plugin = ServerPlugin::getInstance();
 	ConVar * hostname = plugin->getConVar("hostname");
 
-	ConVar * cssmatch_hostname = plugin->getConVar("cssmatch_hostname");
-	string newHostname;
-	if (strcmp(cssmatch_hostname->GetString(),"") == 0)
-	{
-		// cssmatch_hostname not used (because deprecated)
-		newHostname = hostname->GetString();
-	}
-	else
-	{
-		// cssmatch_hostname used: old config file, backward compatibility
-		newHostname = cssmatch_hostname->GetString();
-	}
+	string newHostname = hostnameTemplate;
 
 	// Replace %s by the clan names
 	size_t clanNameSlot = newHostname.find("%s");
@@ -362,6 +351,17 @@ void MatchManager::start(RunnableConfigurationFile & config, bool warmup, BaseMa
 		cssmatch_password->Revert();
 		string oldPassword = sv_password->GetString();
 		config.execute();
+
+		if (strcmp(cssmatch_hostname->GetString(),"") == 0)
+		{
+			// cssmatch_hostname not used (because deprecated)
+			hostnameTemplate = hostname->GetString();
+		}
+		else
+		{
+			// cssmatch_hostname used: old config file, backward compatibility
+			hostnameTemplate = cssmatch_hostname->GetString();
+		}
 
 		// Print the plugin list to the server log
 		plugin->queueCommand("plugin_print\n");

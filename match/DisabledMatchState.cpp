@@ -58,13 +58,12 @@ DisabledMatchState::DisabledMatchState()
 		new MenuCallback<DisabledMatchState>(this,&DisabledMatchState::kniferoundQuestionCallback));
 	kniferoundQuestion->addLine(true,"menu_yes");
 	kniferoundQuestion->addLine(true,"menu_no");
-	kniferoundQuestion->addBack();
+	kniferoundQuestion->addLine(true,"menu_back");
 
-	warmupQuestion = new Menu(NULL,"menu_play_warmup",
+	warmupQuestion = new Menu(kniferoundQuestion,"menu_play_warmup",
 		new MenuCallback<DisabledMatchState>(this,&DisabledMatchState::warmupQuestionCallback));
 	warmupQuestion->addLine(true,"menu_yes");
 	warmupQuestion->addLine(true,"menu_no");
-	warmupQuestion->addBack();
 }
 
 DisabledMatchState::~DisabledMatchState()
@@ -152,6 +151,7 @@ void DisabledMatchState::kniferoundQuestionCallback(Player * player, int choice,
 	// Kniferound?
 	// 1. Yes
 	// 2. No
+	// 3. Back
 
 	switch(choice)
 	{
@@ -181,6 +181,7 @@ void DisabledMatchState::warmupQuestionCallback(Player * player, int choice, Men
 	// Warmup?
 	// 1. Yes
 	// 2. No
+	// 3. Back
 
 	MatchMenuLineData * const matchSettings = static_cast<MatchMenuLineData * const>(player->getMenuData());
 	switch(choice)
@@ -197,9 +198,6 @@ void DisabledMatchState::warmupQuestionCallback(Player * player, int choice, Men
 			matchSettings->state = HalfMatchState::getInstance();
 		showConfigQuestion(player);
 		break;
-	case 3:
-		player->cexec("cssmatch\n");
-		break;
 	default:
 		player->quitMenu();
 	}
@@ -210,7 +208,7 @@ void DisabledMatchState::showConfigQuestion(Player * recipient)
 	ServerPlugin * plugin = ServerPlugin::getInstance();
 	ValveInterfaces * interfaces = plugin->getInterfaces();
 
-	Menu * configQuestion = new Menu(NULL,"menu_config",
+	Menu * configQuestion = new Menu(warmupQuestion,"menu_config",
 		new MenuCallback<DisabledMatchState>(this,&DisabledMatchState::configQuestionCallback));
 
 	// Search for all .cfg files into cfg/cssmatch/configurations

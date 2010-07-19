@@ -160,14 +160,14 @@ bool ServerPlugin::Load(CreateInterfaceFn interfaceFactory, CreateInterfaceFn ga
 			adminMenu->addLine(true,"menu_spec");
 			adminMenu->addLine(true,"menu_kick");
 			adminMenu->addLine(true,"menu_ban");
-			adminMenu->addBack();
+			adminMenu->addLine(true,"menu_back");
 
 			bantimeMenu = new Menu(NULL,"menu_ban_time",
 				new MenuCallback<ServerPlugin>(this,&ServerPlugin::bantimeMenuCallback));
 			bantimeMenu->addLine(true,"menu_5_min");
 			bantimeMenu->addLine(true,"menu_1_h");
 			bantimeMenu->addLine(true,"menu_permanent");
-			bantimeMenu->addBack();
+			bantimeMenu->addLine(true,"menu_back");
 
 			match = new MatchManager(DisabledMatchState::getInstance());
 			

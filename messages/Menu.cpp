@@ -169,7 +169,7 @@ void Menu::addLine(bool isI18nKeyword, const string & line, BaseMenuLineData * d
 	addLine(new MenuLine(NORMAL,isI18nKeyword,line,data));
 }
 
-void Menu::addBack()
+/*void Menu::addBack()
 {
 	addLine(new MenuLine(BACK,true,"menu_back"));
 }
@@ -177,7 +177,7 @@ void Menu::addBack()
 void Menu::addMore()
 {
 	addLine(new MenuLine(NEXT,true,"menu_more"));
-}
+}*/
 
 MenuLine * Menu::getLine(int page, int choice) throw(MenuException)
 {

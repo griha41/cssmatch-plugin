@@ -156,11 +156,11 @@ namespace cssmatch
 		 */
 		void addLine(bool isI18nKeyword, const std::string & line, BaseMenuLineData * data = NULL);
 
-		/** Add a Back line to the menu */
-		void addBack();
+		/* Add a Back line to the menu */
+		//void addBack();
 
-		/** Add a More line to the menu */
-		void addMore();
+		/* Add a More line to the menu */
+		//void addMore();
 
 		/** Returns a pointer to a line 
 		 * @param page The page where the line is

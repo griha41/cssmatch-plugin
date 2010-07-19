@@ -412,6 +412,8 @@ void cssmatch::cssm_teamt(const CCommand & args)
 			//if (*clan->getName() == infos->kniferoundWinner)
 			//	infos->kniferoundWinner = name;
 			clan->setName(name,true);
+
+			match->updateHostname();
 		
 			map<string,string> parameters;
 			parameters["$team"] = name;
@@ -444,6 +446,8 @@ void cssmatch::cssm_teamct(const CCommand & args)
 			//if (*clan->getName() == infos->kniferoundWinner)
 			//	infos->kniferoundWinner = name;
 			clan->setName(name,true);
+
+			match->updateHostname();
 		
 			map<string,string> parameters;
 			parameters["$team"] = name;
@@ -609,6 +613,8 @@ bool cssmatch::say_hook(ClanMember * user, const CCommand & args)
 					//	infos->kniferoundWinner = newName;
 					clan->setName(newName,true);
 
+					match->updateHostname();
+
 					recipients.addAllPlayers();
 
 					map<string,string> parameters;
@@ -661,6 +667,8 @@ bool cssmatch::say_hook(ClanMember * user, const CCommand & args)
 					//if (*clan->getName() == infos->kniferoundWinner)
 					//	infos->kniferoundWinner = newName;
 					clan->setName(newName,true);
+
+					match->updateHostname();
 
 					recipients.addAllPlayers();
 

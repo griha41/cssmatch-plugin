@@ -77,6 +77,26 @@ using std::endl;
 	}
 }*/
 
+/** Workaround for CS:S OB:
+ * Public ConVars are not really considered as public until 
+ * their values are set during the game (after a map change)
+ * This class set the value of cssmatch_version after ~5 seconds
+ */
+class MakePublicTimer : public BaseTimer // TODO: Review me each SRCDS release
+{
+public:
+	MakePublicTimer() : BaseTimer(5.0)
+	{
+	}
+
+	void execute()
+	{
+		ServerPlugin * plugin = ServerPlugin::getInstance();
+		ConVar * cssmatch_version = plugin->getConVar("cssmatch_version");
+		cssmatch_version->SetValue(cssmatch_version->GetString());
+	}
+};
+
 ServerPlugin::ServerPlugin()
 	: loaded(false), updateThread(NULL), clientCommandIndex(0), adminMenu(NULL), bantimeMenu(NULL), match(NULL), i18n(NULL)
 {
@@ -133,20 +153,21 @@ bool ServerPlugin::Load(CreateInterfaceFn interfaceFactory, CreateInterfaceFn ga
 			MathLib_Init(2.2f,2.2f,0.0f,2);
 
 			// Initialize the admin menus
-			adminMenu = new Menu("menu_administration",
+			adminMenu = new Menu(NULL,"menu_administration",
 				new MenuCallback<ServerPlugin>(this,&ServerPlugin::adminMenuCallback));
 			adminMenu->addLine(true,"menu_changelevel");
 			adminMenu->addLine(true,"menu_swap");
 			adminMenu->addLine(true,"menu_spec");
 			adminMenu->addLine(true,"menu_kick");
 			adminMenu->addLine(true,"menu_ban");
-			adminMenu->addLine(true,"menu_back");
+			adminMenu->addBack();
 
-			bantimeMenu = new Menu("menu_ban_time",
+			bantimeMenu = new Menu(NULL,"menu_ban_time",
 				new MenuCallback<ServerPlugin>(this,&ServerPlugin::bantimeMenuCallback));
 			bantimeMenu->addLine(true,"menu_5_min");
 			bantimeMenu->addLine(true,"menu_1_h");
 			bantimeMenu->addLine(true,"menu_permanent");
+			bantimeMenu->addBack();
 
 			match = new MatchManager(DisabledMatchState::getInstance());
 			
@@ -232,12 +253,24 @@ bool ServerPlugin::Load(CreateInterfaceFn interfaceFactory, CreateInterfaceFn ga
 				ConVar * sv_password = cvars->FindVar("sv_password");
 				ConVar * tv_enable = cvars->FindVar("tv_enable");
 				ConVar * ip = cvars->FindVar("ip");
+				ConVar * sv_minrate = cvars->FindVar("sv_minrate");
+				ConVar * sv_maxrate = cvars->FindVar("sv_maxrate");
+				ConVar * sv_mincmdrate = cvars->FindVar("sv_mincmdrate");
+				ConVar * sv_maxcmdrate = cvars->FindVar("sv_maxcmdrate");
+				ConVar * sv_minupdaterate = cvars->FindVar("sv_minupdaterate");
+				ConVar * sv_maxupdaterate = cvars->FindVar("sv_maxupdaterate");
 				if ((sv_cheats == NULL) ||
 					(sv_alltalk == NULL) ||
 					(hostname == NULL) ||
 					(sv_password == NULL) ||
 					(tv_enable == NULL) ||
-					(ip == NULL))
+					(ip == NULL) ||
+					(sv_minrate == NULL) ||
+					(sv_maxrate == NULL) ||
+					(sv_mincmdrate == NULL) || 
+					(sv_maxcmdrate == NULL) ||
+					(sv_minupdaterate == NULL) ||
+					(sv_maxupdaterate == NULL))
 				{
 					success = false;
 					CSSMATCH_PRINT("At least one game ConVars was not found");
@@ -250,6 +283,12 @@ bool ServerPlugin::Load(CreateInterfaceFn interfaceFactory, CreateInterfaceFn ga
 					addPluginConVar(sv_password);
 					addPluginConVar(tv_enable);
 					addPluginConVar(ip);
+					addPluginConVar(sv_minrate);
+					addPluginConVar(sv_maxrate);
+					addPluginConVar(sv_mincmdrate);
+					addPluginConVar(sv_maxcmdrate);
+					addPluginConVar(sv_minupdaterate);
+					addPluginConVar(sv_maxupdaterate);
 				}
 			}
 			catch(const ConvarsAccessorException & e)
@@ -319,7 +358,7 @@ void ServerPlugin::showAdminMenu(Player * player)
 
 void ServerPlugin::showChangelevelMenu(Player * player)
 {
-	Menu * maplist = new Menu("menu_map",
+	Menu * maplist = new Menu(adminMenu,"menu_map",
 		new MenuCallback<ServerPlugin>(this,&ServerPlugin::changelevelMenuCallback));
 
 	try
@@ -356,7 +395,7 @@ void ServerPlugin::constructPlayerlistMenu(Menu * to)
 
 void ServerPlugin::showSwapMenu(Player * player)
 {
-	Menu * swapMenu = new Menu("menu_player",
+	Menu * swapMenu = new Menu(adminMenu,"menu_player",
 		new MenuCallback<ServerPlugin>(this,&ServerPlugin::swapMenuCallback));
 
 	constructPlayerlistMenu(swapMenu);
@@ -366,7 +405,7 @@ void ServerPlugin::showSwapMenu(Player * player)
 
 void ServerPlugin::showSpecMenu(Player * player)
 {
-	Menu * swapMenu = new Menu("menu_player",
+	Menu * swapMenu = new Menu(adminMenu,"menu_player",
 		new MenuCallback<ServerPlugin>(this,&ServerPlugin::specMenuCallback));
 
 	constructPlayerlistMenu(swapMenu);
@@ -376,7 +415,7 @@ void ServerPlugin::showSpecMenu(Player * player)
 
 void ServerPlugin::showKickMenu(Player * player)
 {
-	Menu * swapMenu = new Menu("menu_player",
+	Menu * swapMenu = new Menu(adminMenu,"menu_player",
 		new MenuCallback<ServerPlugin>(this,&ServerPlugin::kickMenuCallback));
 
 	constructPlayerlistMenu(swapMenu);
@@ -386,7 +425,7 @@ void ServerPlugin::showKickMenu(Player * player)
 
 void ServerPlugin::showBanMenu(Player * player)
 {
-	Menu * swapMenu = new Menu("menu_player",
+	Menu * swapMenu = new Menu(adminMenu,"menu_player",
 		new MenuCallback<ServerPlugin>(this,&ServerPlugin::banMenuCallback));
 
 	constructPlayerlistMenu(swapMenu);
@@ -463,7 +502,7 @@ void ServerPlugin::swapMenuCallback(Player * player, int choice, MenuLine * sele
 		{
 			IPlayerInfo * pInfo = player->getPlayerInfo();
 
-			target->swap();
+			target->swap(/*true*/);
 
 			if (isValidPlayerInfo(pInfo))
 			{
@@ -557,14 +596,16 @@ void ServerPlugin::kickMenuCallback(Player * player, int choice, MenuLine * sele
 }
 
 void ServerPlugin::banMenuCallback(Player * player, int choice, MenuLine * selected)
-{
-	if (choice != 10)
+{ 
+	if (choice < 4)
 	{
 		UseridMenuLineData * useridData = static_cast<UseridMenuLineData *>(selected->data);
 
 		player->storeMenuData(new PlayerMenuLineData(selected->text,useridData->userid));
 		showBanTimeMenu(player);
 	}
+	else if (choice == 4)
+		showBanMenu(player);
 	else
 		player->quitMenu();
 }
@@ -759,6 +800,9 @@ void ServerPlugin::LevelInit(char const * pMapName)
 
 	// Delete all pending timers
 	removeTimers();
+
+	// Workaround for CS:S OB (see MakePublicTimer)
+	addTimer(new MakePublicTimer());
 }
 
 void ServerPlugin::ServerActivate(edict_t * pEdictList, int edictCount, int clientMax)

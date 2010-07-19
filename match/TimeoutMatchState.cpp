@@ -32,13 +32,13 @@ using std::map;
 
 TimeoutMatchState::TimeoutMatchState() : duration(0), nextState(NULL)
 {
-	timeoutMenu = new Menu("menu_time-out",
+	timeoutMenu = new Menu(NULL,"menu_time-out",
 		new MenuCallback<TimeoutMatchState>(this,&TimeoutMatchState::timeoutMenuCallback));
 	timeoutMenu->addLine(true,"menu_alltalk");
 	timeoutMenu->addLine(true,"menu_stop");
 	timeoutMenu->addLine(true,"menu_retag");
 	
-	menuWithAdmin = new Menu("menu_time-out",
+	menuWithAdmin = new Menu(NULL,"menu_time-out",
 		new MenuCallback<TimeoutMatchState>(this,&TimeoutMatchState::menuWithAdminCallback));
 	menuWithAdmin->addLine(true,"menu_administration_options");
 	menuWithAdmin->addLine(true,"menu_alltalk");
@@ -124,8 +124,8 @@ void TimeoutMatchState::timeoutMenuCallback(Player * player, int choice, MenuLin
 	case 3:
 		{
 			MatchLignup * lignup = match->getLignup();
-			match->detectClanName(T_TEAM);
-			match->detectClanName(CT_TEAM);
+			match->detectClanName(T_TEAM,true);
+			match->detectClanName(CT_TEAM,true);
 
 			RecipientFilter recipients;
 			recipients.addRecipient(player);

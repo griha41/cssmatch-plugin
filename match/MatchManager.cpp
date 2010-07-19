@@ -211,7 +211,7 @@ void MatchManager::player_team(IGameEvent * event)
 		plugin->addTimer(new ClanNameDetectionTimer(1.0f,toReDetect));
 	}
 
-/*	toReDetect = INVALID_TEAM;
+	toReDetect = INVALID_TEAM;
 	switch(oldSide)
 	{
 	case T_TEAM:
@@ -223,13 +223,12 @@ void MatchManager::player_team(IGameEvent * event)
 		playercount = plugin->getPlayerCount(CT_TEAM);
 		break;
 	}
-	if ((toReDetect != INVALID_TEAM) && (playercount < 3)) // "< 3" see above
+	if ((toReDetect != INVALID_TEAM) && (playercount == 2)) // "== 2" see above
 	{
 		plugin->addTimer(new ClanNameDetectionTimer(1.0f,toReDetect));
 	}
 
-	http://code.google.com/p/cssmatch-plugin/issues/detail?id=75 
-	*/
+	// http://code.google.com/p/cssmatch-plugin/issues/detail?id=75 	
 }
 
 void MatchManager::player_changename(IGameEvent * event)
@@ -249,13 +248,19 @@ void MatchManager::player_changename(IGameEvent * event)
 	}
 }
 
-void MatchManager::detectClanName(TeamCode code) throw(MatchManagerException)
+void MatchManager::detectClanName(TeamCode code, bool force) throw(MatchManagerException)
 {
 	if (currentState != initialState)
 	{
 		try
 		{
-			getClan(code)->detectClanName();
+			MatchClan * clan = getClan(code);
+			//bool isKniferoundWinner = *clan->getName() == infos.kniferoundWinner;
+
+			clan->detectClanName(force);
+			//if (isKniferoundWinner)
+			//	infos.kniferoundWinner = *clan->getName();
+
 			updateHostname();
 		}
 		catch(const MatchManagerException & e)
@@ -335,7 +340,7 @@ void MatchManager::start(RunnableConfigurationFile & config, bool warmup, BaseMa
 		// Update match infos
 		infos.halfNumber = 1;
 		infos.roundNumber = 1;
-		infos.kniferoundWinner = NULL;
+		infos.kniferoundWinner = "";
 
 		// Reset all clan related info
 		lignup.clan1.reset();
@@ -385,7 +390,7 @@ void MatchManager::start(RunnableConfigurationFile & config, bool warmup, BaseMa
 		}
 		else
 		{
-			// cssmatch_password not use (because deprecated) or sv_password used, so ignore cssmatch_password
+			// cssmatch_password not used (because deprecated) or sv_password used, so ignore cssmatch_password
 			password = sv_password->GetString();
 		}
 
@@ -400,8 +405,8 @@ void MatchManager::start(RunnableConfigurationFile & config, bool warmup, BaseMa
 		setMatchState(state);
 
 		// Try to find the clan names
-		detectClanName(T_TEAM);
-		detectClanName(CT_TEAM);
+		detectClanName(T_TEAM,false);
+		detectClanName(CT_TEAM,false);
 	}
 	else
 		throw MatchManagerException("There already is a match in progress");
@@ -590,7 +595,7 @@ void ClanNameDetectionTimer::execute()
 {
 	ServerPlugin * plugin = ServerPlugin::getInstance(); 
 	MatchManager * manager = plugin->getMatch();
-	manager->detectClanName(team);
+	manager->detectClanName(team,false);
 }
 
 ConVarMonitorTimer::ConVarMonitorTimer(	float delay,

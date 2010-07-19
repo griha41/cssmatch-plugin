@@ -229,7 +229,8 @@ namespace cssmatch
 		/** Swap this player 
 		 * @return <code>false</code> if the player is spectator
 		 */
-		bool swap();
+		//@param respawn <code>true</code> to spawn the player (without class choice)
+		bool swap(/*bool rspawn*/);
 
 		/** Put this player in the spectator team 
 		 * @return <code>false</code> if the player is already spectator
@@ -277,7 +278,7 @@ namespace cssmatch
 		//int getArmor();
 
 
-		/** Spawn this player */
+		/* Spawn this player */
 		void spawn();
 
 

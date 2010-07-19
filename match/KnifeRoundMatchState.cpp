@@ -44,14 +44,14 @@ using std::ostringstream;
 
 KnifeRoundMatchState::KnifeRoundMatchState()
 {
-	kniferoundMenu = new Menu("menu_kniferound",
+	kniferoundMenu = new Menu(NULL,"menu_kniferound",
 		new MenuCallback<KnifeRoundMatchState>(this,&KnifeRoundMatchState::kniferoundMenuCallback));
 	kniferoundMenu->addLine(true,"menu_alltalk");
 	kniferoundMenu->addLine(true,"menu_restart");
 	kniferoundMenu->addLine(true,"menu_stop");
 	kniferoundMenu->addLine(true,"menu_retag");
 
-	menuWithAdmin = new Menu("menu_kniferound",
+	menuWithAdmin = new Menu(NULL,"menu_kniferound",
 		new MenuCallback<KnifeRoundMatchState>(this,&KnifeRoundMatchState::menuWithAdminCallback));
 	menuWithAdmin->addLine(true,"menu_administration_options");
 	menuWithAdmin->addLine(true,"menu_alltalk");
@@ -81,8 +81,13 @@ void KnifeRoundMatchState::endKniferound(TeamCode winner)
 
 	MatchInfo * infos = match->getInfos();
 	// Save the winner of this round for the report
-	infos->kniferoundWinner = match->getClan(winner);
+	infos->kniferoundWinner = *match->getClan(winner)->getName();
 		// note: winner is supposed valid
+
+	// Re-allow the detection of the clan names as the teams can change
+	MatchLignup * lignup = match->getLignup();
+	lignup->clan1.setAllowDetection(true);
+	lignup->clan2.setAllowDetection(true);
 
 	// Global recipient list
 	RecipientFilter recipients;
@@ -90,7 +95,7 @@ void KnifeRoundMatchState::endKniferound(TeamCode winner)
 	
 	// Announce the winner
 	map<string,string> parameters;
-	parameters["$team"] = *infos->kniferoundWinner->getName();
+	parameters["$team"] = infos->kniferoundWinner;
 	i18n->i18nChatSay(recipients,"kniferound_winner",parameters);
 
 	// Invite the winners to choice a side
@@ -266,8 +271,8 @@ void KnifeRoundMatchState::kniferoundMenuCallback(Player * player, int choice, M
 	case 4:
 		{
 			MatchLignup * lignup = match->getLignup();
-			match->detectClanName(T_TEAM);
-			match->detectClanName(CT_TEAM);
+			match->detectClanName(T_TEAM,true);
+			match->detectClanName(CT_TEAM,true);
 
 			RecipientFilter recipients;
 			recipients.addRecipient(player);

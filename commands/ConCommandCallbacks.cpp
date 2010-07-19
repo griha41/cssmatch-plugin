@@ -196,8 +196,8 @@ void cssmatch::cssm_retag(const CCommand & args)
 	{
 		MatchLignup * lignup = match->getLignup();
 
-		match->detectClanName(T_TEAM);
-		match->detectClanName(CT_TEAM);
+		match->detectClanName(T_TEAM,true);
+		match->detectClanName(CT_TEAM,true);
 
 		map<string,string> parameters;
 		parameters["$team1"] = *lignup->clan1.getName();
@@ -402,12 +402,15 @@ void cssmatch::cssm_teamt(const CCommand & args)
 	if (args.ArgC() > 1)
 	{
 		MatchManager * match = plugin->getMatch();
+		//MatchInfo * infos = match->getInfos();
 		I18nManager * i18n = plugin->getI18nManager();
 		try
 		{
 			MatchClan * clan = match->getClan(T_TEAM);
 			string name = args.ArgS();
 
+			//if (*clan->getName() == infos->kniferoundWinner)
+			//	infos->kniferoundWinner = name;
 			clan->setName(name,true);
 		
 			map<string,string> parameters;
@@ -431,12 +434,15 @@ void cssmatch::cssm_teamct(const CCommand & args)
 	if (args.ArgC() > 1)
 	{
 		MatchManager * match = plugin->getMatch();
+		//MatchInfo * infos = match->getInfos();
 		I18nManager * i18n = plugin->getI18nManager();
 		try
 		{
 			MatchClan * clan = match->getClan(CT_TEAM);
 			string name = args.ArgS();
 
+			//if (*clan->getName() == infos->kniferoundWinner)
+			//	infos->kniferoundWinner = name;
 			clan->setName(name,true);
 		
 			map<string,string> parameters;
@@ -464,7 +470,7 @@ void cssmatch::cssm_swap(const CCommand & args)
 		ClanMember * target = NULL;
 		CSSMATCH_VALID_PLAYER(PlayerHavingUserid,atoi(args.Arg(1)),target)
 		{
-			if (! target->swap())
+			if (! target->swap(/*true*/))
 				i18n->i18nMsg("admin_spectator_player");
 		}
 		else
@@ -505,6 +511,7 @@ bool cssmatch::say_hook(ClanMember * user, const CCommand & args)
 
 	ServerPlugin * plugin = ServerPlugin::getInstance();
 	MatchManager * match = plugin->getMatch();
+	//MatchInfo * infos = match->getInfos();
 	I18nManager * i18n = plugin->getI18nManager();
 
 	istringstream commandString(args.Arg(1));
@@ -597,6 +604,9 @@ bool cssmatch::say_hook(ClanMember * user, const CCommand & args)
 				try
 				{
 					MatchClan * clan = match->getClan(T_TEAM);
+
+					//if (*clan->getName() == infos->kniferoundWinner)
+					//	infos->kniferoundWinner = newName;
 					clan->setName(newName,true);
 
 					recipients.addAllPlayers();
@@ -647,6 +657,9 @@ bool cssmatch::say_hook(ClanMember * user, const CCommand & args)
 				try
 				{
 					MatchClan * clan = match->getClan(CT_TEAM);
+
+					//if (*clan->getName() == infos->kniferoundWinner)
+					//	infos->kniferoundWinner = newName;
 					clan->setName(newName,true);
 
 					recipients.addAllPlayers();

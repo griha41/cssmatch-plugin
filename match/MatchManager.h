@@ -68,13 +68,13 @@ namespace cssmatch
 		tm startTime;
 
 		/** Knife round winner */
-		MatchClan * kniferoundWinner;
+		std::string kniferoundWinner;
 
 		/** Did a warmup was asked by the admin? */
 		bool warmup;
 
 		MatchInfo()
-			: halfNumber(1), roundNumber(1), startTime(*getLocalTime()), kniferoundWinner(NULL), warmup(false){}
+			: halfNumber(1), roundNumber(1), startTime(*getLocalTime()), warmup(false){}
 	};
 
 	/** Match manager <br>
@@ -159,9 +159,10 @@ namespace cssmatch
 
 		/** Redetect a clan name
 		 * @param code The clan's team code
+		 * @param force <code>true</code> to bypass !teamt/!teamct
 		 * @throws MatchManagerException if no match is running
 		 */
-		void detectClanName(TeamCode code) throw(MatchManagerException);
+		void detectClanName(TeamCode code, bool force) throw(MatchManagerException);
 
 		/** Set a new match state <br>
 		 * Call the endState method of the previous state, then the startState of the new state

@@ -92,8 +92,15 @@ namespace cssmatch
 		/** Prepare this clan for a new match (reset stats, etc.) */
 		void reset();
 
-		/** Try to automatically detect the clan name */
-		void detectClanName();
+		/** Allow the detection of the name of this clan 
+		 * @param allow <code>true</code to allow the clan name detection
+		 */
+		void setAllowDetection(bool allow);
+
+		/** Try to automatically detect the clan name 
+		 * @param force <code>true</code> to bypass !teamt/!teamct
+		 */
+		void detectClanName(bool force);
 
 		/** Is the clan ready to end the warmup time? */
 		bool isReady() const;

@@ -190,7 +190,7 @@ void UserMessagesManager::motdSay(RecipientFilter recipients, MotdType type, con
 	engine->MessageEnd();
 }
 
-void UserMessagesManager::showPanel(RecipientFilter recipients, const std::string & panelName, bool show)
+/*void UserMessagesManager::showPanel(RecipientFilter recipients, const std::string & panelName, bool show)
 {
 	bf_write * pWrite = engine->UserMessageBegin(&recipients,findMessageType("VGUIMenu"));
 
@@ -199,7 +199,7 @@ void UserMessagesManager::showPanel(RecipientFilter recipients, const std::strin
 	pWrite->WriteByte(0); // No more data
 
 	engine->MessageEnd();
-}
+}*/
 
 void UserMessagesManager::centerSay(RecipientFilter & recipients, const string & message)
 {

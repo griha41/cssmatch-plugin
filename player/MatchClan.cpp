@@ -92,13 +92,19 @@ void MatchClan::reset()
 	lastHalfStats.scoreCT = 0;
 	stats.scoreT = 0;
 	stats.scoreCT = 0;
+	lastHalfStats.scoreT = 0;
+	lastHalfStats.scoreCT = 0;
 	ready = false;
-	allowAutoDetect = true;
 }
 
-void MatchClan::detectClanName()
+void MatchClan::setAllowDetection(bool allow)
 {
-	if (allowAutoDetect)
+	allowAutoDetect = allow;
+}
+
+void MatchClan::detectClanName(bool force)
+{
+	if (allowAutoDetect || force)
 	{
 		// 1. Get two members
 		// 2. Get their names

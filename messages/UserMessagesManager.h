@@ -149,12 +149,12 @@ namespace cssmatch
 		 */
 		void motdSay(RecipientFilter recipients, MotdType type, const std::string & title, const std::string & message);
 
-		/** Show/Hide an existing vgui panel 
+		/* Show/Hide an existing vgui panel 
 		 * @param recipients Recipient list
 		 * @param panelName Panel name
 		 * @param <code>true</code>: show the panel, <code>false</code>: hide the panel
 		 */
-		void showPanel(RecipientFilter recipients, const std::string & panelName, bool show);
+		//void showPanel(RecipientFilter recipients, const std::string & panelName, bool show);
 
 		/** Send a centered message
 		 * @param recipients Recipient list

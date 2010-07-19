@@ -38,7 +38,7 @@ using std::map;
 WarmupMatchState::WarmupMatchState() : finished(false)
 		
 {
-	warmupMenu = new Menu("menu_warmup",
+	warmupMenu = new Menu(NULL,"menu_warmup",
 		new MenuCallback<WarmupMatchState>(this,&WarmupMatchState::warmupMenuCallback));
 	warmupMenu->addLine(true,"menu_alltalk");
 	warmupMenu->addLine(true,"menu_restart");
@@ -46,7 +46,7 @@ WarmupMatchState::WarmupMatchState() : finished(false)
 	warmupMenu->addLine(true,"menu_retag");
 	warmupMenu->addLine(true,"menu_go");
 
-	menuWithAdmin = new Menu("menu_warmup",
+	menuWithAdmin = new Menu(NULL,"menu_warmup",
 		new MenuCallback<WarmupMatchState>(this,&WarmupMatchState::menuWithAdminCallback));
 	menuWithAdmin->addLine(true,"menu_administration_options");
 	menuWithAdmin->addLine(true,"menu_alltalk");
@@ -255,8 +255,8 @@ void WarmupMatchState::warmupMenuCallback(Player * player, int choice, MenuLine 
 	case 4:
 		{
 			MatchLignup * lignup = match->getLignup();
-			match->detectClanName(T_TEAM);
-			match->detectClanName(CT_TEAM);
+			match->detectClanName(T_TEAM,true);
+			match->detectClanName(CT_TEAM,true);
 
 			RecipientFilter recipients;
 			recipients.addRecipient(player);

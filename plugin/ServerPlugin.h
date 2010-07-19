@@ -86,7 +86,8 @@ namespace cssmatch
 				convars(NULL),
 				serverGameDll(NULL),
 				sounds(NULL),
-				serverTools(NULL){}
+				serverTools(NULL)
+				{}
 	};
 
 	/** Client command */

@@ -260,7 +260,7 @@ void Player::ban(int duration, const string & reason) const
 	kick(reason);
 }
 
-bool Player::swap()
+bool Player::swap(/*bool respawn*/)
 {
 	ServerPlugin * plugin = ServerPlugin::getInstance();
 	I18nManager * i18n = plugin->getI18nManager();
@@ -276,13 +276,23 @@ bool Player::swap()
 		{
 		case T_TEAM:
 			pInfo->ChangeTeam((int)CT_TEAM);
-			i18n->showPanel(recipient,"class_ct",false);
-			spawn();
+			if (pInfo->IsFakeClient())
+				spawn();
+			/*if (respawn)
+			{
+				i18n->showPanel(recipient,"class_ct",false);
+				spawn();
+			}*/
 			break;
 		case CT_TEAM:
 			pInfo->ChangeTeam((int)T_TEAM);
-			i18n->showPanel(recipient,"class_ter",false);
-			spawn();
+			if (pInfo->IsFakeClient())
+				spawn();
+			/*if (respawn)
+			{
+				i18n->showPanel(recipient,"class_ter",false);
+				spawn();
+			}*/
 			break;
 		default:
 			success = false;

@@ -119,7 +119,7 @@ namespace cssmatch
 	{
 	protected:
 		/* Parent menu (can be NULL) */
-		//Menu * parent;
+		Menu * parent;
 
 		/** Menu title */
 		std::string title;
@@ -129,12 +129,18 @@ namespace cssmatch
 
 		/** Menu lines */
 		std::vector<MenuLine *> lines;
+
+		/** Add a line to the menu 
+		 * @param toAdd The line to add
+		 */
+		void addLine(MenuLine * toAdd);
 	public:
 		/** 
+		 * @param parentMenu Parent menu
 		 * @param menuTitle The menu title
 		 * @param menuCallback Callback invoked when the menu is used (deleted by ~Menu!)
 		 */
-		Menu(/*Menu * parentMenu, */const std::string & menuTitle, BaseMenuCallback * menuCallback);
+		Menu(Menu * parentMenu, const std::string & menuTitle, BaseMenuCallback * menuCallback);
 		~Menu();
 
 		/** Call the menu callback with the provided info 
@@ -149,6 +155,12 @@ namespace cssmatch
 		 * @param data The data shipped into this line
 		 */
 		void addLine(bool isI18nKeyword, const std::string & line, BaseMenuLineData * data = NULL);
+
+		/** Add a Back line to the menu */
+		void addBack();
+
+		/** Add a More line to the menu */
+		void addMore();
 
 		/** Returns a pointer to a line 
 		 * @param page The page where the line is

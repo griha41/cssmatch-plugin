@@ -160,6 +160,12 @@ PLUGIN_RESULT cssmatch::clientcmd_rates(ClanMember * user, const CCommand & args
 	ServerPlugin * plugin = ServerPlugin::getInstance();
 	ValveInterfaces * interfaces = plugin->getInterfaces();
 	I18nManager * i18n = plugin->getI18nManager();
+	float sv_minrate = plugin->getConVar("sv_minrate")->GetFloat();
+	float sv_maxrate = plugin->getConVar("sv_maxrate")->GetFloat();
+	float sv_mincmdrate = plugin->getConVar("sv_mincmdrate")->GetFloat();
+	float sv_maxcmdrate = plugin->getConVar("sv_maxcmdrate")->GetFloat();
+	float sv_minupdaterate = plugin->getConVar("sv_minupdaterate")->GetFloat();
+	float sv_maxupdaterate = plugin->getConVar("sv_maxupdaterate")->GetFloat();
 
 	RecipientFilter recipients;
 	recipients.addRecipient(user);
@@ -172,11 +178,29 @@ PLUGIN_RESULT cssmatch::clientcmd_rates(ClanMember * user, const CCommand & args
 
 		ostringstream message;
 
+		float cl_updaterate = atof(interfaces->engine->GetClientConVarValue(playerIndex,"cl_updaterate"));
+		if (cl_updaterate < sv_minupdaterate)
+			cl_updaterate = sv_minupdaterate;
+		else if (cl_updaterate > sv_maxupdaterate)
+			cl_updaterate = sv_maxupdaterate;
+
+		float cl_cmdrate = atof(interfaces->engine->GetClientConVarValue(playerIndex,"cl_cmdrate"));
+		if (cl_cmdrate < sv_mincmdrate)
+			cl_cmdrate = sv_mincmdrate;
+		else if (cl_cmdrate > sv_maxcmdrate)
+			cl_cmdrate = sv_maxcmdrate;
+
+		float rate = atof(interfaces->engine->GetClientConVarValue(playerIndex,"rate"));
+		if (rate < sv_minrate)
+			rate = sv_minrate;
+		else if (rate > sv_maxrate)
+			rate = sv_maxrate;
+
 		message << string(interfaces->engine->GetClientConVarValue(playerIndex,"name")) << ": " << endl
-				<< "  " << "cl_updaterate  = " << interfaces->engine->GetClientConVarValue(playerIndex,"cl_updaterate") << endl
-				<< "  " << "cl_cmdrate     = " << interfaces->engine->GetClientConVarValue(playerIndex,"cl_cmdrate") << endl
-				<< "  " << "cl_interpolate = " << interfaces->engine->GetClientConVarValue(playerIndex,"cl_interpolate") << endl
-				<< "  " << "rate           = " << interfaces->engine->GetClientConVarValue(playerIndex,"rate") << endl
+				<< "  " << "cl_updaterate  = " << cl_updaterate << endl
+				<< "  " << "cl_cmdrate     = " << cl_cmdrate << endl
+				<< "  " << "cl_interp      = " << interfaces->engine->GetClientConVarValue(playerIndex,"cl_interp") << endl
+				<< "  " << "rate           = " << rate << endl
 				<< endl;
 
 		const string & finalMsg = message.str();

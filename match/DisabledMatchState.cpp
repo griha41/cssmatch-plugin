@@ -43,28 +43,28 @@ using std::string;
 
 DisabledMatchState::DisabledMatchState()
 {
-	disabledMenu = new Menu("menu_no_match",
+	disabledMenu = new Menu(NULL,"menu_no_match",
 		new MenuCallback<DisabledMatchState>(this,&DisabledMatchState::disabledMenuCallback));
 	disabledMenu->addLine(true,"menu_alltalk");
 	disabledMenu->addLine(true,"menu_start");
 
-	menuWithAdmin = new Menu("menu_no_match",
+	menuWithAdmin = new Menu(NULL,"menu_no_match",
 		new MenuCallback<DisabledMatchState>(this,&DisabledMatchState::menuWithAdminCallback));
 	menuWithAdmin->addLine(true,"menu_administration_options");
 	menuWithAdmin->addLine(true,"menu_alltalk");
 	menuWithAdmin->addLine(true,"menu_start");
 
-	kniferoundQuestion = new Menu("menu_play_kniferound",
+	kniferoundQuestion = new Menu(NULL,"menu_play_kniferound",
 		new MenuCallback<DisabledMatchState>(this,&DisabledMatchState::kniferoundQuestionCallback));
 	kniferoundQuestion->addLine(true,"menu_yes");
 	kniferoundQuestion->addLine(true,"menu_no");
-	kniferoundQuestion->addLine(true,"menu_back");
+	kniferoundQuestion->addBack();
 
-	warmupQuestion = new Menu("menu_play_warmup",
+	warmupQuestion = new Menu(NULL,"menu_play_warmup",
 		new MenuCallback<DisabledMatchState>(this,&DisabledMatchState::warmupQuestionCallback));
 	warmupQuestion->addLine(true,"menu_yes");
 	warmupQuestion->addLine(true,"menu_no");
-	warmupQuestion->addLine(true,"menu_back");
+	warmupQuestion->addBack();
 }
 
 DisabledMatchState::~DisabledMatchState()
@@ -210,7 +210,7 @@ void DisabledMatchState::showConfigQuestion(Player * recipient)
 	ServerPlugin * plugin = ServerPlugin::getInstance();
 	ValveInterfaces * interfaces = plugin->getInterfaces();
 
-	Menu * configQuestion = new Menu("menu_config",
+	Menu * configQuestion = new Menu(NULL,"menu_config",
 		new MenuCallback<DisabledMatchState>(this,&DisabledMatchState::configQuestionCallback));
 
 	// Search for all .cfg files into cfg/cssmatch/configurations

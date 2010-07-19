@@ -33,8 +33,8 @@ using std::vector;
 using std::map;
 using std::ostringstream;
 
-Menu::Menu(/*Menu * parentMenu, */const string & menuTitle, BaseMenuCallback * menuCallback)
-	: /*parent(parentMenu), */title(menuTitle), callback(menuCallback)
+Menu::Menu(Menu * parentMenu, const string & menuTitle, BaseMenuCallback * menuCallback)
+	: parent(parentMenu), title(menuTitle), callback(menuCallback)
 {
 }
 
@@ -52,18 +52,109 @@ Menu::~Menu()
 	delete callback;
 }
 
+void Menu::addLine(MenuLine * toAdd)
+{
+	int linecount = lines.size();
+
+	if ((linecount == 0) && (parent != NULL)) // First option in the menu?
+	{
+		lines.push_back(toAdd);
+		lines.push_back(new MenuLine(BACK,true,"menu_back"));
+	}
+	else if (linecount < 9) // Is the first page not full?
+	{
+		// Yes, so, do we have a parent menu?
+		if (parent == NULL)
+		{	
+			// No, no problem
+			lines.push_back(toAdd);
+		}
+		else
+		{
+			// Yes, so there are 2 options to move/add
+			// - the new line => to add on the current page
+			// - "Back" => to move at the end of the current page
+
+			MenuLine * toMove = lines[linecount - 1];
+			lines[linecount - 1] = toAdd;
+			lines.push_back(toMove);
+		}
+	}
+	else if (linecount == 9) // Does this lines can be added on the first page?
+	{
+		// Yes, so there are 2 situations
+		if (parent == NULL)
+		{
+			// There is no parent menu, so there are 4 options to move/add:
+			// - the last line of the current page => to move to the new page
+			// - "More" => to add at the end of the current page
+			// - the new line => to add to the new page
+			// - and "Back" => to add to the new page
+
+			MenuLine * toMove = lines[8];
+			lines[8] = new MenuLine(NEXT,true,"menu_more");
+			lines.push_back(toMove);
+
+			lines.push_back(toAdd);
+			lines.push_back(new MenuLine(BACK,true,"menu_back"));
+		}
+		else
+		{
+			// There is a parent menu, so there are 5 options to move/add:
+			// - the last line of the current page (not Back) => to move to the new page
+			// - "Back" => to move one position back
+			// - "More" => to add at the end of the current page
+			// - the new line => to add to the new page
+			// - and "Back" => to add to the new page
+
+			MenuLine * lineToMove = lines[7];
+			MenuLine * backToMove = lines[8];
+			lines[7] = backToMove;
+			lines[8] = new MenuLine(NEXT,true,"menu_more");
+			lines.push_back(lineToMove);
+
+			lines.push_back(toAdd);
+			lines.push_back(new MenuLine(BACK,true,"menu_back"));
+		}
+	}
+	else if ((linecount % 9) == 0) // Is the current page (which is not the first page) full?
+	{
+		// Yes, so there are 5 options to move/add:
+		// - current last line => to move to the new page
+		// - "Back" => to add to the current page
+		// - "More" => to add to the current page
+		// - the new line => to add to the new page
+		// - "Back" => to add at to the new page
+
+		MenuLine * toMove = lines[linecount - 2];
+		lines[linecount - 2] = new MenuLine(BACK,true,"menu_back");
+		lines[linecount - 1] = new MenuLine(NEXT,true,"menu_more");
+		lines.push_back(toMove);
+
+		lines.push_back(toAdd);
+		lines.push_back(new MenuLine(BACK,true,"menu_back"));
+	}
+	else // The new line can be added to the current page
+	{
+		MenuLine * back = lines[linecount - 1];
+		lines[linecount - 1] = toAdd;
+		lines.push_back(back);
+	}
+}
+
 void Menu::doCallback(Player * user, int choice)
 {
-	// FIXME: BACK/NEXT loose the i18n parameters
+	// FIXME: BACK/NEXT loses the i18n parameters
 	int page = user->getPage();
 	MenuLine * selected = getLine(page,choice);
 
 	switch(selected->type)
 	{
 	case BACK:
-		user->previousPage();
-		/*else if (parent != NULL)
-			parent->send(user,1);*/
+		if (page > 1)
+			user->previousPage();
+		else if (parent != NULL)
+			user->sendMenu(parent,1);
 		break;
 	case NEXT:
 		user->nextPage();
@@ -75,56 +166,17 @@ void Menu::doCallback(Player * user, int choice)
 
 void Menu::addLine(bool isI18nKeyword, const string & line, BaseMenuLineData * data)
 {
-	int linecount = lines.size();
-	MenuLine * toAdd = new MenuLine(NORMAL,isI18nKeyword,line,data);
+	addLine(new MenuLine(NORMAL,isI18nKeyword,line,data));
+}
 
-	if (linecount < 9) // Is the first page not full?
-	{
-		// Yes, no problem
-		lines.push_back(toAdd);
+void Menu::addBack()
+{
+	addLine(new MenuLine(BACK,true,"menu_back"));
+}
 
-		/*if ((linecount == 0) && (parent != NULL))
-		{
-			lines.push_back(new MenuLine(BACK,true,"menu_back"));
-		}*/
-	}
-	else if (linecount == 9) // Does this lines can be added on the first page?
-	{
-		// Yes, so there are 3 options to change/add:
-		// - "More"
-		// - the new line
-		// - and "Back"
-		// (The last two are put on a new page.)
-		
-		MenuLine * toMove = lines[8];
-		lines[8] = new MenuLine(NEXT,true,"menu_more");
-		lines.push_back(toMove);
-
-		lines.push_back(toAdd);
-		lines.push_back(new MenuLine(BACK,true,"menu_back"));
-	}
-	else if ((linecount % 9) == 0) // Is the current page (which is not the first page) full?
-	{
-		// Yes, so there are 4 option to change/add:
-		// - "Back"
-		// - "More"
-		// - the new line
-		// - "Back"
-
-		MenuLine * toMove = lines[linecount-2];
-		lines[linecount-2] = new MenuLine(BACK,true,"menu_back");
-		lines[linecount-1] = new MenuLine(NEXT,true,"menu_more");
-		lines.push_back(toMove);
-
-		lines.push_back(toAdd);
-		lines.push_back(new MenuLine(BACK,true,"menu_back"));
-	}
-	else // The new line can be added to the current page
-	{
-		MenuLine * back = lines[linecount-1];
-		lines[linecount-1] = toAdd;
-		lines.push_back(back);
-	}
+void Menu::addMore()
+{
+	addLine(new MenuLine(NEXT,true,"menu_more"));
 }
 
 MenuLine * Menu::getLine(int page, int choice) throw(MenuException)
@@ -139,7 +191,7 @@ MenuLine * Menu::getLine(int page, int choice) throw(MenuException)
 	{
 		choice--;
 
-		size_t index = (page-1)*9 + choice;
+		size_t index = (page-1) * 9 + choice;
 		if ((index < 0) || (index >= lines.size()))
 			throw MenuException("Bad line index for the menu " + title);
 		line = lines[index];

@@ -46,14 +46,14 @@ using std::for_each;
 
 HalfMatchState::HalfMatchState() : finished(false), roundRestarted(false), halfRestarted(false)
 {
-	halfMenu = new Menu("menu_match",new MenuCallback<HalfMatchState>(this,&HalfMatchState::halfMenuCallback));
+	halfMenu = new Menu(NULL,"menu_match",new MenuCallback<HalfMatchState>(this,&HalfMatchState::halfMenuCallback));
 	halfMenu->addLine(true,"menu_alltalk");
 	halfMenu->addLine(true,"menu_restart");
 	halfMenu->addLine(true,"menu_stop");
 	halfMenu->addLine(true,"menu_retag");
 	halfMenu->addLine(true,"menu_restart_manche");
 
-	menuWithAdmin = new Menu("menu_match",new MenuCallback<HalfMatchState>(this,&HalfMatchState::menuWithAdminCallback));
+	menuWithAdmin = new Menu(NULL,"menu_match",new MenuCallback<HalfMatchState>(this,&HalfMatchState::menuWithAdminCallback));
 	menuWithAdmin->addLine(true,"menu_administration_options");
 	menuWithAdmin->addLine(true,"menu_alltalk");
 	menuWithAdmin->addLine(true,"menu_restart");
@@ -148,52 +148,58 @@ void HalfMatchState::endState()
 
 void HalfMatchState::restartRound()
 {
-	roundRestarted = true; // see round_start
+	if (! finished)
+	{
+		roundRestarted = true; // see round_start
 
-	ServerPlugin * plugin = ServerPlugin::getInstance(); 
-	MatchManager * match = plugin->getMatch();
-	MatchInfo * infos = match->getInfos();
+		ServerPlugin * plugin = ServerPlugin::getInstance(); 
+		MatchManager * match = plugin->getMatch();
+		MatchInfo * infos = match->getInfos();
 
-	// Restore the score of each player // see round_start
+		// Restore the score of each player // see round_start
 
-	// Back to the last round (round_start will maybe increment that)
-	if (infos->roundNumber == 1)
-		infos->roundNumber = -2; 
-		// a negative round number causes game restarts until the round number reaches 1
-	else
-		infos->roundNumber -= 1;
+		// Back to the last round (round_start will maybe increment that)
+		if (infos->roundNumber == 1)
+			infos->roundNumber = -2; 
+			// a negative round number causes game restarts until the round number reaches 1
+		else
+			infos->roundNumber -= 1;
 
-	// Do the restart
-	plugin->queueCommand("mp_restartgame 2\n");
+		// Do the restart
+		plugin->queueCommand("mp_restartgame 2\n");
+	}
 }
 
 void HalfMatchState::restartState()
 {
-	halfRestarted = true; // see round_start
+	if (! finished)
+	{
+		halfRestarted = true; // see round_start
 
-	ServerPlugin * plugin = ServerPlugin::getInstance();
-	MatchManager * match = plugin->getMatch();
-	MatchInfo * infos = match->getInfos();
+		ServerPlugin * plugin = ServerPlugin::getInstance();
+		MatchManager * match = plugin->getMatch();
+		MatchInfo * infos = match->getInfos();
 
-	// Restore the score of each player // see round_start
+		// Restore the score of each player // see round_start
 
-	// Restore the score of each clan
-	MatchClan * clanT = match->getClan(T_TEAM);
-	ClanStats * currentScoreClanT = clanT->getStats();
-	ClanStats * lastHalfStatsClanT = clanT->getLastHalfState();
-	currentScoreClanT->scoreT = lastHalfStatsClanT->scoreT;
+		// Restore the score of each clan
+		MatchClan * clanT = match->getClan(T_TEAM);
+		ClanStats * currentScoreClanT = clanT->getStats();
+		ClanStats * lastHalfStatsClanT = clanT->getLastHalfState();
+		currentScoreClanT->scoreT = lastHalfStatsClanT->scoreT;
 
-	MatchClan * clanCT = match->getClan(CT_TEAM);
-	ClanStats * currentScoreClanCT = clanCT->getStats();
-	ClanStats * lastHalfStatsClanCT = clanCT->getLastHalfState();
-	currentScoreClanCT->scoreCT = lastHalfStatsClanCT->scoreCT;
+		MatchClan * clanCT = match->getClan(CT_TEAM);
+		ClanStats * currentScoreClanCT = clanCT->getStats();
+		ClanStats * lastHalfStatsClanCT = clanCT->getLastHalfState();
+		currentScoreClanCT->scoreCT = lastHalfStatsClanCT->scoreCT;
 
-	// Back to the first round (round_start will maybe increment that)
-	infos->roundNumber = -2;
-	// a negative round number causes game restarts until the round number reaches 1
+		// Back to the first round (round_start will maybe increment that)
+		infos->roundNumber = -2;
+		// a negative round number causes game restarts until the round number reaches 1
 
-	// Do the restart
-	plugin->queueCommand("mp_restartgame 2\n");
+		// Do the restart
+		plugin->queueCommand("mp_restartgame 2\n");
+	}
 }
 
 void HalfMatchState::showMenu(Player * recipient)
@@ -257,8 +263,8 @@ void HalfMatchState::halfMenuCallback(Player * player, int choice, MenuLine * se
 	case 4:
 		{
 			MatchLignup * lignup = match->getLignup();
-			match->detectClanName(T_TEAM);
-			match->detectClanName(CT_TEAM);
+			match->detectClanName(T_TEAM,true);
+			match->detectClanName(CT_TEAM,true);
 
 			RecipientFilter recipients;
 			recipients.addRecipient(player);
@@ -579,7 +585,7 @@ void SwapTimer::execute()
 	list<ClanMember *>::iterator itPlayer;
 	for(itPlayer = playerlist->begin(); itPlayer != playerlist->end(); itPlayer++)
 	{
-		(*itPlayer)->swap();
+		(*itPlayer)->swap(/*false*/);
 	}
 }
 

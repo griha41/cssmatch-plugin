@@ -43,8 +43,6 @@
 #include "IEngineSound.h" 
 #include "toolframework/itoolentity.h"
 
-#include <sstream>
-
 using namespace cssmatch;
 
 using std::string;
@@ -137,14 +135,14 @@ bool ServerPlugin::Load(CreateInterfaceFn interfaceFactory, CreateInterfaceFn ga
 	if (! loaded)
 	{
 		success &= 
-			getInterface<IPlayerInfoManager>(gameServerFactory,interfaces.playerinfomanager,INTERFACEVERSION_PLAYERINFOMANAGER) &&
-			getInterface<IVEngineServer>(interfaceFactory,interfaces.engine,INTERFACEVERSION_VENGINESERVER) &&
-			getInterface<IGameEventManager2>(interfaceFactory,interfaces.gameeventmanager2,INTERFACEVERSION_GAMEEVENTSMANAGER2) &&
-			getInterface<IFileSystem>(interfaceFactory,interfaces.filesystem,FILESYSTEM_INTERFACE_VERSION) &&
-			getInterface<IServerPluginHelpers>(interfaceFactory,interfaces.helpers,INTERFACEVERSION_ISERVERPLUGINHELPERS) &&
-			getInterface<IServerGameDLL>(gameServerFactory,interfaces.serverGameDll,"ServerGameDLL006") &&
-			getInterface<IEngineSound>(interfaceFactory,interfaces.sounds,IENGINESOUND_SERVER_INTERFACE_VERSION) &&
-			getInterface<IServerTools>(gameServerFactory,interfaces.serverTools,VSERVERTOOLS_INTERFACE_VERSION);
+			getInterface<IPlayerInfoManager>(gameServerFactory,interfaces.playerinfomanager,"PlayerInfoManager",2) && // INTERFACEVERSION_PLAYERINFOMANAGER
+			getInterface<IVEngineServer>(interfaceFactory,interfaces.engine,"VEngineServer",21) && // INTERFACEVERSION_VENGINESERVER
+			getInterface<IGameEventManager2>(interfaceFactory,interfaces.gameeventmanager2,"GAMEEVENTSMANAGER",2) && // INTERFACEVERSION_GAMEEVENTSMANAGER2
+			getInterface<IFileSystem>(interfaceFactory,interfaces.filesystem,"VFileSystem",17) && // FILESYSTEM_INTERFACE_VERSION
+			getInterface<IServerPluginHelpers>(interfaceFactory,interfaces.helpers,"ISERVERPLUGINHELPERS",1) && // INTERFACEVERSION_ISERVERPLUGINHELPERS
+			getInterface<IServerGameDLL>(gameServerFactory,interfaces.serverGameDll,"ServerGameDLL",6) && // INTERFACEVERSION_SERVERGAMEDLL
+			getInterface<IEngineSound>(interfaceFactory,interfaces.sounds,"IEngineSoundServer",3) && // IENGINESOUND_SERVER_INTERFACE_VERSION
+			getInterface<IServerTools>(gameServerFactory,interfaces.serverTools,"VSERVERTOOLS",1); // VSERVERTOOLS_INTERFACE_VERSION
 
 		if (success)
 		{
@@ -296,21 +294,21 @@ bool ServerPlugin::Load(CreateInterfaceFn interfaceFactory, CreateInterfaceFn ga
 				success = false;
 				CSSMATCH_PRINT_EXCEPTION(e);
 			}
-		}
 
-		loaded = true;
-		
-		try
-		{
-			updateThread = new UpdateNotifier();
-			updateThread->Start();
-		}
-		catch(const UpdateNotifierException & e)
-		{
-			CSSMATCH_PRINT_EXCEPTION(e);
-		}
+			loaded = true;
+			
+			try
+			{
+				updateThread = new UpdateNotifier();
+				updateThread->Start();
+			}
+			catch(const UpdateNotifierException & e)
+			{
+				CSSMATCH_PRINT_EXCEPTION(e);
+			}
 
-		Msg(CSSMATCH_NAME ": loaded\n");
+			Msg(CSSMATCH_NAME ": loaded\n");
+		}
 	}
 	else
 	{

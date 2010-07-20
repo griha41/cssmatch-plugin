@@ -52,6 +52,7 @@ class ConCommand;
 #include <list>
 #include <map>
 #include <algorithm>
+#include <sstream>
 
 namespace cssmatch
 {
@@ -169,21 +170,42 @@ namespace cssmatch
 
 		/** Get a named interface from an interface factory
 		 * @param factory The factory provided by the game when the plugin is loaded
-		 * @param interfaceVersion The name of the interface to get
+		 * @param interfaceName The base name of the interface to get
+		 * @param minVersion Minimum version of the interface to get
 		 */
 		template<typename T>
 		static bool getInterface(	CreateInterfaceFn factory,
 									T * & toInitialize,
-									const std::string & interfaceVersion)
+									const std::string & interfaceName,
+									int minVersion)
 		{
 			bool success = false;
 
-			toInitialize = (T *)factory(interfaceVersion.c_str(),NULL);
+			toInitialize = NULL;
+			while((toInitialize == NULL) && (minVersion <= 999))
+			{	
+				std::ostringstream toget;
+				toget << interfaceName;
+				if (minVersion < 10)
+					toget << "00";
+				else if (minVersion < 100)
+					toget << "0";
+				toget << minVersion;
+
+				toInitialize = (T *)factory(toget.str().c_str(),NULL);
+
+				minVersion++;
+			}
 
 			if (toInitialize == NULL)
-				Msg(std::string(CSSMATCH_NAME ": Unable to get the \"" + interfaceVersion + "\" interface!\n").c_str());
+				Msg(std::string(CSSMATCH_NAME ": Unable to get the interface \"" + interfaceName + "\"\n").c_str());
 			else
+			{
 				success = true;
+#ifdef _DEBUG
+				Msg(std::string(CSSMATCH_NAME ": Got interface \"" + interfaceName + "\" v" + toString(minVersion - 1) + "\n").c_str());
+#endif // _DEBUG
+			}
 
 			return success;
 		}

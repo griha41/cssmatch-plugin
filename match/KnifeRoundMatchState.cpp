@@ -110,7 +110,10 @@ void KnifeRoundMatchState::endKniferound(TeamCode winner)
 		TeamCode playerTeam = (*itPlayer)->getMyTeam();
 		if (playerTeam == winner)
 		{
-			interfaces->engine->ClientCommand(identity->pEntity,"chooseteam");
+			//interfaces->engine->ClientCommand(identity->pEntity,"chooseteam");
+			RecipientFilter panelRecip;
+			panelRecip.addRecipient(*itPlayer);
+			i18n->showPanel(panelRecip,"team",true);
 		}
 		else if (playerTeam == teamLoser)
 		{

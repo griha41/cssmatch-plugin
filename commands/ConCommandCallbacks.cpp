@@ -518,6 +518,7 @@ bool cssmatch::say_hook(ClanMember * user, const CCommand & args)
 	//MatchInfo * infos = match->getInfos();
 	I18nManager * i18n = plugin->getI18nManager();
 
+	string commandName = args.Arg(0);
 	istringstream commandString(args.Arg(1));
 	string chatCommand;
 	commandString >> chatCommand;
@@ -580,7 +581,20 @@ bool cssmatch::say_hook(ClanMember * user, const CCommand & args)
 		parameters2["$score"] = toString(stats2->scoreT + stats2->scoreCT);
 
 		RecipientFilter recipients;
-		recipients.addAllPlayers();
+
+		if (commandName == "say")
+			recipients.addAllPlayers();
+		else
+		{
+			TeamCode team = user->getMyTeam();
+			list<ClanMember *> * playerlist = plugin->getPlayerlist();
+			list<ClanMember *>::const_iterator itPlayer;
+			for (itPlayer = playerlist->begin(); itPlayer != playerlist->end(); itPlayer++)
+			{
+				if ((*itPlayer)->getMyTeam() == team)
+					recipients.addRecipient(*itPlayer);
+			}
+		}
 
 		i18n->i18nChatSay(recipients,"match_scores");
 		i18n->i18nChatSay(recipients,"match_scores_team",parameters1);

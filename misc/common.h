@@ -62,7 +62,7 @@ class CBaseCombatCharacter;
 
 #define CSSMATCH_NAME "CSSMatch"
 
-#define CSSMATCH_PLUGIN_PRINT_BASE "2.1.2"
+#define CSSMATCH_PLUGIN_PRINT_BASE "2.1.3"
 #ifdef CSSMATCH_BETA
 #define CSSMATCH_VERSION CSSMATCH_PLUGIN_PRINT_BASE " BETA"
 #else
@@ -72,7 +72,7 @@ class CBaseCombatCharacter;
 #define CSSMATCH_SITE "http://www.cssmatch.com"
 
 #define CSSMATCH_PLUGIN_PRINT \
-		"Nico's " CSSMATCH_NAME ", version " CSSMATCH_VERSION " (" __DATE__ "), " CSSMATCH_SITE
+		"Nico's " CSSMATCH_NAME ", version " CSSMATCH_VERSION " (" __DATE__ " " __TIME__ "), " CSSMATCH_SITE
 
 /** Invalid entity index */
 #define CSSMATCH_INVALID_INDEX 0

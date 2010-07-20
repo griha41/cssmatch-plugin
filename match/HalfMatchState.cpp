@@ -117,7 +117,7 @@ void HalfMatchState::startState()
 		}
 	}
 
-	// Announce
+	// Announcement
 	map<string,string> parameters;
 	parameters["$current"] = toString(infos->halfNumber);
 	parameters["$total"] = plugin->getConVar("cssmatch_sets")->GetString();
@@ -179,6 +179,7 @@ void HalfMatchState::restartState()
 		ServerPlugin * plugin = ServerPlugin::getInstance();
 		MatchManager * match = plugin->getMatch();
 		MatchInfo * infos = match->getInfos();
+		I18nManager * i18n = plugin->getI18nManager();
 
 		// Restore the score of each player // see round_start
 
@@ -196,6 +197,17 @@ void HalfMatchState::restartState()
 		// Back to the first round (round_start will maybe increment that)
 		infos->roundNumber = -2;
 		// a negative round number causes game restarts until the round number reaches 1
+
+		// Announcement
+		RecipientFilter recipients;
+		recipients.addAllPlayers();
+
+		map<string,string> parameters;
+		parameters["$current"] = toString(infos->halfNumber);
+		parameters["$total"] = plugin->getConVar("cssmatch_sets")->GetString();
+		i18n->i18nChatSay(recipients,"match_start_manche",parameters);
+
+		i18n->i18nChatSay(recipients,"match_restarts");
 
 		// Do the restart
 		plugin->queueCommand("mp_restartgame 2\n");

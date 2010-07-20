@@ -26,9 +26,9 @@
 #include "../misc/common.h" // CSSMATCH_BETA
 
 #ifdef CSSMATCH_BETA
-#define CSSMATCH_CHANGELOG_FILE "/plugin/changelogbeta.txt"
+#define CSSMATCH_CHANGELOG_FILE "/plugin/changelogbeta.php"
 #else
-#define CSSMATCH_CHANGELOG_FILE "/plugin/changelog.txt"
+#define CSSMATCH_CHANGELOG_FILE "/plugin/changelog.php"
 #endif
 
 namespace cssmatch

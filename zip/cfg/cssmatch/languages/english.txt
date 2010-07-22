@@ -13,6 +13,7 @@
 //  (Alt+01) = orange
 //  (Alt+03) = light green or team color
 //  (Alt+04) = green
+//  (Alt+05) = dark green
 
 [English]
 
@@ -61,19 +62,16 @@ update_available =              "Update available! For more information type !u
 
 // Knife Round
 kniferound_announcement =		"KnifeRound ! GO ! GO ! GO !"
-//kniferound_c4 =					"Planting the bomb during kniferound is forbidden !"
 kniferound_restarts =			"3 restarts, then kniferound starts !"
 kniferound_winner =				"Kniferound won by team $team !"
 kniferound_dead_time =			"$team has $time secondes to choose a side, the other team is waiting as spectactor."
 
 // Warmup
 warmup_announcement =			"Warmup !"
-//warmup_c4 =						"Planting the bomb during warmup is forbidden !"
 warmup_ready =					"$team is ready"
 warmup_already_ready =			"$team already announced as ready"
 warmup_all_ready =				"All teams are ready to go !"
 warmup_disable =				"This feature can only be used during warmup"
-warmup_end =					"End of warmup !"
 
 // Match
 match_in_progress =				"Match already running..."
@@ -81,14 +79,12 @@ match_not_in_progress =			"No match running..."
 match_round_popup =				"Round $current / $total\n$team1 : $score1\n$team2 : $score2"
 match_password_popup =			"Server password : $password"
 match_password_remember =		"REMINDER ! Server password is $password"
-//match_started_by =				"Match started by $admin..."
-//match_started =					"Match started..."
 match_name =					"$team1 VS $team2"
 match_config_error =			"Error : config file has no match information !"
 match_scores =					"Scores :"
 match_scores_team =				"$team : $score"
 match_winner =					"Winning team : $team"
-match_no_winner =				"Winning team : none"
+match_no_winner =				" M"
 match_dead_time =				"$time seconds to make screenshots !"
 match_please_changelevel =		"Change map to restore default config"
 match_start_manche =			"Starting half $current / $total"
@@ -171,15 +167,10 @@ menu_close =					"Close"
 error_file_not_found =			"File $file cannot be found"
 error_command_not_found =		"Command "$command" cannot be found"
 error_invalid_player =			"Invalid player"
-//error_general =					"Error has occured, please contact plugin author on $site"
 error_tv_not_connected =		"SourceTV record cannot start because it's not connected on server"
 
 // Players
 player_join_game =				"$username joins the game"
-//player_match_hosted_popup =		"Match is running on this server !\n \nIf you're not one of the people taking part, please leave"
 player_no_swap_in_match =		"Only CSSMatch and admins can swap players"
 player_you_not_admin =			"You're not an admin !"
-//player_leave_game =				"$username left game ! (reason : $reason)"
-player_username =				"Player nickname"
-player_nobody =					"Nobody"
-player_thetime =				"$hoursh$minutes"
+player_thetime =				"$year/$month/$day $hoursh$minutes"

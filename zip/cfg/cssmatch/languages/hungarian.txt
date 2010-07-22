@@ -1,0 +1,188 @@
+﻿// CSSMatch
+// Nicolous
+// http://code.google.com/p/cssmatch-plugin-en/
+
+// English
+// Hungarian translation by kajla
+// Release date: 2010.04.01.
+// Updated: 2010.04.17.
+// Translator e-mail addresses: kajla_hun@freemail.hu or kajla@skyhosting.hu
+//
+// Magyar
+// A magyar fordítást kajla készítette
+// Készült: 2010.04.01.
+// Frissítve: 2010.04.17.
+// Fordító e-mail címei: kajla_hun@freemail.hu ; kajla@skyhosting.hu
+
+// Please ONLY TRANSLATE the sentences between QUOTES
+//
+// ABOUT THE KEYWORDS prefixed by $ 
+//	YOU CAN MOVE these keywords, but YOU MUST NOT MODIFY the name of the keyword
+//
+// Keywords's message suffixed by _popup are the only which supports \n escape sequences
+//
+// Chat messages can use some colors :
+//  (Alt+01) = orange
+//  (Alt+03) = light green or team color
+//  (Alt+04) = green
+//  (Alt+05) = dark green
+
+[Hungarian]
+
+// Parancsok
+cssm_help =						"cssm_help : Kilistázza az RCON parancsokat a konzolba"
+cssm_start =					"cssm_start [optimális konfig fájl] : elindítja a meccset"
+cssm_stop =						"cssm_stop : leállítja a meccset"
+cssm_retag =					"cssm_retag : új csapat név érzékelése"
+cssm_go =						"cssm_go : kötelezi a bemelegítést (!go-t) a csapatoknak"
+cssm_restartmanche =			"cssm_restartmanche : újraindítja a félidőt"
+cssm_restartround =				"cssm_restartround : újraindítja a kört"
+cssm_adminlist =				"cssm_adminlist : kilistázza az összes játékvezetőt"
+cssm_grant =					"cssm_grant steamID : hozzáad egy játékvezetőt egy pálya erejéig"
+cssm_revoke =					"cssm_revoke steamID : eltávolít egy játékvezetőt egy pálya erejéig"
+cssm_teamt =					"cssm_teamt [terrorista csapat név] : szerkeszti a terrorista csapat nevét"
+cssm_teamct =					"cssm_teamct [anti-terrorista csapat név] : szerkeszti az anti-terrorista csapat nevét"
+cssm_swap =						"cssm_swap ID : játékos áthelyezése"
+cssm_spec =						"cssm_spec ID : játékos áthelyezése a megfigyelők közé"
+
+// ConVars
+cssmatch_version =				"CSSMatch : Plugin verziója"
+cssmatch_advanced =				"CSSMatch : "1" = teljes szerver adminisztrációs menü, "0" = csak 'war' adminisztrációs menü"
+cssmatch_language =				"CSSMatch : A CSSMatch alaptérelmezett nyelve (pl. : "hungarian" ezt a fájlt fogja használni: cfg/cssmatch/languages/hungarian.txt)"
+cssmatch_report = 				"CSSMatch : "1" = pályánként új riport fájlt készít, "0" = nem készít riport fájlt"
+cssmatch_usermessages =         "CSSMatch : Mod UserMessage count - Do not change without instructions"
+cssmatch_updatesite =           "CSSMatch : Used by the update notifier"
+cssmatch_weapons = 		        "CSSMatch : CS:S weapon list"
+cssmatch_kniferound =			"CSSMatch : "1" = engedélyezi a kés kört, "0" = tiltja a kés kört"
+cssmatch_kniferound_money =		"CSSMatch : A kés kör alatt ennyi pénzt kapnak a játékosok"
+cssmatch_kniferound_allows_c4 =	"CSSMatch : "1" = bomba lerakás engedélyezése kés kör allatt, "0" = tiltás"
+cssmatch_end_kniferound =		"CSSMatch : Ennyi másodperc lesz a kés kör és a bemelegítés között"
+cssmatch_rounds =				"CSSMatch : Körök száma"
+cssmatch_sets =					"CSSMatch : Félidők száma egy meccs alatt"
+cssmatch_end_set =				"CSSMatch : Ennyi másodperc múlva kezdődik egy új kör, bemelegítés vagy akár a kés kör"
+cssmatch_sourcetv =				"CSSMatch : "1" = elindítja a SourceTV felvételt (ha engedélyezve van), "0" = kikapcsolva"
+cssmatch_sourcetv_path =		"CSSMatch : A SourceTV ide fogja menteni a felvételeket"
+cssmatch_warmup_time =			"CSSMatch : Idő limit (percben) a bemelegítésnek ("0" = kikapcsolva)"
+cssmatch_hostname =				"CSSMatch : Szerver neve egy meccs alatt (%s megváltozik a csapatok neveikre)"
+cssmatch_password =				"CSSMatch : Szerver jelszó egy meccs alatt"
+cssmatch_default_config =		"CSSMatch : Alaptérelmezett szerver konfigurációs fájl"
+
+// Figyelmeztetések
+sv_alltalk =					"Közös beszéd be van kapcsolva!"
+sv_cheats =						"Csalások engedélyezve vannak!"
+update_available =              "Update available! For more information type !update"
+
+// Kés kör
+kniferound_announcement =		"Kés kör ! FUSS FORESZ ! FUSS !"
+kniferound_restarts =			"3 újraindítás, aztán kezdődik a kés kör !"
+kniferound_winner =				"A kés kört a $team csapat nyerte !"
+kniferound_dead_time =			"$team kapott $time másodpercet, hogy kiválassza a csapatát, addig a másik csapat megfigyelőkbe vár."
+
+// Bemelegítés
+warmup_announcement =			"Bemelegítés !"
+warmup_ready =					"$team csapat készen van"
+warmup_already_ready =			"$team már jelezték, hogy készen vannak"
+warmup_all_ready =				"Összes csapat készen áll a meccsre !"
+warmup_disable =				"Ezt az opciót csak a bemelegítés közben tudod használni!"
+
+// Meccs
+match_in_progress =				"A mecss már fut ..."
+match_not_in_progress =			"Nincs futó meccs ..."
+match_round_popup =				"Körök: $current / $total\n$team1 : $score1\n$team2 : $score2"
+match_password_popup =			"Szerver jelszava : $password"
+match_password_remember =		"EMLÉKEZTETŐ ! A szerver jelszava: $password"
+match_name =					"$team1 VS $team2"
+match_config_error =			"Hiba : a konfigurációs fájl nem tartalmaz meccs információt !"
+match_scores =					"Pontok :"
+match_scores_team =				"$team : $score"
+match_winner =					"Győztes csapat : $team"
+match_no_winner =				"Győztes csapat : nincs"
+match_dead_time =				"$time másodperc múlva fénykép készül !"
+match_please_changelevel =		"Válts pályát, hogy betöltse az alap beállításokat!"
+match_start_manche =			"Félidő indul $current / $total"
+match_restarts =				"3 újraindítás, aztán MENJ ! MENJ ! MENJ !"
+match_go =      				".:Live:. GO GO GO !"
+match_end_manche_popup =		"Félidő vége $current !\n\nPontok :\n$team1 : $score1\n$team2 : $score2"
+match_end_current_manche =		"$current félidő befejezve !"
+match_end =						"Meccs vége !"
+match_end_popup =				"Vége a meccsnek !\n\nPontok :\n$team1 : $score1\n$team2 : $score2"
+
+// Adminisztráció
+admin_adminlist =				"Adminisztrátorok Steam ID-jük :"
+admin_new_admin =				"Steam ID $steamid most játékvezető"
+admin_is_already_admin =		"Steam ID $steamid már játékvezető"
+admin_old_admin =				"Steam ID $steamid többé már nem játékvezető"
+admin_is_not_admin =			"Steam ID $steamid nem játékvezető"
+admin_new_t_team_name =			"A terroristák új csapat neve: $team"
+admin_new_ct_team_name =		"Az anti-terroristák új csapat neve: $team"
+admin_spectator_player =		"Ez a játékos megfigyelő"
+admin_map_not_found =			"$map pályát nem lehet betölteni !"
+admin_swap =					"$username játékost áthelyezte: $admin"
+admin_is_not_connected =		"$username hátra hagyta csapattársait"
+admin_spec =					"$admin megfigyelők közé helyezte $username játékost"
+admin_kick =					"Kirúgta az adminisztrátor"
+admin_kick_by =					"$username játékost kirúgta: $admin"
+admin_ban =						"Kitiltotta az egyik adminisztrátor"
+admin_temporaly_ban =			"$username játékost véglegesen kitiltotta: $admin"
+admin_permanently_ban =			"$username játékost kitiltotta: $admin"	
+admin_please_specify_tag =		"Kérlek adj hozzá egy új klán előtagot"
+admin_please_specify_password =	"Please add new server password"
+admin_round_restarted_by =		"A kört újraindította: $admin"
+admin_round_restarted =			"A kört újraindította egy adminisztrátor"
+admin_manche_restarted_by =		"félidőt újraindította: $admin"
+admin_manche_restarted =		"A félidőt újraindította egy adminisztrátor"
+admin_unable_to_force_go =		"Nem írhatsz !go-t, mert a bemelegítés még nem kezdődött el"
+admin_no_warmup_started	=		"Bemelegítés még nem kezdődött el"
+admin_all_teams_say_ready_by =	"Egyes csapatokat 'kész' állapotba helyezte: $admin"
+admin_all_teams_say_ready =		"Egyes csapatokat 'kész' állapotba helyezte az egyik adminisztrátor"
+
+// Menük
+menu_play_kniferound =			"CSSMatch : Legyen kés kör ?"
+menu_yes =						"Igen"
+menu_no	=						"Nem"
+menu_back =						"Vissza"
+menu_more =						"Következő"
+menu_play_warmup =				"CSSMatch : Legyen bemelegítés ?"
+menu_alltalk =					"Közös beszéd $action"
+menu_enable =					"engedélyezése"
+menu_disable =					"tiltása"
+menu_no_match =					"CSSMatch : Jelenleg nincs futó meccs"
+menu_start =					"Meccs indítása"
+menu_kniferound =				"CSSMatch : Kés kör indul"
+menu_restart =					"Újraindítás"
+menu_stop =						"Meccs leállítása"
+menu_retag =					"Új csapat név észlelése"
+menu_warmup =					"CSSMatch : Bemelegítés"
+menu_go =						"Szükséges !go-t írni az összes csapatnak!"
+menu_match =					"CSSMatch : Meccs"
+menu_restart_manche =			"Félidő újraindítása"
+menu_config =					"CSSMatch : Válassz konfigot"
+menu_administration =			"CSSMatch : Admin menü"
+menu_time-out =                "CSSMatch : Time-out"
+menu_changelevel =				"Pályaváltás"
+menu_swap =						"Játékos áthelyezése"
+menu_spec =						"Játékos áthelyezése a megfigyelők közé"
+menu_kick =						"Játékos kirúgása"
+menu_ban =						"Játékos kitiltása"
+menu_map =						"CSSMatch : Válassz pályát"
+menu_player =					"CSSMatch : Válassz játékost"
+menu_ban_time =					"CSSMatch : Válassz kitiltási időt"
+menu_5_min =					"5 perc"
+menu_1_h =						"1 óra"
+menu_permanent =				"Végleges"
+menu_administration_options =	"Adminisztrációs opciók"
+menu_cant_display =				"Ezt a részét a menünek nem tudom megjeleníteni ! Kérlek menj fel a készítő honlapjára a hibajelentésért: $site !"
+menu_empty =					"Ez a lista üres :-("
+menu_close =					"Bezárás"
+
+// Hibák
+error_file_not_found =			"$file fájl nem található"
+error_command_not_found =		""$command" parancs nem található"
+error_invalid_player =			"Érvénytelen játékos"
+error_tv_not_connected =		"SourceTV felvétel nem engedélyezett, mert nem csatlakozott a szerverhez"
+
+// Játékosok
+player_join_game =				"$username csatlakozott a játékhoz"
+player_no_swap_in_match =		"Csak CSSMatch és adminok tudnak áthelyezni játékosokat"
+player_you_not_admin =			"Nem vagy admin !"
+player_thetime =				"Jelenlegi idő: $hours:$minutes"

@@ -185,11 +185,11 @@ bool ServerPlugin::Load(CreateInterfaceFn interfaceFactory, CreateInterfaceFn ga
 			addPluginConVar(new I18nConVar(i18n,"cssmatch_kniferound","1",FCVAR_NONE,"cssmatch_kniferound",true,0.0f,true,1.0f));
 			addPluginConVar(new I18nConVar(i18n,"cssmatch_kniferound_money","0",FCVAR_NONE,"cssmatch_kniferound_money",true,0.0f,true,16000.0f));
 			addPluginConVar(new I18nConVar(i18n,"cssmatch_kniferound_allows_c4","1",FCVAR_NONE,"cssmatch_kniferound_allows_c4",true,0.0f,true,1.0f));
-			addPluginConVar(new I18nConVar(i18n,"cssmatch_end_kniferound","20",FCVAR_NONE,"cssmatch_end_kniferound",true,5.0f,false,0.0f));
+			addPluginConVar(new I18nConVar(i18n,"cssmatch_end_kniferound","20",FCVAR_NONE,"cssmatch_end_kniferound",true,0.0f,false,0.0f));
 
 			addPluginConVar(new I18nConVar(i18n,"cssmatch_rounds","12",FCVAR_NONE,"cssmatch_rounds",true,0.0f,false,0.0f));
 			addPluginConVar(new I18nConVar(i18n,"cssmatch_sets","2",FCVAR_NONE,"cssmatch_sets",true,0.0f,false,0.0f));
-			addPluginConVar(new I18nConVar(i18n,"cssmatch_end_set","10",FCVAR_NONE,"cssmatch_end_set",true,5.0f,false,0.0f));
+			addPluginConVar(new I18nConVar(i18n,"cssmatch_end_set","10",FCVAR_NONE,"cssmatch_end_set",true,0.0f,false,0.0f));
 
 			addPluginConVar(new I18nConVar(i18n,"cssmatch_sourcetv","1",FCVAR_NONE,"cssmatch_sourcetv",true,0.0f,true,1.0f));
 			addPluginConVar(new I18nConVar(i18n,"cssmatch_sourcetv_path","cfg/cssmatch/sourcetv",FCVAR_NONE,"cssmatch_sourcetv_path"));

@@ -96,6 +96,8 @@ void MatchClan::reset()
 	lastHalfStats.scoreT = 0;
 	lastHalfStats.scoreCT = 0;
 	ready = false;
+	setAllowDetection(true);
+	name = "Nobody";
 }
 
 void MatchClan::setAllowDetection(bool allow)

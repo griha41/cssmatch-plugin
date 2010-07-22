@@ -13,6 +13,7 @@
 //  (Alt+01) = orange
 //  (Alt+03) = light green or team color
 //  (Alt+04) = green
+//  (Alt+05) = dark green
 
 [German]
 
@@ -22,7 +23,7 @@ cssm_start =					"cssm_start [optional : config file] : Startet Match"
 cssm_stop =						"cssm_stop : Stoppt Match"
 cssm_retag =					"cssm_retag : Neuerkennung der ClanTags der Teams"
 cssm_go =						"cssm_go : Erzwingt !go für beide teams während des Warmups"
-cssm_restartmanche =				"cssm_restartmanche : Neustart der Hälfte"
+cssm_restartmanche =			"cssm_restartmanche : Neustart der Hälfte"
 cssm_restartround =				"cssm_resstartround : Neustart der Runde"
 cssm_adminlist =                "cssm_adminlist : Listet alle Schiedsrichter auf"
 cssm_grant =					"cssm_grant steamID : Einen Schiedsrichter hinzufügen (Verfällt bei Mapchange)"
@@ -61,19 +62,16 @@ update_available =              "Update available! For more information type !u
 
 // Knife Round
 kniferound_announcement =		"Messerrunde ! Knife ! Knife ! Knife !"
-//kniferound_c4 =					"Das Legen der Bombe während der Messerrunde ist verboten !"
 kniferound_restarts =			"3 Neustarts, dann beginnt die Messerrunde !"
 kniferound_winner =				" $team gewinnt die Messerrunde !"
 kniferound_dead_time =			"$team hat $time Sekunden Zeit um eine Seite zu wählen, das andere Team wartet als Zuschauer."
 
 // Warmup
 warmup_announcement =			"Warmup Time !"
-//warmup_c4 =						"Das Legen der Bombe während des Warmups ist Verboten !"
 warmup_ready =					"$team ist jetzt Bereit !"
 warmup_already_ready =			"$team ist schona als bereit markiert !"
 warmup_all_ready =				"Alle Teams sind bereit !"
 warmup_disable =				"Diese funktion kann nur während des Warmups benutzt werden"
-warmup_end =					"Ende des Warmups !"
 
 // Match
 match_in_progress =				"Match läuft schon..."
@@ -81,8 +79,6 @@ match_not_in_progress =			"Kein laufendes Match..."
 match_round_popup =				"Runde $current / $total\n$team1 : $score1\n$team2 : $score2"
 match_password_popup =			"Server Passwort : $password"
 match_password_remember =		"ERINNERUNG ! Server Passwort ist $password"
-//match_started_by =				"Match wurde von $admin gestartet..."
-//match_started =					"Match wurde gestartet..."
 match_name =					"$team1 VS $team2"
 match_config_error =			"Error : config Datei hat keine Match Informationen !"
 match_scores =					"Scores :"
@@ -171,15 +167,10 @@ menu_close =					"Schliessen"
 error_file_not_found =			"Datei $file kann nicht gefunden werden"
 error_command_not_found =		"Befehl "$command" wurde nicht gefunden"
 error_invalid_player =			"Ungültiger Spieler"
-//error_general =					"Ein Fehler ist aufgetreten, bitte den Autor auf $site informieren !"
 error_tv_not_connected =		"SourceTV Aufnahme kann nicht gestartet werden weil SourceTV nicht mit dem Server verbunden ist."
 
 // Players
 player_join_game =				"$username tritt dem Spiel bei"
-//player_match_hosted_popup =		"Ein Match läuft auf diesem Server !\n \nWenn du nicht teilnimmst, verlasse bitte den Server."
 player_no_swap_in_match =		"Nur CSSMatch und Admins können Spieler swappen"
 player_you_not_admin =			"Du bist kein Admin !"
-//player_leave_game =				"$username hat den Server verlassen ! (reason : $reason)"
-player_username =				"Spieler Nickname"
-player_nobody =					"Niemand"
-player_thetime =				"$hoursh$minutes"
+player_thetime =				"$day/$month/$year $hoursh$minutes"

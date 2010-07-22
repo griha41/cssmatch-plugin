@@ -61,9 +61,9 @@ typedef in_addr IN_ADDR;
 #include <string>
 
 #ifdef CSSMATCH_BETA
-#define CSSMATCH_VERSION_FILE "/plugin/versionbeta.php"
+#define CSSMATCH_VERSION_FILE "/plugin/versionbeta.txt"
 #else
-#define CSSMATCH_VERSION_FILE "/plugin/version.php"
+#define CSSMATCH_VERSION_FILE "/plugin/version.txt"
 #endif
 
 namespace cssmatch

@@ -1,0 +1,176 @@
+﻿// CSSMatch
+// Nicolous
+// http://code.google.com/p/cssmatch-plugin-en/
+
+// Please ONLY TRANSLATE the sentences between QUOTES
+//
+// ABOUT THE KEYWORDS prefixed by $ 
+//	YOU CAN MOVE these keywords, but YOU MUST NOT MODIFY the name of the keyword
+//
+// Keywords's message suffixed by _popup are the only which supports \n escape sequences
+//
+// Chat messages can use some colors :
+//  (Alt+01) = orange
+//  (Alt+03) = light green or team color
+//  (Alt+04) = green
+//  (Alt+05) = dark green
+
+[Russian]
+
+// Команды
+cssm_help =						"cssm_help : Список RCON команд в консоли"
+cssm_start =					"cssm_start [опции : файл конфигурации] : Запуск матча"
+cssm_stop =						"cssm_stop : Остановить матч"
+cssm_retag =					"cssm_retag : Новое имя команды принято"
+cssm_go =						"cssm_go : Напишите !go во время разминки"
+cssm_restartmanche =			"cssm_restartmanche : Рестарт половины"
+cssm_restartround =				"cssm_restartround : Перезапустить раунд"
+cssm_adminlist =				"cssm_adminlist : Список всех судей"
+cssm_grant =					"cssm_grant steamID : Добавить судью"
+cssm_revoke =					"cssm_revoke steamID : Отменить судью во время одной карты"
+cssm_teamt =					"cssm_teamt terrorist team name : Сменить имя команды terrorist's"
+cssm_teamct =					"cssm_teamct counter-terrorist team name : Сменить имя команды counter-terrorist's "
+cssm_swap =						"cssm_swap ID : Смена команд"
+cssm_spec =						"cssm_spec ID : Переместить игрока в spectactor"
+
+// Переменные
+cssmatch_version =				"Версия плагина"
+cssmatch_advanced =				"CSSMatch : "1" = Полное админское меню , "0" = Только меню для матча"
+cssmatch_language =				"CSSMatch : Стандартный язык плагина (e.g. : "english" путь  cfg/cssmatch/languages/english.txt)"
+cssmatch_report = 				"CSSMatch : "1" = Создавать файл результатов после каждого матча, "0" = откл."
+cssmatch_usermessages =         "CSSMatch : Mod UserMessage count - Do not change without instructions"
+cssmatch_updatesite =           "CSSMatch : Used by the update notifier"
+cssmatch_weapons = 		        "CSSMatch : CS:S weapon list"
+cssmatch_kniferound =			"CSSMatch : "1" = Включить ножевой раунд, "0" = откл."
+cssmatch_kniferound_money =		"CSSMatch : Колличество денег в ножевом раунде"
+cssmatch_kniferound_allows_c4 =	"CSSMatch : "1" = Включить закладку бомбы во время ножевого раунда, "0" = откл."
+cssmatch_end_kniferound =		"CSSMatch : Время (сек.) после которого кончается ножевой раунд и начинается разминка"
+cssmatch_rounds =				"CSSMatch : Колличество раундов в половине"
+cssmatch_sets =					"CSSMatch : Колличество половин в матче"
+cssmatch_end_set =				"CSSMatch : Время (сек.) после которого кончается половина и начинается другая"
+cssmatch_sourcetv =				"CSSMatch : "1" = Запуск записи SourceTV, "0" = откл."
+cssmatch_sourcetv_path =		"CSSMatch : Путь для SourceTV демок"
+cssmatch_warmup_time =			"CSSMatch : Время (мин.) на разминку ("0" = откл.)"
+cssmatch_hostname =				"CSSMatch : Имя сервера (%s сменится на название команд)"
+cssmatch_password =				"CSSMatch : Пароль сервера"
+cssmatch_default_config =		"CSSMatch : Стандартный конфиг файл"
+
+// Предупреждения
+sv_alltalk =					"Общий чат включен"
+sv_cheats =						"Sv_Cheats включен"
+update_available =              "Update available! For more information type !update"
+
+// Ножевой раунд
+kniferound_announcement =		"Ножевой раунт ! GO ! GO ! GO !"
+kniferound_restarts =			"3 рестарта и ножевой раунд !"
+kniferound_winner =				"$team выиграла ножевой раунд!"
+kniferound_dead_time =			"$team имеет $time секунд для выбора стороны."
+
+// Разминка
+warmup_announcement =			"Разминка !"
+warmup_ready =					"$team готовы !"
+warmup_already_ready =			"$team готовы !"
+warmup_all_ready =				"Все команды готовы !"
+warmup_disable =				"Это можно использовать только во время разминки"
+
+// Матч
+match_in_progress =				"Матч запущен..."
+match_not_in_progress =			"Матч не запущен..."
+match_round_popup =				"Раунд $current / $total\n$team1 : $score1\n$team2 : $score2"
+match_password_popup =			"Пароль сервера : $password"
+match_password_remember =		"Нопоминание ! Пароль сервера $password"
+match_name =					"$team1 VS $team2"
+match_config_error =			"Ошибка : файл конфига не имеет информации !"
+match_scores =					"Счет :"
+match_scores_team =				"$team : $score"
+match_winner =					"Победившая команда : $team"
+match_no_winner =				"Победившая команда : нет"
+match_dead_time =				"$time секунд для снятия снимка !"
+match_please_changelevel =		"Смените карту для восстановления стандартного конфига"
+match_start_manche =			"Начало половины $current / $total"
+match_restarts =				"3 рестарта и  GO ! GO ! GO !"
+match_go =      				".:Live:. GO GO GO !"
+match_end_manche_popup =		"Первая половина закончилась $current !\n\nScores :\n$team1 : $score1\n$team2 : $score2"
+match_end_current_manche =		"Первая половина $current закончилась !"
+match_end =						"Конец матча !"
+match_end_popup =				"Конец матча !\n\nScores :\n$team1 : $score1\n$team2 : $score2"
+
+// Администрирование
+admin_adminlist =				"Список админов :"
+admin_new_admin =				"SteamID $steamid теперь судья для этой карты"
+admin_is_already_admin =		"SteamID $steamid судья"
+admin_old_admin =				"SteamID $steamid больше не судья"
+admin_is_not_admin =			"SteamID $steamid нет судей"
+admin_new_t_team_name =			"Новое название команды terrorist's $team"
+admin_new_ct_team_name =		"Новое название команды counter-terrorist's $team"
+admin_spectator_player =		"Этот игрок spectactor"
+admin_map_not_found =			"Карту $map не возможно загрузить !"
+admin_swap =					"$admin переместил $username"
+admin_is_not_connected =		"$username вышел из игры"
+admin_spec =					"$admin перенес $username в spectactor"
+admin_kick =					"Кикнут админом"
+admin_kick_by =					"$admin кикнул $username"
+admin_ban =						"Забанен Админом"
+admin_temporaly_ban =			"$username временно забанен $admin"
+admin_permanently_ban =			"$username забанен"	
+admin_please_specify_tag =		"Пожалуйста добавте новый клан тэг"
+admin_please_specify_password =	"Please add new server password"
+admin_round_restarted_by =		"$admin перезапустил раунд"
+admin_round_restarted =			"Админ перезапустил раунд"
+admin_manche_restarted_by =		"$admin перезапустил половину"
+admin_manche_restarted =		"Админ перезапустил половину"
+admin_unable_to_force_go =		"Вы не можите написать !go, разминка еще не запущена"
+admin_no_warmup_started	=		"Разминка не запущена"
+admin_all_teams_say_ready_by =	"Обе команды были отмечены готовые $admin"
+admin_all_teams_say_ready =		"Обе команды были отмечены готовые"
+
+// Меню
+menu_play_kniferound =			"Вы хотите ножевой раунд?"
+menu_yes =						"Да"
+menu_no	=						"Нет"
+menu_back =						"Назад"
+menu_more =						"Далее"
+menu_play_warmup =				"Вы хотите разминку?"
+menu_alltalk =					"$action общий чат"
+menu_enable =					"Включить"
+menu_disable =					"Отключить"
+menu_no_match =					"Матч не запущен"
+menu_start =					"Запуск матча"
+menu_kniferound =				"Запуск ножевого раунда"
+menu_restart =					"Рестарт"
+menu_stop =						"Остановка матча"
+menu_retag =					"Обнаружение название команды"
+menu_warmup =					"Разминка"
+menu_go =						"Для готовности наберите в чате !go"
+menu_match =					"Матч"
+menu_restart_manche =			"Рестарт половины"
+menu_config =					"Выберете конфигурацию"
+menu_administration =			"Меню Админа"
+menu_time-out =                "CSSMatch : Time-out"
+menu_changelevel =				"Сменить карту"
+menu_swap =						"Переместить игрока"
+menu_spec =						"Переместить в spectactor"
+menu_kick =						"Кикнуть игрока"
+menu_ban =						"Забанить игрока"
+menu_map =						"Выберете карту"
+menu_player =					"Выберете игрока"
+menu_ban_time =					"Выберете время бана"
+menu_5_min =					"5 минут"
+menu_1_h =						"1 час"
+menu_permanent =				"Навечно"
+menu_administration_options =	"Опции Админа"
+menu_cant_display =				"Эта часть меню отключена ! Читайте инструкцию на сайте $site !"
+menu_empty =					"Этот лист пустой :-("
+menu_close =					"Закрыть"
+
+// Ошибки
+error_file_not_found =			"Файл $file не найден"
+error_command_not_found =		"Команда "$command" не найдена"
+error_invalid_player =			"Неверный игрок"
+error_tv_not_connected =		"SourceTV не записывает, потому что не соединен с сервером"
+
+// Игроки
+player_join_game =				"$username присоединился к игре"
+player_no_swap_in_match =		"Только CSSMatch и admins может переместить игрока"
+player_you_not_admin =			"Вы не Админ !"
+player_thetime =				"$hoursh$minutes"

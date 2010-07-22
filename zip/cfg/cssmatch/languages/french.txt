@@ -13,6 +13,7 @@
 //  (Alt+01) = orange
 //  (Alt+03) = vert clair (ou couleur de la team)
 //  (Alt+04) = vert
+//  (Alt+05) = vert foncé
 
 [French]
 
@@ -61,19 +62,16 @@ update_available =              "Mise à jour disponible ! Pour plus d'info tape
 
 // Knife Round
 kniferound_announcement =		"CutRound !"
-//kniferound_c4 =					"La pose de la bombe est interdite !"
 kniferound_restarts =			"3 restarts puis CutRound !"
 kniferound_winner =				"Le round au couteau a été remporté par la team $team !"
 kniferound_dead_time =			"Les $team ont $time secondes pour choisir leur camp, les autres attendent en spectateur"
 
 // Warmup
 warmup_announcement =			"Strats Time !"
-//warmup_c4 =						"La pose du C4 est interdite !"
 warmup_ready =					"Les $team sont prêts"
 warmup_already_ready =			"Les $team sont déjà déclarés prêts"
 warmup_all_ready =				"Toutes les teams sont prêtes !"
 warmup_disable =				"Cette fonctionnalité n'est disponible qu'en Strats Time"
-//warmup_end =					"Fin du Strats Time !"
 
 // Match
 match_in_progress =				"Un match est déjà en cours..."
@@ -81,14 +79,12 @@ match_not_in_progress =			"Il n'y a aucun match en cours..."
 match_round_popup =				"Round $current / $total\n$team1 : $score1\n$team2 : $score2"
 match_password_popup =			"Mot de passe du serveur : $password"
 match_password_remember =		"RAPPEL : Le mot de passe du serveur est $password"
-//match_started_by =				"Un match est lancé par $admin..."
-//match_started =					"Un match est lancé..."
 match_name =					"$team1 VS $team2"
 match_config_error =			"Erreur : le fichier de configuration n'impose aucune phase de match !"
 match_scores =					"Scores :"
 match_scores_team =				"$team : $score"
 match_winner =					"Team gagnante : $team"
-match_no_winner =				"Team gagnante : égalité"
+match_no_winner =				"Match nul"
 match_dead_time =				"$time secondes de temps mort, prenez vos screenshots !"
 match_please_changelevel =		"Changez de map pour restaurer au maximum la configuration par défaut"
 match_start_manche =			"Lancement de la manche $current / $total"
@@ -149,8 +145,8 @@ menu_go =						"Forcer le !go de toutes les teams"
 menu_match =					"CSSMatch : Match"
 menu_restart_manche =			"Recommencer la manche"
 menu_config =					"CSSMatch : Choix d'une configuration"
-menu_time-out =                "CSSMatch : Temps mort"
 menu_administration =			"CSSMatch : Administration"
+menu_time-out =                "CSSMatch : Temps mort"
 menu_changelevel =				"Changer de map"
 menu_swap =						"Swapper un joueur"
 menu_spec =						"Mettre un joueur en spectateur"
@@ -171,15 +167,10 @@ menu_close =					"Fermer ce menu"
 error_file_not_found =			"Impossible de trouver le fichier $file"
 error_command_not_found =		"Impossible de trouver la commande "$command""
 error_invalid_player =			"Joueur invalide"
-//error_general =					"Une erreur est survenue, demandez de l'aide sur $site"
 error_tv_not_connected =		"Impossible de lancer l'enregistrement sourceTV car celle-ci n'est pas sur le serveur"
 
 // Players
 player_join_game =				"$username rejoint la partie"
-//player_match_hosted_popup =		"Ce serveur héberge actuellement un match !\n \nSi vous n'en faite pas partie, quittez le serveur STP"
 player_no_swap_in_match =		"Seuls les arbitres peuvent changer un joueur de camp"
 player_you_not_admin =			"Vous n'êtes pas arbitre !"
-//player_leave_game =				"$username quitte le match ! (motif : $reason)"
-player_username =				"Pseudo du joueur"
-player_nobody =					"Personne"
-player_thetime =				"$hoursh$minutes"
+player_thetime =				"$day/$month/$year $hoursh$minutes"

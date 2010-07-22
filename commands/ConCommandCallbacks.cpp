@@ -221,11 +221,11 @@ void cssmatch::cssm_go(const CCommand & args)
 	BaseMatchState * currentState = match->getMatchState();
 	if (currentState == warmupState)
 	{
-		warmupState->endWarmup();
-
 		RecipientFilter recipients;
 		recipients.addAllPlayers();
 		i18n->i18nChatSay(recipients,"admin_all_teams_say_ready");
+
+		warmupState->endWarmup();
 	}
 	else if (currentState != match->getInitialState())
 	{
@@ -747,6 +747,38 @@ bool cssmatch::say_hook(ClanMember * user, const CCommand & args)
 				i18n->i18nChatSay(recipients,"admin_please_specify_password");
 			}
 		}
+	}
+	else if (chatCommand == "!thetime")
+	{
+		RecipientFilter recipients;
+		recipients.addAllPlayers();
+		map<string,string> parameters;
+
+		tm * time = getLocalTime();
+
+		if (time->tm_mday > 9)
+			parameters["$day"] = toString(time->tm_mday);
+		else
+			parameters["$day"] = "0" + toString(time->tm_mday);
+
+		if (time->tm_mon > 9)
+			parameters["$month"] = toString(time->tm_mon + 1);
+		else
+			parameters["$month"] = "0" + toString(time->tm_mon + 1);
+
+		parameters["$year"] = toString(time->tm_year + 1900);
+
+		if (time->tm_hour > 9)
+			parameters["$hours"] = toString(time->tm_hour);
+		else
+			parameters["$hours"] = "0" + toString(time->tm_hour);
+
+		if (time->tm_min > 9)
+			parameters["$minutes"] = toString(time->tm_min);
+		else
+			parameters["$minutes"] = "0" + toString(time->tm_min);
+
+		i18n->i18nChatSay(recipients,"player_thetime",parameters);
 	}
 
 	return eat;

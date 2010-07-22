@@ -13,11 +13,12 @@
 //  (Alt+01) = naranja
 //  (Alt+03) = verde claro o el color del equipo
 //  (Alt+04) = verde
+//  (Alt+05) = verde oscuro
 
 [Spanish]
 
 // ConCommands
-cssm_help =						"Lista cssmatch de comandos RCON en consola"
+cssm_help =						"cssm_help : Lista cssmatch de comandos RCON en consola"
 cssm_start =					"cssm_start [Fichero de configuración opcional] : Iniciar War"
 cssm_stop =						"cssm_stop : Parar War"
 cssm_retag =					"cssm_retag : Detecta nuevos nombres de los equipos"
@@ -61,19 +62,16 @@ update_available =              "Update available! For more information type !u
 
 // Knife Round
 kniferound_announcement =		"¡ Ronda Cuchillo ! ¡ GO ! ¡ GO ! ¡ GO !"
-//kniferound_c4 =					"¡ Plantar la bomba durante la ronda de cuchillo está prohibido !"
 kniferound_restarts =			"¡ 3 reinicios, luego empieza la ronda a cuchillo !"
 kniferound_winner =				"¡ KnifeRound ganada por el equipo $team !"
 kniferound_dead_time =			"$team tiene $time segundos para elegir un lado, el otro equipo espera como espectador."
 
 // Warmup
 warmup_announcement =			"¡ Estrategia !"
-//warmup_c4 =						"¡ Plantar la bomba durante la ronda de estrategia está prohibido !"
 warmup_ready =					"$team está listo"
 warmup_already_ready =			"$team ya avisó que está listo"
 warmup_all_ready =				"¡ Los dos equipos están listos para empezar !"
 warmup_disable =				"Esta función sólo puede utilizarse durante la estrategia"
-warmup_end =					"¡ Fin Estrategia !"
 
 // Match
 match_in_progress =				"La War ya está en proceso..."
@@ -81,8 +79,6 @@ match_not_in_progress =			"La War no está en proceso..."
 match_round_popup =				"Ronda $current / $total\n$team1 : $score1\n$team2 : $score2"
 match_password_popup =			"Contraseña Servidor : $password"
 match_password_remember =		"¡ RECUERDA ! La contraseña del servidor es $password"
-//match_started_by =				"War iniciada por $admin..."
-//match_started =					"La War comenzó..."
 match_name =					"$team1 VS $team2"
 match_config_error =			"¡ Error : el archivo de configuración no tiene la información de war !"
 match_scores =					"Scores :"
@@ -171,15 +167,10 @@ menu_close =					"Cerrar"
 error_file_not_found =			"Archivo $file no se encuentra"
 error_command_not_found =		"Comando "$command" no se encuentra"
 error_invalid_player =			"Jugador no válido"
-//error_general =					"Ha ocurrido un error, por favor, póngase en contacto con el autor del plugin en $site"
 error_tv_not_connected =		"SourceTV no puede iniciarse porque no está conectada en el servidor"
 
 // Players
 player_join_game =				"$username se une a la partida"
-//player_match_hosted_popup =		"¡ La Wat está en proceso en este servidor !\n \nSi no eres una de las personas que forman parte, por favor, váyase"
 player_no_swap_in_match =		"Sólo CSSMatch y admins pueden mover jugadores"
 player_you_not_admin =			"¡ Tú no eres un Admin !"
-//player_leave_game =				"¡ $username abandonó el juego ! (razón : $reason)"
-player_username =				"Nickname del jugador"
-player_nobody =					"Nadie"
-player_thetime =				"$hoursh$minutes"
+player_thetime =				"$day/$month/$year $hoursh$minutes"

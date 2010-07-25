@@ -27,7 +27,7 @@
 #define MATCH_CONFIGURATIONS_PATH "cssmatch/configurations/"
 
 /** Default config name */
-#define DEFAULT_CONFIGURATION_FILE "default.cfg"
+#define DEFAULT_CONFIGURATION_FILE "mr15.cfg"
 
 #include "ConfigurationFile.h"
 

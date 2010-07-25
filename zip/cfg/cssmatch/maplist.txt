@@ -1,11 +1,9 @@
-// CSSMatch
-// Nicolous
-// http://code.google.com/p/cssmatch-plugin-en/
+// CSSMatch - http://www.cssmatch.com
 
-// Français ? German ? http://www.cssmatch.com/translations/
+// You don't speak english? http://www.cssmatch.com/translations
 
 // ==========================================
-// List of available maps in the admin menu
+// List of maps available in the admin menu
 // ==========================================
 // For more information : http://code.google.com/p/cssmatch-plugin-en/wiki/maplist .
 

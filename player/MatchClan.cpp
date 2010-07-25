@@ -28,15 +28,51 @@
 #include "ClanMember.h"
 
 #include <sstream>
+#include <map>
 
 using namespace cssmatch;
 
 using std::string;
 using std::list;
 using std::ostringstream;
+using std::map;
 
 MatchClan::MatchClan() : name("Nobody"), allowAutoDetect(true), ready(false)
 {
+}
+
+// I'm static
+bool MatchClan::isValidClanName(const string & newName, const list<ClanMember *> & memberlist)
+{
+	bool valid = false;
+
+	if (newName.size() >= 3)
+	{
+		int majority = memberlist.size() / 2;
+		int occurences = 0;
+
+		list<ClanMember *>::const_iterator itMember = memberlist.begin();
+		while(itMember != memberlist.end())
+		{
+			IPlayerInfo * pInfo = (*itMember)->getPlayerInfo();
+			if (isValidPlayerInfo(pInfo))
+			{
+				string name = pInfo->GetName();
+				if (name.find(newName) != string::npos)
+				{
+					occurences++;
+					if (occurences > majority)
+					{
+						valid = true;
+						break;
+					}
+				}
+			}
+			itMember++;
+		}
+	}
+
+	return valid;
 }
 
 const string * MatchClan::getName() const
@@ -107,118 +143,163 @@ void MatchClan::setAllowDetection(bool allow)
 
 void MatchClan::detectClanName(bool force)
 {
+	// This function looks complex
+	// Actually, the clan tag should be found very fast in most cases
+
 	if (allowAutoDetect || force)
 	{
-		// 1. Get two members
-		// 2. Get their names
-		// 3. Accumulate consecutive/common characters until we find a clan name than satisfies isValidClanName
+		ServerPlugin * plugin = ServerPlugin::getInstance();
+		ValveInterfaces * interfaces = plugin->getInterfaces();
 
-		list<ClanMember *> members;
-		getMembers(&members);
+		list<ClanMember *> memberlist;
+		getMembers(&memberlist);
 
-		list<ClanMember *>::const_iterator itMembers = members.begin();
-		list<ClanMember *>::const_iterator lastMembers = members.end();
+		// First, try elect the most used steam clan tag
 
-		// 1.
-		if (itMembers != lastMembers)
+		map<string,int> tagStats; // clan tag => occurrences
+		string mostUsed; // most 
+		list<ClanMember *>::const_iterator itMember = memberlist.begin();
+		int majority = memberlist.size()  / 2;
+		while(itMember != memberlist.end())
 		{
-			// Get the fist member
-			ClanMember * member1 = *itMembers;
+			const char * community = "";
 
-			// Try to get a second member
-			itMembers++;
-			if (itMembers != lastMembers)
+			IPlayerInfo * pInfo = (*itMember)->getPlayerInfo();
+			if (isValidPlayerInfo(pInfo) && (! pInfo->IsFakeClient()))
+				community = interfaces->engine->GetClientConVarValue((*itMember)->getIdentity()->index,"cl_clantag");
+
+			int occurences = ++tagStats[community];
+			if (tagStats[mostUsed] < occurences)
+				mostUsed = community;
+
+			if (occurences > majority)
+				break;
+
+			itMember++;
+		}
+
+		if (! mostUsed.empty())
+			setName(mostUsed);
+		else
+		{
+			// Without steam clan tag, try to guess a clan name
+
+			switch(memberlist.size())
 			{
-				// Get the second member
-				ClanMember * member2 = *itMembers;
-
-
-				// 2.
-				IPlayerInfo * pInfo1 = member1->getPlayerInfo();
-				IPlayerInfo * pInfo2 = member2->getPlayerInfo();
-				if (isValidPlayerInfo(pInfo1) && isValidPlayerInfo(pInfo2))
+			case 0: // no player
+				setName("Nobody");
+				break;
+			case 1: // 1 player
 				{
-					string memberName1 = pInfo1->GetName();
-					string memberName2 = pInfo2->GetName();
-
-
-					// 3.
-					string newName; // new clan name
-					bool foundNewName = false; // true if a new clan name was found
-					string::const_iterator itMemberName1 = memberName1.begin();
-					string::const_iterator endMemberName1 = memberName1.end();
-					string::const_iterator itMemberName2 = memberName2.begin();
-					string::const_iterator endMemberName2 = memberName2.end();
-
-					// For each character of member1
-					//	Is a character common to a character of member2?
-					//		Try to accumulate all consecutive/common characters
-					//		Is the clan name coherent?
-					//			Found a new clan name!
-					//	Otherwise continue
-					while(itMemberName1 != endMemberName1)
+					IPlayerInfo * pInfo = memberlist.front()->getPlayerInfo();
+					if (isValidPlayerInfo(pInfo))
 					{
-						while((itMemberName1 != endMemberName1) && (itMemberName2 != endMemberName2))
+						setName(pInfo->GetName());
+					}
+					else
+						setName("Nobody");
+					break;
+				}
+			default: // at least 2 players
+				{
+					// 1. Get two members
+					// 2. Get their names
+					// 3. Accumulate consecutive/common characters until we find a clan name that satisfies isValidClanName
+					// 4. If no valid name was found, continue with two other members
+
+					bool foundName = false; // true if a new clan name was found
+					int iMember = 0;
+
+					// 1.
+					itMember = memberlist.begin();
+					while((iMember <= majority) && (! foundName))
+					{
+						list<ClanMember *>::const_iterator itMember2 = itMember;
+						itMember2++;
+						while(itMember2 != memberlist.end() && (! foundName))
 						{
-							// (itMemberName1 may changes here)
+							ClanMember * member1 = *itMember;
+							ClanMember * member2 = *itMember2;
+								
+							// 2.
+							IPlayerInfo * pInfo1 = member1->getPlayerInfo();
+							IPlayerInfo * pInfo2 = member2->getPlayerInfo();
+							if (isValidPlayerInfo(pInfo1) && isValidPlayerInfo(pInfo2))
+							{
+								string memberName1 = pInfo1->GetName();
+								string memberName2 = pInfo2->GetName();
 
-							if ((*itMemberName1) == (*itMemberName2))
-							{ // Found a common character
-								newName += *itMemberName1;
+								// 3.
+								string newName; // new clan name
+								string::const_iterator itMemberName1 = memberName1.begin();
+								string::const_iterator endMemberName1 = memberName1.end();
+								string::const_iterator endMemberName2 = memberName2.end();
 
-								itMemberName1++;
-								//itMemberName2++; // see below
-							}
-							else if (MatchClan::isValidClanName(newName))
-							{ // Found a coherent clan name
-								ConfigurationFile::trim(newName);
-								setName(newName);
-								foundNewName = true;
+								// For each character of member1
+								//	Is a character common to a character of member2?
+								//		Try to accumulate all consecutive/common characters
+								//		Is the clan name coherent?
+								//			Found a new clan name!
+								//	Otherwise continue
+								while(itMemberName1 != endMemberName1)
+								{
+									string::const_iterator itMemberName2 = memberName2.begin();
+									while((itMemberName1 != endMemberName1) && (itMemberName2 != endMemberName2))
+									{
+										// (itMemberName1 may changes here)
 
-								// Halt to all the loops !
-								itMemberName1 = endMemberName1-1;
-								itMemberName2 = endMemberName2-1;
-							}
-							else
-								newName = "";
+										if ((*itMemberName1) == (*itMemberName2))
+										{ // Found a common character
+											newName += *itMemberName1;
 
-							itMemberName2++;
+											itMemberName1++;
+											//itMemberName2++; // see below
+										}
+										else if (MatchClan::isValidClanName(newName,memberlist))
+										{ // Found a coherent clan name
+											ConfigurationFile::trim(newName);
+											setName(newName);
+											foundName = true;
+
+											// Break the two last while
+											itMemberName1 = endMemberName1 - 1;
+											itMemberName2 = endMemberName2 - 1;
+										}
+										else
+											newName = "";
+
+										itMemberName2++;
+									}
+
+									if (itMemberName1 != endMemberName1)
+										itMemberName1++;
+								}
+							}	
+
+							itMember2++;
 						}
-
-						itMemberName1++;
+						itMember++;
+						iMember++;
 					}
 
 					// If no coherent name was found, we set a neutral name
-					if (! foundNewName)
+					if (! foundName)
 					{
-						ostringstream buffer;
-						buffer << memberName1 << "'s clan";
-						setName(buffer.str());
+						IPlayerInfo * pInfo = memberlist.front()->getPlayerInfo();
+						if (isValidPlayerInfo(pInfo))
+						{
+							ostringstream buffer;
+							buffer << pInfo->GetName() << "'s clan";
+							setName(buffer.str());
+						}
+						else
+						{
+							setName("Nobody");
+							CSSMATCH_PRINT("Failed to find a clan name")
+						}
 					}
 				}
-				else // Error :-(
-				{
-					CSSMATCH_PRINT("An error occured detecting a clan name !");
-					setName("Nobody");
-				}
 			}
-			else // One member in this clan => clan's name = member's name
-			{
-				IPlayerInfo * pInfo = member1->getPlayerInfo();
-				if (isValidPlayerInfo(pInfo))
-				{
-					name = pInfo->GetName();
-				}
-				else // Error :-(
-				{
-					CSSMATCH_PRINT("An error occured detecting a clan name !");
-					setName("Nobody");
-				}
-			}
-		}
-		else // No member in this clan
-		{
-			setName("Nobody");
 		}
 	}
 }

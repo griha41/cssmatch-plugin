@@ -63,11 +63,11 @@ namespace cssmatch
 		/** Is the clan ready to end the warmup time? */
 		bool ready;
 
-		/** Valid a clan name (used when the clan name is automatically detected) */
-		static bool isValidClanName(const std::string & newName)
-		{
-			return newName.size() >= 3;
-		}
+		/** Valid a clan name (used when the clan name is automatically detected) 
+		 * @param newName Clan name to test
+		 * @param memberlist Clan members
+		 */
+		static bool isValidClanName(const std::string & newName, const std::list<ClanMember *> & memberlist);
 	public:
 		MatchClan();
 

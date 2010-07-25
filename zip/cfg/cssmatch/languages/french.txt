@@ -1,6 +1,6 @@
-﻿// CSSMatch
-// Nicolous
-// http://code.google.com/p/cssmatch-plugin-en/
+﻿// CSSMatch - http://www.cssmatch.com
+
+// You don't speak english? http://www.cssmatch.com/translations/
 
 // Ne traduisez QUE les phrases entre guillemets
 //

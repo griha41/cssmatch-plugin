@@ -1,15 +1,15 @@
-﻿// CSSMatch
-// Nicolous
-// http://code.google.com/p/cssmatch-plugin-en/
+﻿// CSSMatch - http://www.cssmatch.com
+
+// You don't speak english? http://www.cssmatch.com/translations/
 
 // Please ONLY TRANSLATE the sentences between QUOTES
 //
 // ABOUT THE KEYWORDS prefixed by $ 
-//	YOU CAN MOVE them, but YOU MUST NOT MODIFY their name
+//	YOU CAN MOVE these keywords, but YOU MUST NOT MODIFY the name of the keyword
 //
-// The messages whose the name ends with "_popup" are the only ones which supports \n escape sequences
+// Messages having a keyword suffixed by _popup are the only ones which supports \n escape sequences
 //
-// Chat messages can use some colors :
+// Chat messages can use some colors:
 //  (Alt+01) = orange
 //  (Alt+03) = light green or team color
 //  (Alt+04) = green

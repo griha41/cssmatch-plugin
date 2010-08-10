@@ -5,13 +5,13 @@
 // English
 // Hungarian translation by kajla
 // Release date: 2010.04.01.
-// Updated: 2010.04.17.
+// Updated: 2010.07.23.
 // Translator e-mail addresses: kajla_hun@freemail.hu or kajla@skyhosting.hu
 //
 // Magyar
 // A magyar fordítást kajla készítette
 // Készült: 2010.04.01.
-// Frissítve: 2010.04.17.
+// Frissítve: 2010.07.23.
 // Fordító e-mail címei: kajla_hun@freemail.hu ; kajla@skyhosting.hu
 
 // Please ONLY TRANSLATE the sentences between QUOTES
@@ -21,7 +21,7 @@
 //
 // Messages having a keyword suffixed by _popup are the only ones which supports \n escape sequences
 //
-// Chat messages can use some colors:
+// Chat messages can use some colors :
 //  (Alt+01) = orange
 //  (Alt+03) = light green or team color
 //  (Alt+04) = green
@@ -50,9 +50,9 @@ cssmatch_version =				"CSSMatch : Plugin verziója"
 cssmatch_advanced =				"CSSMatch : "1" = teljes szerver adminisztrációs menü, "0" = csak 'war' adminisztrációs menü"
 cssmatch_language =				"CSSMatch : A CSSMatch alaptérelmezett nyelve (pl. : "hungarian" ezt a fájlt fogja használni: cfg/cssmatch/languages/hungarian.txt)"
 cssmatch_report = 				"CSSMatch : "1" = pályánként új riport fájlt készít, "0" = nem készít riport fájlt"
-cssmatch_usermessages =         "CSSMatch : Mod UserMessage count - Do not change without instructions"
-cssmatch_updatesite =           "CSSMatch : Used by the update notifier"
-cssmatch_weapons = 		        "CSSMatch : CS:S weapon list"
+cssmatch_usermessages =         "CSSMatch : Mod felhasználó üzenet számolás - Ne változtasd meg utasítás nélkül!"
+cssmatch_updatesite =           "CSSMatch : Frissítésre használt weboldal"
+cssmatch_weapons = 		        "CSSMatch : CS:S fegyver lista"
 cssmatch_kniferound =			"CSSMatch : "1" = engedélyezi a kés kört, "0" = tiltja a kés kört"
 cssmatch_kniferound_money =		"CSSMatch : A kés kör alatt ennyi pénzt kapnak a játékosok"
 cssmatch_kniferound_allows_c4 =	"CSSMatch : "1" = bomba lerakás engedélyezése kés kör allatt, "0" = tiltás"
@@ -70,7 +70,7 @@ cssmatch_default_config =		"CSSMatch : Alaptérelmezett szerver konfigurációs 
 // Figyelmeztetések
 sv_alltalk =					"Közös beszéd be van kapcsolva!"
 sv_cheats =						"Csalások engedélyezve vannak!"
-update_available =              "Update available! For more information type !update"
+update_available =              "Frissítés elérhető! Bővebb információért írj be !update-t!"
 
 // Kés kör
 kniferound_announcement =		"Kés kör ! FUSS FORESZ ! FUSS !"
@@ -101,7 +101,7 @@ match_dead_time =				"$time másodperc múlva fénykép készül !"
 match_please_changelevel =		"Válts pályát, hogy betöltse az alap beállításokat!"
 match_start_manche =			"Félidő indul $current / $total"
 match_restarts =				"3 újraindítás, aztán MENJ ! MENJ ! MENJ !"
-match_go =      				".:Live:. GO GO GO !"
+match_go =      				".:Élő:. Sok sikert !"
 match_end_manche_popup =		"Félidő vége $current !\n\nPontok :\n$team1 : $score1\n$team2 : $score2"
 match_end_current_manche =		"$current félidő befejezve !"
 match_end =						"Meccs vége !"
@@ -126,7 +126,7 @@ admin_ban =						"Kitiltotta az egyik adminisztrátor"
 admin_temporaly_ban =			"$username játékost véglegesen kitiltotta: $admin"
 admin_permanently_ban =			"$username játékost kitiltotta: $admin"	
 admin_please_specify_tag =		"Kérlek adj hozzá egy új klán előtagot"
-admin_please_specify_password =	"Please add new server password"
+admin_please_specify_password =	"Kérlek adj hozzá egy új szerver jelszót"
 admin_round_restarted_by =		"A kört újraindította: $admin"
 admin_round_restarted =			"A kört újraindította egy adminisztrátor"
 admin_manche_restarted_by =		"félidőt újraindította: $admin"
@@ -158,7 +158,7 @@ menu_match =					"CSSMatch : Meccs"
 menu_restart_manche =			"Félidő újraindítása"
 menu_config =					"CSSMatch : Válassz konfigot"
 menu_administration =			"CSSMatch : Admin menü"
-menu_time-out =                "CSSMatch : Time-out"
+menu_time-out =                "CSSMatch : Időtúllépés"
 menu_changelevel =				"Pályaváltás"
 menu_swap =						"Játékos áthelyezése"
 menu_spec =						"Játékos áthelyezése a megfigyelők közé"
@@ -185,4 +185,4 @@ error_tv_not_connected =		"SourceTV felvétel nem engedélyezett, mert nem csatl
 player_join_game =				"$username csatlakozott a játékhoz"
 player_no_swap_in_match =		"Csak CSSMatch és adminok tudnak áthelyezni játékosokat"
 player_you_not_admin =			"Nem vagy admin !"
-player_thetime =				"Jelenlegi idő: $hours:$minutes"
+player_thetime =				"Jelenlegi dátum/idő: $year/$month/$day $hours:$minutes"

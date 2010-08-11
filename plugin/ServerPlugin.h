@@ -25,7 +25,6 @@
 
 #include "../messages/RecipientFilter.h"
 #include "../misc/BaseSingleton.h"
-#include "../convars/ConvarsAccessor.h" // ConvarsAccessorException
 #include "../player/ClanMember.h"
 #include "../exceptions/BaseException.h"
 #include "../commands/ConCommandCallbacks.h"
@@ -72,7 +71,7 @@ namespace cssmatch
 		IPlayerInfoManager * playerinfomanager; // game dll interface to interact with players
 		IServerPluginHelpers * helpers; // special 3rd party plugin helpers from the engine
 		CGlobalVars * gpGlobals; // global vars
-		ConvarsAccessor * convars; // console vars
+		ICvar * cvars; // console vars
 		IServerGameDLL * serverGameDll; // Access to some DLL infos
 		IEngineSound * sounds;
 		IServerTools * serverTools;
@@ -84,7 +83,7 @@ namespace cssmatch
 				playerinfomanager(NULL),
 				helpers(NULL),
 				gpGlobals(NULL),
-				convars(NULL),
+				cvars(NULL),
 				serverGameDll(NULL),
 				sounds(NULL),
 				serverTools(NULL)

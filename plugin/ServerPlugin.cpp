@@ -33,7 +33,8 @@
 #include "../match/MatchManager.h"
 #include "../match/DisabledMatchState.h"
 
-#include "filesystem.h"
+#include "tier1.h"
+#include "tier2/tier2.h"
 #include "edict.h"
 #include "eiface.h"
 #include "iplayerinfo.h"
@@ -94,7 +95,7 @@ public:
 		cssmatch_version->SetValue(cssmatch_version->GetString());
 	}
 };
-
+ #include "eiface.h"
 ServerPlugin::ServerPlugin()
 	: loaded(false), updateThread(NULL), clientCommandIndex(0), adminMenu(NULL), bantimeMenu(NULL), match(NULL), i18n(NULL)
 {
@@ -103,9 +104,6 @@ ServerPlugin::ServerPlugin()
 ServerPlugin::~ServerPlugin()
 {
 	removeTimers();
-
-	if (interfaces.convars != NULL)
-		delete interfaces.convars;
 
 	for_each(playerlist.begin(),playerlist.end(),PlayerToRemove());
 
@@ -134,11 +132,13 @@ bool ServerPlugin::Load(CreateInterfaceFn interfaceFactory, CreateInterfaceFn ga
 
 	if (! loaded)
 	{
+		ConnectTier1Libraries(&interfaceFactory,1);
+		ConnectTier2Libraries(&interfaceFactory,1);
+
 		success &= 
 			getInterface<IPlayerInfoManager>(gameServerFactory,interfaces.playerinfomanager,"PlayerInfoManager",2) && // INTERFACEVERSION_PLAYERINFOMANAGER
 			getInterface<IVEngineServer>(interfaceFactory,interfaces.engine,"VEngineServer",21) && // INTERFACEVERSION_VENGINESERVER
 			getInterface<IGameEventManager2>(interfaceFactory,interfaces.gameeventmanager2,"GAMEEVENTSMANAGER",2) && // INTERFACEVERSION_GAMEEVENTSMANAGER2
-			getInterface<IFileSystem>(interfaceFactory,interfaces.filesystem,"VFileSystem",17) && // FILESYSTEM_INTERFACE_VERSION
 			getInterface<IServerPluginHelpers>(interfaceFactory,interfaces.helpers,"ISERVERPLUGINHELPERS",1) && // INTERFACEVERSION_ISERVERPLUGINHELPERS
 			getInterface<IServerGameDLL>(gameServerFactory,interfaces.serverGameDll,"ServerGameDLL",6) && // INTERFACEVERSION_SERVERGAMEDLL
 			getInterface<IEngineSound>(interfaceFactory,interfaces.sounds,"IEngineSoundServer",3) && // IENGINESOUND_SERVER_INTERFACE_VERSION
@@ -238,25 +238,24 @@ bool ServerPlugin::Load(CreateInterfaceFn interfaceFactory, CreateInterfaceFn ga
 			addPluginClientCommand("cssm_rates",clientcmd_rates,true);
 
 			// Initialize the ConCommand/ConVar interface
-			try
+			if (g_pCVar != NULL)
 			{
-				interfaces.convars = new ConvarsAccessor();
-				interfaces.convars->accessRegister(interfaceFactory);
+				interfaces.cvars = g_pCVar;
+				ConVar_Register(0);
 				
 				// Grab some existing ConVars
-				ICvar * cvars = interfaces.convars->getConVarInterface();
-				ConVar * sv_cheats = cvars->FindVar("sv_cheats");
-				ConVar * sv_alltalk = cvars->FindVar("sv_alltalk");
-				ConVar * hostname = cvars->FindVar("hostname");
-				ConVar * sv_password = cvars->FindVar("sv_password");
-				ConVar * tv_enable = cvars->FindVar("tv_enable");
-				ConVar * ip = cvars->FindVar("ip");
-				ConVar * sv_minrate = cvars->FindVar("sv_minrate");
-				ConVar * sv_maxrate = cvars->FindVar("sv_maxrate");
-				ConVar * sv_mincmdrate = cvars->FindVar("sv_mincmdrate");
-				ConVar * sv_maxcmdrate = cvars->FindVar("sv_maxcmdrate");
-				ConVar * sv_minupdaterate = cvars->FindVar("sv_minupdaterate");
-				ConVar * sv_maxupdaterate = cvars->FindVar("sv_maxupdaterate");
+				ConVar * sv_cheats = interfaces.cvars->FindVar("sv_cheats");
+				ConVar * sv_alltalk = interfaces.cvars->FindVar("sv_alltalk");
+				ConVar * hostname = interfaces.cvars->FindVar("hostname");
+				ConVar * sv_password = interfaces.cvars->FindVar("sv_password");
+				ConVar * tv_enable = interfaces.cvars->FindVar("tv_enable");
+				ConVar * ip = interfaces.cvars->FindVar("ip");
+				ConVar * sv_minrate = interfaces.cvars->FindVar("sv_minrate");
+				ConVar * sv_maxrate = interfaces.cvars->FindVar("sv_maxrate");
+				ConVar * sv_mincmdrate = interfaces.cvars->FindVar("sv_mincmdrate");
+				ConVar * sv_maxcmdrate = interfaces.cvars->FindVar("sv_maxcmdrate");
+				ConVar * sv_minupdaterate = interfaces.cvars->FindVar("sv_minupdaterate");
+				ConVar * sv_maxupdaterate = interfaces.cvars->FindVar("sv_maxupdaterate");
 				if ((sv_cheats == NULL) ||
 					(sv_alltalk == NULL) ||
 					(hostname == NULL) ||
@@ -289,14 +288,26 @@ bool ServerPlugin::Load(CreateInterfaceFn interfaceFactory, CreateInterfaceFn ga
 					addPluginConVar(sv_maxupdaterate);
 				}
 			}
-			catch(const ConvarsAccessorException & e)
+			else
 			{
 				success = false;
-				CSSMATCH_PRINT_EXCEPTION(e);
+				Msg(CSSMATCH_NAME ": Failed to connect tier1 libs\n");
+			}
+
+			// Initialize the file system interface
+			if (g_pFullFileSystem != NULL)
+			{
+				interfaces.filesystem = g_pFullFileSystem;
+			}
+			else
+			{
+				success = false;
+				Msg(CSSMATCH_NAME ": Failed to connect tier2 libs\n");
 			}
 
 			loaded = true;
 			
+			// Start the check for updates thread
 			try
 			{
 				updateThread = new UpdateNotifier();
@@ -304,7 +315,7 @@ bool ServerPlugin::Load(CreateInterfaceFn interfaceFactory, CreateInterfaceFn ga
 			}
 			catch(const UpdateNotifierException & e)
 			{
-				CSSMATCH_PRINT_EXCEPTION(e);
+				Msg(CSSMATCH_NAME ": %s (%s, l.%i)\n",e.what(),__FILE__,__LINE__);
 			}
 
 			Msg(CSSMATCH_NAME ": loaded\n");
@@ -317,6 +328,24 @@ bool ServerPlugin::Load(CreateInterfaceFn interfaceFactory, CreateInterfaceFn ga
 	}
 
 	return success;
+}
+
+void ServerPlugin::Unload()
+{
+	Msg(CSSMATCH_NAME ": unloading...\n");
+
+	ConVar_Unregister();
+	DisconnectTier1Libraries();
+	DisconnectTier2Libraries();
+
+	if (updateThread != NULL)
+	{
+		updateThread->End();
+		updateThread->Join();
+		delete updateThread;
+		updateThread = NULL;
+	}
+	Msg(CSSMATCH_NAME ": unloaded\n");
 }
 
 ValveInterfaces * ServerPlugin::getInterfaces()
@@ -747,22 +776,6 @@ void ServerPlugin::removeTimers()
 		delete *itTimer;
 	}
 	timers.clear();
-}
-
-void ServerPlugin::Unload()
-{
-	Msg(CSSMATCH_NAME ": unloading...\n");
-
-	interfaces.convars->accessUnregister();
-
-	if (updateThread != NULL)
-	{
-		updateThread->End();
-		updateThread->Join();
-		delete updateThread;
-		updateThread = NULL;
-	}
-	Msg(CSSMATCH_NAME ": unloaded\n");
 }
 
 void ServerPlugin::Pause()

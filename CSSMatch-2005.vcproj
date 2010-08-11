@@ -82,7 +82,7 @@
 				OutputFile="zip\addons\cssmatch.dll"
 				LinkIncremental="2"
 				SuppressStartupBanner="true"
-				AdditionalLibraryDirectories="..\hl2sdk\lib\public"
+				AdditionalLibraryDirectories="..\hl2sdk-ob\lib\public"
 				IgnoreDefaultLibraryNames="LIBC,libcmt"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile=".\Debug/serverplugin_empty.pdb"
@@ -307,14 +307,6 @@
 			</File>
 			<File
 				RelativePath=".\convars\ConVarCallbacks.h"
-				>
-			</File>
-			<File
-				RelativePath=".\convars\ConvarsAccessor.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\convars\ConvarsAccessor.h"
 				>
 			</File>
 			<File

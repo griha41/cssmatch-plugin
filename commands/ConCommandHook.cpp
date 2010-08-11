@@ -43,12 +43,11 @@ void ConCommandHook::Init()
 
 	ServerPlugin * plugin = ServerPlugin::getInstance();
 	ValveInterfaces * interfaces = plugin->getInterfaces();
-	ICvar * cvars = interfaces->convars->getConVarInterface();
 	const char * name = GetName();
 
-	if (cvars != NULL)
+	if (interfaces->cvars != NULL)
 	{
-		const ConCommandBase * listedCommand = cvars->GetCommands();
+		const ConCommandBase * listedCommand = interfaces->cvars->GetCommands();
 		bool success = false;
 
 		while(listedCommand != NULL)

@@ -1,0 +1,176 @@
+// CSSMatch - http://www.cssmatch.com
+
+// You don't speak english? http://www.cssmatch.com/translations/
+
+// Please ONLY TRANSLATE the sentences between QUOTES
+//
+// ABOUT THE KEYWORDS prefixed by $ 
+//	YOU CAN MOVE these keywords, but YOU MUST NOT MODIFY the name of the keyword
+//
+// Messages having a keyword suffixed by _popup are the only ones which supports \n escape sequences
+//
+// Chat messages can use some colors:
+//  (Alt+01) = orange
+//  (Alt+03) = light green or team color
+//  (Alt+04) = green
+//  (Alt+05) = dark green
+
+[English]
+
+// ConCommands
+cssm_help =						"cssm_help : Geeft cssmatch RCON commands in console weer"
+cssm_start =					"cssm_start [Eventueel : config bestand] : Start match"
+cssm_stop =						"cssm_stop : Stop match"
+cssm_retag =					"cssm_retag : Nieuwe team naam detectie"
+cssm_go =						"cssm_go : Forceer !go voor elk team tijdens de warmup"
+cssm_restartmanche =			"cssm_restartmanche : Herstart helft"
+cssm_restartround =				"cssm_restartround : Herstart ronde"
+cssm_adminlist =				"cssm_adminlist : Geeft alle huidige administrators weer"
+cssm_grant =					"cssm_grant steamID : Voeg een administrator toe voor één map"
+cssm_revoke =					"cssm_revoke steamID : Verwijder een administrator tijdens één map"
+cssm_teamt =					"cssm_teamt terrorist team naam : Wijzig de terrorist's team naam"
+cssm_teamct =					"cssm_teamct counter-terrorist team naam : Wijzig de counter-terrorist's team naam"
+cssm_swap =						"cssm_swap ID : Zet speler over"
+cssm_spec =						"cssm_spec ID : Zet speler naar spectactor"
+
+// ConVars
+cssmatch_version =				"CSSMatch : Plugin versie"
+cssmatch_advanced =				"CSSMatch : "1" = volledig server administratie menu, "0" = enkel war administratie menu"
+cssmatch_language =				"CSSMatch : Standaard taal van CSSMatch (vb. : "dutch" zal dit bestand gebruiken  cfg/cssmatch/languages/dutch.txt)"
+cssmatch_report = 				"CSSMatch : "1" = Na elke match zal een nieuw verslag bestand gemaakt worden, "0" = Er wordt geen verslag bestand gemaakt"
+cssmatch_usermessages =         "CSSMatch : Mod UserMessage count - Do not change without instructions"
+cssmatch_updatesite =           "CSSMatch : Wordt gebruikt door de update melder"
+cssmatch_weapons = 		        "CSSMatch : CS:S wapen lijst"
+cssmatch_kniferound =			"CSSMatch : "1" = Gebruik kniferonde, "0" = uit"
+cssmatch_kniferound_money =		"CSSMatch : Hoeveelheid geld beschikbaar voor de kniferonde"
+cssmatch_kniferound_allows_c4 =	"CSSMatch : "1" = Sta bomb planten toe tijdens kniferonde, "0" = uit"
+cssmatch_end_kniferound =		"CSSMatch : Tijd (seconden) tussen einde van kniferonde en begin van warmup"
+cssmatch_rounds =				"CSSMatch : Aantal rondes per helft"
+cssmatch_sets =					"CSSMatch : Aantal helften per match"
+cssmatch_end_set =				"CSSMatch : Tijd (seconden) tussen einde van helft en de volgende (warmup, nieuwe helft of einde van match)"
+cssmatch_sourcetv =				"CSSMatch : "1" = Start sourceTV record als het aan staat, "0" = uit"
+cssmatch_sourcetv_path =		"CSSMatch : Pad dat verwijst naar sourceTV records bestanden"
+cssmatch_warmup_time =			"CSSMatch : Tijdslimiet (minuten) voor warmup ("0" = uit)"
+cssmatch_hostname =				"CSSMatch : Hostname tijdens de match (%s verandert in team namen)"
+cssmatch_password =				"CSSMatch : Server password tijdens de match"
+cssmatch_default_config =		"CSSMatch : Standaard server config bestand"
+
+// Warnings
+sv_alltalk =					"AllTalk staat Aan"
+sv_cheats =						"Sv_Cheats staat Aan"
+update_available =              "Update beschikbaar! Voor meer informatie type !update"
+
+// Knife Round
+kniferound_announcement =		"KnifeRonde ! GO ! GO ! GO !"
+kniferound_restarts =			"3 herstarts, dan start kniferonde !"
+kniferound_winner =				"Kniferonde gewonnen door team $team !"
+kniferound_dead_time =			"$team heeft $time seconden om een kant te kiezen, het andere team staat te wachten als spectactor."
+
+// Warmup
+warmup_announcement =			"Warmup !"
+warmup_ready =					"$team is klaar"
+warmup_already_ready =			"$team al aangeduid als klaar"
+warmup_all_ready =				"Alle teams zijn klaar om te gaan!"
+warmup_disable =				"Deze functie kan enkel gebruikt worden tijdens warmup"
+
+// Match
+match_in_progress =				"Match reeds lopende..."
+match_not_in_progress =			"Geen match lopende..."
+match_round_popup =				"Ronde $current / $total\n$team1 : $score1\n$team2 : $score2"
+match_password_popup =			"Server password : $password"
+match_password_remember =		"HERINNERING ! Server password is $password"
+match_name =					"$team1 VS $team2"
+match_config_error =			"Error : config bestand heeft geen match informatie !"
+match_scores =					"Scores :"
+match_scores_team =				"$team : $score"
+match_winner =					"Winning team : $team"
+match_no_winner =				" M"
+match_dead_time =				"$time seconds to make screenshots !"
+match_please_changelevel =		"Change map to restore default config"
+match_start_manche =			"Starting half $current / $total"
+match_restarts =				"3 restarts, then GO ! GO ! GO !"
+match_go =      				".:Live:. GO GO GO !"
+match_end_manche_popup =		"End of half $current !\n\nScores :\n$team1 : $score1\n$team2 : $score2"
+match_end_current_manche =		"Half $current complete !"
+match_end =						"End of match !"
+match_end_popup =				"End of match !\n\nScores :\n$team1 : $score1\n$team2 : $score2"
+
+// Administration
+admin_adminlist =				"Administrators steamID lijst :"
+admin_new_admin =				"SteamID $steamid is nu administrator voor één map"
+admin_is_already_admin =		"SteamID $steamid is administrator"
+admin_old_admin =				"SteamID $steamid is geen administrator meer"
+admin_is_not_admin =			"SteamID $steamid is geen administrator"
+admin_new_t_team_name =			"Nieuwe terrorist's team naam $team"
+admin_new_ct_team_name =		"Nieuwe counter-terrorist's team naam $team"
+admin_spectator_player =		"Deze speler is een spectactor"
+admin_map_not_found =			"Map $map kan niet worden geladen !"
+admin_swap =					"$username overgezet door $admin"
+admin_is_not_connected =		"$username verlaat het spel"
+admin_spec =					"$admin zette $username naar spectactor"
+admin_kick =					"Kicked door administrator"
+admin_kick_by =					"$username kicked door $admin"
+admin_ban =						"Banned door administrator"
+admin_temporaly_ban =			"$username tijdelijk banned door $admin"
+admin_permanently_ban =			"$username banned door $admin"	
+admin_please_specify_tag =		"A.U.B. voeg nieuwe clan tag toe"
+admin_please_specify_password =	"A.U.B. voet nieuw server password toe"
+admin_round_restarted_by =		"Ronde is herstart door $admin"
+admin_round_restarted =			"Ronde is herstart door administrator"
+admin_manche_restarted_by =		"Helft is herstart door $admin"
+admin_manche_restarted =		"Helft is herstart door administrator"
+admin_unable_to_force_go =		"U kan !go niet forceren, warmup is niet begonnen"
+admin_no_warmup_started	=		"Warmup is niet begonnen"
+admin_all_teams_say_ready_by =	"Beide teams zijn aangeduid als klaar door $admin"
+admin_all_teams_say_ready =		"Beide teams zijn aangeduid als klaar door administrator"
+
+// Menus
+menu_play_kniferound =			"CSSMatch : Wil je een Kniferonde spelen ?"
+menu_yes =						"Ja"
+menu_no	=						"Nee"
+menu_back =						"Vorige"
+menu_more =						"Volgende"
+menu_play_warmup =				"CSSMatch : Zal een warmup worden gespeeld ?"
+menu_alltalk =					"Alltalk $action "
+menu_enable =					"aanzetten"
+menu_disable =					"afzetten"
+menu_no_match =					"CSSMatch : Geen match bezig"
+menu_start =					"Start match"
+menu_kniferound =				"CSSMatch : Start kniferonde"
+menu_restart =					"Herstart"
+menu_stop =						"Stop match"
+menu_retag =					"Nieuwe team naam detectie"
+menu_warmup =					"CSSMatch : Warmup"
+menu_go =						"Forceer !go voor alle teams"
+menu_match =					"CSSMatch : Match"
+menu_restart_manche =			"Herstart helft"
+menu_config =					"CSSMatch : Selecteer config"
+menu_administration =			"CSSMatch : Admin menu"
+menu_time-out =                "CSSMatch : Time-out"
+menu_changelevel =				"Wijzig map"
+menu_swap =						"Zet een speler over"
+menu_spec =						"Zet speler naar spectactor"
+menu_kick =						"Kick een speler"
+menu_ban =						"Ban een speler"
+menu_map =						"CSSMatch : Kies map"
+menu_player =					"CSSMatch : Kies speler"
+menu_ban_time =					"CSSMatch : Kies ban tijd"
+menu_5_min =					"5 min"
+menu_1_h =						"1 h"
+menu_permanent =				"Blijvend"
+menu_administration_options =	"Administratie opties"
+menu_cant_display =				"Dit deel van het menu kan niet worden weergegeven ! A.U.B. verwittig de auteur op $site !"
+menu_empty =					"Deze lijst is leeg :-("
+menu_close =					"Sluit"
+
+// Errors
+error_file_not_found =			"Bestand: $file kan niet worden gevonden"
+error_command_not_found =		"Command "$command" kan niet worden gevonden"
+error_invalid_player =			"Ongeldige speler"
+error_tv_not_connected =		"SourceTV record kan niet worden gestart omdat het niet actief is op de server "
+
+// Players
+player_join_game =				"$username treedt toe tot het spel"
+player_no_swap_in_match =		"Enkel CSSMatch en administrators kunnen spelers overzetten"
+player_you_not_admin =			"U bent geen admin !"
+player_thetime =				"$year/$month/$day $hoursh$minutes"

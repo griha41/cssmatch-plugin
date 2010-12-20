@@ -58,11 +58,11 @@ class IServerUnknown;
 class CBasePlayer;
 class CBaseCombatCharacter;
 
-//#define CSSMATCH_BETA
+#define CSSMATCH_BETA
 
 #define CSSMATCH_NAME "CSSMatch"
 
-#define CSSMATCH_PLUGIN_PRINT_BASE "2.1.5"
+#define CSSMATCH_PLUGIN_PRINT_BASE "2.1.6"
 #ifdef CSSMATCH_BETA
 #define CSSMATCH_VERSION CSSMATCH_PLUGIN_PRINT_BASE " BETA"
 #else

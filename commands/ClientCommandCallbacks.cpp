@@ -160,13 +160,7 @@ PLUGIN_RESULT cssmatch::clientcmd_rates(ClanMember * user, const CCommand & args
 	ServerPlugin * plugin = ServerPlugin::getInstance();
 	ValveInterfaces * interfaces = plugin->getInterfaces();
 	I18nManager * i18n = plugin->getI18nManager();
-	float sv_minrate = plugin->getConVar("sv_minrate")->GetFloat();
-	float sv_maxrate = plugin->getConVar("sv_maxrate")->GetFloat();
-	float sv_mincmdrate = plugin->getConVar("sv_mincmdrate")->GetFloat();
-	float sv_maxcmdrate = plugin->getConVar("sv_maxcmdrate")->GetFloat();
-	float sv_minupdaterate = plugin->getConVar("sv_minupdaterate")->GetFloat();
-	float sv_maxupdaterate = plugin->getConVar("sv_maxupdaterate")->GetFloat();
-
+	
 	RecipientFilter recipients;
 	recipients.addRecipient(user);
 
@@ -178,34 +172,43 @@ PLUGIN_RESULT cssmatch::clientcmd_rates(ClanMember * user, const CCommand & args
 
 		ostringstream message;
 
-		float cl_updaterate = atof(interfaces->engine->GetClientConVarValue(playerIndex,"cl_updaterate"));
-		if (cl_updaterate < sv_minupdaterate)
-			cl_updaterate = sv_minupdaterate;
-		else if (cl_updaterate > sv_maxupdaterate)
-			cl_updaterate = sv_maxupdaterate;
+		const char * name = interfaces->engine->GetClientConVarValue(playerIndex,"name");
+		const char * cl_updaterate = interfaces->engine->GetClientConVarValue(playerIndex,"cl_updaterate");
+		const char * cl_cmdrate = interfaces->engine->GetClientConVarValue(playerIndex,"cl_cmdrate");
+		const char * cl_interp = interfaces->engine->GetClientConVarValue(playerIndex,"cl_interp");
+		const char * rate = interfaces->engine->GetClientConVarValue(playerIndex,"rate");
 
-		float cl_cmdrate = atof(interfaces->engine->GetClientConVarValue(playerIndex,"cl_cmdrate"));
-		if (cl_cmdrate < sv_mincmdrate)
-			cl_cmdrate = sv_mincmdrate;
-		else if (cl_cmdrate > sv_maxcmdrate)
-			cl_cmdrate = sv_maxcmdrate;
-
-		float rate = atof(interfaces->engine->GetClientConVarValue(playerIndex,"rate"));
-		if (rate < sv_minrate)
-			rate = sv_minrate;
-		else if (rate > sv_maxrate)
-			rate = sv_maxrate;
-
-		message << string(interfaces->engine->GetClientConVarValue(playerIndex,"name")) << ": " << endl
+		message << name << ": " << endl
 				<< "  " << "cl_updaterate  = " << cl_updaterate << endl
 				<< "  " << "cl_cmdrate     = " << cl_cmdrate << endl
-				<< "  " << "cl_interp      = " << interfaces->engine->GetClientConVarValue(playerIndex,"cl_interp") << endl
+				<< "  " << "cl_interp      = " << cl_interp << endl
 				<< "  " << "rate           = " << rate << endl
 				<< endl;
 
 		const string & finalMsg = message.str();
 		i18n->consoleSay(recipients,finalMsg);
 	}
+
+	ostringstream message;
+
+	const char * sv_minrate = interfaces->cvars->FindVar("sv_minrate")->GetString();
+	const char * sv_maxrate = interfaces->cvars->FindVar("sv_maxrate")->GetString();
+	const char * sv_mincmdrate = interfaces->cvars->FindVar("sv_mincmdrate")->GetString();
+	const char * sv_maxcmdrate = interfaces->cvars->FindVar("sv_maxcmdrate")->GetString();
+	const char * sv_minupdaterate = interfaces->cvars->FindVar("sv_minupdaterate")->GetString();
+	const char * sv_maxupdaterate = interfaces->cvars->FindVar("sv_maxupdaterate")->GetString();
+	const char * sv_competitive_minspec = interfaces->cvars->FindVar("sv_competitive_minspec")->GetString();
+	
+	message << "sv_minrate = " << sv_minrate << ", "
+			<< "sv_maxrate = " << sv_maxrate << endl
+			<< "sv_mincmdrate = " << sv_mincmdrate << ", "
+			<< "sv_maxcmdrate = " << sv_maxcmdrate << endl
+			<< "sv_minupdaterate = " << sv_minupdaterate << ", "
+			<< "sv_maxupdaterate = " << sv_maxupdaterate << endl
+			<< "sv_competitive_minspec = " << sv_competitive_minspec << endl;
+
+	const string & finalMsg = message.str();
+	i18n->consoleSay(recipients,finalMsg);
 
 	return PLUGIN_STOP;
 }

@@ -238,7 +238,7 @@ void Player::kick(const string & reason) const
 	
     IPlayerInfo * pInfo = getPlayerInfo();
     if (isValidPlayerInfo(pInfo) && (! pInfo->IsFakeClient()))
-		textReason = i18n->getTranslation(reason,interfaces->engine->GetClientConVarValue(identity.index,"cl_language"));
+		textReason = i18n->getTranslation(interfaces->engine->GetClientConVarValue(identity.index,"cl_language"),reason);
     else
         textReason = "Kick bot";
 

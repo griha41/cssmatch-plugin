@@ -120,8 +120,11 @@ namespace cssmatch
 				: name(playername), userid(playerUserid){};
 		};
 
-		/** Is the plugin already loaded before? */
-		bool loaded;
+		/** Prevent multiple plugin load
+		 * If I'm greater than 1, ServerPlugin::Load will return false 
+		 * If I'm equal to 0, ServerPlugin::Unload will unregister all ccommands
+		 */
+		int instances;
 
 		/** Search-for-update thread */
 		UpdateNotifier * updateThread;

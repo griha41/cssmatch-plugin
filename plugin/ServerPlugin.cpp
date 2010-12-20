@@ -97,7 +97,7 @@ public:
 };
  #include "eiface.h"
 ServerPlugin::ServerPlugin()
-	: loaded(false), updateThread(NULL), clientCommandIndex(0), adminMenu(NULL), bantimeMenu(NULL), match(NULL), i18n(NULL)
+	: instances(0), updateThread(NULL), clientCommandIndex(0), adminMenu(NULL), bantimeMenu(NULL), match(NULL), i18n(NULL)
 {
 }
 
@@ -130,7 +130,8 @@ bool ServerPlugin::Load(CreateInterfaceFn interfaceFactory, CreateInterfaceFn ga
 
 	bool success = true;
 
-	if (! loaded)
+	instances++;
+	if (instances == 1)
 	{
 		ConnectTier1Libraries(&interfaceFactory,1);
 		ConnectTier2Libraries(&interfaceFactory,1);
@@ -304,8 +305,6 @@ bool ServerPlugin::Load(CreateInterfaceFn interfaceFactory, CreateInterfaceFn ga
 				success = false;
 				Msg(CSSMATCH_NAME ": Failed to connect tier2 libs\n");
 			}
-
-			loaded = true;
 			
 			// Start the check for updates thread
 			try
@@ -334,16 +333,20 @@ void ServerPlugin::Unload()
 {
 	Msg(CSSMATCH_NAME ": unloading...\n");
 
-	ConVar_Unregister();
-	DisconnectTier1Libraries();
-	DisconnectTier2Libraries();
-
-	if (updateThread != NULL)
+	instances--;
+	if (instances == 0)
 	{
-		updateThread->End();
-		updateThread->Join();
-		delete updateThread;
-		updateThread = NULL;
+		ConVar_Unregister();
+		DisconnectTier1Libraries();
+		DisconnectTier2Libraries();
+
+		if (updateThread != NULL)
+		{
+			updateThread->End();
+			updateThread->Join();
+			delete updateThread;
+			updateThread = NULL;
+		}
 	}
 	Msg(CSSMATCH_NAME ": unloaded\n");
 }
@@ -624,15 +627,13 @@ void ServerPlugin::kickMenuCallback(Player * player, int choice, MenuLine * sele
 
 void ServerPlugin::banMenuCallback(Player * player, int choice, MenuLine * selected)
 { 
-	if (choice < 4)
+	if (choice != 10)
 	{
 		UseridMenuLineData * useridData = static_cast<UseridMenuLineData *>(selected->data);
 
 		player->storeMenuData(new PlayerMenuLineData(selected->text,useridData->userid));
 		showBanTimeMenu(player);
 	}
-	else if (choice == 4)
-		showBanMenu(player);
 	else
 		player->quitMenu();
 }

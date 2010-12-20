@@ -122,25 +122,27 @@ int UpdateNotifier::Run()
 		if (host == NULL)
 		{
 			CSSMATCH_PRINT("gethostbyname() failed (error " + toString(SOCKET_ERROR_CODE) + ")");
-			continue;
 		}
-
-		memcpy(&serv.sin_addr,host->h_addr,host->h_length);
-	    
-		serv.sin_port = htons(80);
-		serv.sin_family = AF_INET;
-	    
-		SOCKET socketfd = socket(AF_INET,SOCK_STREAM,0);
-		if (socketfd == INVALID_SOCKET)
+		else
 		{
-			CSSMATCH_PRINT("socket() failed (error " + toString(SOCKET_ERROR_CODE) + ")");
-			continue;
+			memcpy(&serv.sin_addr,host->h_addr,host->h_length);
+		    
+			serv.sin_port = htons(80);
+			serv.sin_family = AF_INET;
+		    
+			SOCKET socketfd = socket(AF_INET,SOCK_STREAM,0);
+			if (socketfd == INVALID_SOCKET)
+			{
+				CSSMATCH_PRINT("socket() failed (error " + toString(SOCKET_ERROR_CODE) + ")");
+			}
+			else
+			{
+				query(serv,socketfd,hostname);
+
+				shutdown(socketfd,SD_BOTH);
+				closesocket(socketfd);
+			}
 		}
-		
-		query(serv,socketfd,hostname);
-
-		shutdown(socketfd,SD_BOTH);
-
 #ifdef _DEBUG
 		wake.Wait(1*60*1000);
 #else

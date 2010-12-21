@@ -154,12 +154,13 @@ void MatchClan::detectClanName(bool force)
 		list<ClanMember *> memberlist;
 		getMembers(&memberlist);
 
-		// First, try elect the most used steam clan tag
+		list<ClanMember *>::const_iterator itMember = memberlist.begin();
+		int majority = memberlist.size()  / 2;
+
+/*		// First, try elect the most used steam clan tag
 
 		map<string,int> tagStats; // clan tag => occurrences
 		string mostUsed; // most 
-		list<ClanMember *>::const_iterator itMember = memberlist.begin();
-		int majority = memberlist.size()  / 2;
 		while(itMember != memberlist.end())
 		{
 			const char * community = "";
@@ -182,7 +183,7 @@ void MatchClan::detectClanName(bool force)
 			setName(mostUsed);
 		else
 		{
-			// Without steam clan tag, try to guess a clan name
+			// Without steam clan tag, try to guess a clan name*/
 
 			switch(memberlist.size())
 			{
@@ -300,7 +301,7 @@ void MatchClan::detectClanName(bool force)
 					}
 				}
 			}
-		}
+		/*}*/
 	}
 }
 

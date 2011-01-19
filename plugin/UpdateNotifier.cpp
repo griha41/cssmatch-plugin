@@ -38,7 +38,7 @@ void UpdateNotifier::query(const SOCKADDR_IN & serv, const SOCKET & socketfd, co
 	
 	// Query the file
 	ostringstream requestbuf;
-	requestbuf	<< "GET " CSSMATCH_VERSION_FILE " HTTP/1.1\r\n"
+	requestbuf	<< "GET " CSSMATCH_VERSION_FILE " HTTP/1.0\r\n"
 				   "Host: " << hostname << "\r\n"
 				   "Connection: Close\r\n"
 				   "\r\n";

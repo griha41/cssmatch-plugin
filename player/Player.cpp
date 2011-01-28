@@ -1,5 +1,5 @@
 /* 
- * Copyright 2008-2010 Nicolas Maingot
+ * Copyright 2008-2011 Nicolas Maingot
  * 
  * This file is part of CSSMatch.
  * 
@@ -293,6 +293,7 @@ bool Player::swap(/*bool respawn*/)
 				i18n->showPanel(recipient,"class_ter",false);
 				spawn();
 			}*/
+
 			break;
 		default:
 			success = false;

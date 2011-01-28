@@ -1,5 +1,5 @@
 /* 
- * Copyright 2008-2010 Nicolas Maingot
+ * Copyright 2008-2011 Nicolas Maingot
  * 
  * This file is part of CSSMatch.
  * 
@@ -58,7 +58,7 @@ class IServerUnknown;
 class CBasePlayer;
 class CBaseCombatCharacter;
 
-#define CSSMATCH_BETA
+//#define CSSMATCH_BETA
 
 #define CSSMATCH_NAME "CSSMatch"
 

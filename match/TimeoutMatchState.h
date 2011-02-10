@@ -49,7 +49,8 @@ namespace cssmatch
 		public:
 			// BaseCountdown method
 			/** 
-			 * @param nextState The state the lauch once the time-out ended
+			 * @param seconds Countdown duration
+			 * @param state Next match state
 			 */
 			void fire(int seconds, BaseMatchState * state)
 			{

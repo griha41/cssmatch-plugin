@@ -76,7 +76,7 @@ namespace cssmatch
 
 		/** Set the clan name 
 		 * @param newName The new clan name
-		 * @param forbidDetection Forbid detectClanName from change the clan name
+		 * @param forbidAutoDetect Forbid detectClanName from change the clan name
 		 */
 		void setName(const std::string & newName, bool forbidAutoDetect = false);
 
@@ -93,7 +93,7 @@ namespace cssmatch
 		void reset();
 
 		/** Allow the detection of the name of this clan 
-		 * @param allow <code>true</code to allow the clan name detection
+		 * @param allow <code>true</code> to allow the clan name detection
 		 */
 		void setAllowDetection(bool allow);
 

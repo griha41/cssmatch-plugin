@@ -140,7 +140,7 @@ namespace cssmatch
 
 	/** Make sure that a player index is valid
 	 * @param index The player index to check
-	 * @ param maxClients The current max clients of the server
+	 * @param maxClients The current max clients of the server
 	 * @return <code>true</code> if the player index is valid, <code>false</code> otherwise
 	 */
 	inline bool isValidPlayerInfoIndex(int index, int maxClients)
@@ -177,7 +177,7 @@ namespace cssmatch
 	}
 
 	/** Make sure that a server unknown pointer is valid
-	 * @param bEntity The server unknown pointer to check
+	 * @param sUnknown The server unknown pointer to check
 	 * @return <code>true</code> if the server unknown pointer is valid, <code>false</code> otherwise
 	 */
 	inline bool isValidServerUnknown(IServerUnknown * sUnknown)
@@ -186,7 +186,7 @@ namespace cssmatch
 	}
 
 	/** Make sure that a base player pointer instance is valid
-	 * @param bEntity The base player pointer to check
+	 * @param bPlayer The base player pointer to check
 	 * @return <code>true</code> if the base player pointer is valid, <code>false</code> otherwise
 	 */
 	inline bool isValidBasePlayer(CBasePlayer * bPlayer)
@@ -195,7 +195,7 @@ namespace cssmatch
 	}
 
 	/** Make sure that a base combat character pointer is valid
-	 * @param bEntity The base combat character pointer to check
+	 * @param bCombatCharacter The base combat character pointer to check
 	 * @return <code>true</code> if the base combat character pointer is valid, <code>false</code> otherwise
 	 */
 	inline bool isValidBaseCombatCharacter(CBaseCombatCharacter * bCombatCharacter)

@@ -70,7 +70,7 @@ namespace cssmatch
 	public:
 		/** Initialize the handler
 		 * @param propClass The prop class
-		 * @propPath The prop path - Step separator is "." (e.g. step1.step2.prop)
+		 * @param propPath The prop path - Step separator is "." (e.g. step1.step2.prop)
 		 */
 		EntityProp(const std::string & propClass, const std::string & propPath);
 

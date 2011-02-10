@@ -197,8 +197,11 @@ namespace cssmatch
 		std::map<std::string, std::string> parameters;
 	public:
 		/**
-		 * @param i18n The message manager
 		 * @param executionDate When this timer will be executed
+		 * @param recipients Recipient list
+		 * @param keyword Translation identifier to use
+		 * @param parameters If specified, the message's parameters and their values		 
+		 * @param playerIndex If specified, any part of the message after \003 will appear in the color corresponding to the player's team		 
 		 * @see I18nManager::I18nChatSay
 		 */
 		TimerI18nChatSay(	float executionDate,
@@ -236,8 +239,12 @@ namespace cssmatch
 		std::map<std::string, std::string> parameters;
 	public:
 		/**
-		 * @param i18n The message manager
 		 * @param executionDate When this timer will be executed
+         * @param recipients Recipient list
+		 * @param keyword Translation identifier to use		
+		 * @param lifeTime Display time (in seconds)
+		 * @param parameters If specified, the message's parameters and their values
+		 * @param flags Options that the player can select
 		 * @see I18nManager::I18nChatSay
 		 */
 		TimerI18nPopupSay(	float executionDate,

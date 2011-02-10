@@ -172,6 +172,7 @@ namespace cssmatch
 
 		/** Get a named interface from an interface factory
 		 * @param factory The factory provided by the game when the plugin is loaded
+		 * @param toInitialize Result variable
 		 * @param interfaceName The base name of the interface to get
 		 * @param minVersion Minimum version of the interface to get
 		 */

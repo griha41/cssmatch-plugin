@@ -82,7 +82,7 @@ namespace cssmatch
 	 * - a knife round <br>
 	 * - a warmup time <br>
 	 * - one or more halfs of n rounds <br>
-	 * The states plus this class implement a state pattern (This class is the context)
+	 * This class defines the context
 	 */
 	class MatchManager : public IGameEventListener2
 	{
@@ -242,12 +242,13 @@ namespace cssmatch
 		std::string message;
 	public:
 		/**
+		 * @param delay Time before starting
 		 * @param varToWatch The ConVar to watch
 		 * @param expectedValue The expected value of this variable
 		 * @param warningMessage Message (its i18n keyword) to send if the ConVar is not equalto to the expected value
 		 * @see BaseTimer
 		 */
-		ConVarMonitorTimer(	float date,
+		ConVarMonitorTimer(	float delay,
 							ConVar * varToWatch, 
 							const std::string & expectedValue,
 							const std::string & warningMessage);

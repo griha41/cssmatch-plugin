@@ -92,7 +92,7 @@ namespace cssmatch
 		IVEngineServer * engine; // Optimisation
 
 		/** Lookup a message type id 
-		 * @param The message type name (e.g. ShowMenu)
+		 * @param typeName The message type name (e.g. ShowMenu)
 		 * @return The message type id, CSSMATCH_INVALID_MSG_TYPE otherwise
 		 */
 		int findMessageType(const std::string & typeName);
@@ -142,7 +142,7 @@ namespace cssmatch
 
 		/** Send a MOTD-like message
 		 * @param recipients Recipient list
-		 * @param motd type Motd type
+		 * @param type Motd type
 		 * @param title Window title
 		 * @param message Message or URL
 		 * @see enum MotdType
@@ -152,7 +152,7 @@ namespace cssmatch
 		/** Show/Hide an existing vgui panel 
 		 * @param recipients Recipient list
 		 * @param panelName Panel name
-		 * @param <code>true</code>: show the panel, <code>false</code>: hide the panel
+		 * @param show <code>true</code>: show the panel, <code>false</code>: hide the panel
 		 */
 		void showPanel(RecipientFilter recipients, const std::string & panelName, bool show);
 

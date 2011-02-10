@@ -43,6 +43,7 @@ namespace cssmatch
 			int left;
 		public:
 			/** 
+			 * @param owner Corresponding countdown instance
 			 * @param executionDate see BaseTimer
 			 * @param timeLeft Seconds left
 			 */

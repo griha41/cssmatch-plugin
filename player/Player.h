@@ -400,6 +400,7 @@ namespace cssmatch
 		Player * player;
 	public:
 		/**
+		 * @param delay Delay before sending
 		 * @param pl The player who views the popup
 		 * @see BaseTimer 
 		 */

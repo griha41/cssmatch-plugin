@@ -24,8 +24,14 @@
 BASE_DIR = ../hl2sdk-ob
 
 # Compilateur
-#CXX = g++-3.4
-CXX = g++-4.1
+#CXX = g++-3.4 # maximise la compatibilité
+CXX = g++-4.1 # disponible sur les distri récentes
+
+# Nom du fichier binaire de sortie
+BINARY_NAME = cssmatch.so
+
+# Dossier de sortie du fichier binaire
+BINARY_DIR = zip/addons
 
 # Code source du SDK de VALVE
 SDK_SRC_DIR = $(BASE_DIR)
@@ -43,17 +49,9 @@ SRCDS_BIN_DIR = bin
 # Dossier contenant les librairies statiques
 SRCDS_A_DIR = $(SDK_SRC_DIR)/lib/linux
 
-###############
-# Options de compilation
-###############
 
-# Architecture du processeur
-ARCH_CFLAGS = 	-mtune=i686 \
-				-march=pentium \
-				-mmmx
-ARCH_BIN = .so
-
-# Options du compilateur
+# Paramètres du compilateur
+ARCH_CFLAGS = -mtune=i686 -march=pentium  -mmmx
 USER_CFLAGS = -DTIXML_USE_TICPP
 BASE_CFLAGS = 	-msse \
 				-fpermissive \
@@ -70,29 +68,14 @@ BASE_CFLAGS = 	-msse \
 				-fPIC \
 				-Wno-deprecated \
 				-msse 
-OPT_FLAGS = -O3 \
-			-funroll-loops \
-			-s \
-			-pipe
-DEBUG_FLAGS = 	-g \
-				-ggdb3 \
-				-O0 \
-				-D_DEBUG				
+OPT_FLAGS = -O3 -funroll-loops -s -pipe
+DEBUG_FLAGS = -g -ggdb3 -O0 -D_DEBUG				
 
-
-############
-# Objets à compiler
-############
-
+# Fichiers à compiler
 SRC= $(wildcard *.cpp) $(wildcard */*.cpp) $(wildcard */*/*.cpp) 			
 
-###########
-# Librairies à lier			
-###########
-
-LINK_SO =	$(SRCDS_BIN_DIR)/libtier0.so \
-			$(SRCDS_BIN_DIR)/libvstdlib.so \
-			$(SRCDS_BIN_DIR)/libsteam_api.so			
+# Fichiers à lier
+LINK_SO =	$(SRCDS_BIN_DIR)/libtier0.so			
 LINK_A = 	$(SRCDS_A_DIR)/tier1_i486.a \
 			$(SRCDS_A_DIR)/mathlib_i486.a \
 			$(SRCDS_A_DIR)/dmxloader_i486.a \
@@ -100,14 +83,9 @@ LINK_A = 	$(SRCDS_A_DIR)/tier1_i486.a \
 			$(SRCDS_A_DIR)/tier3_i486.a \
 			$(SRCDS_A_DIR)/particles_i486.a \
 			$(SRCDS_A_DIR)/choreoobjects_i486.a
-			
-
 LINK = -lm -ldl $(LINK_A) $(LINK_SO)
 
-# #############
-# Bibliothèques à inclure 
-##############
-
+# Dossiers des fichiers inclus
 INCLUDE = 	-I. \
 			-I$(SDK_PUBLIC_DIR) \
 			-I$(SDK_PUBLIC_DIR)/engine \
@@ -120,44 +98,42 @@ INCLUDE = 	-I. \
 			-I$(SDK_SRC_DIR)/game/server \
 			-I$(SDK_SRC_DIR)/game/shared
 
-###################
-# Cibles et règles de compilation
-###################
 
-# Nom du fichier binaire de sortie
-BINARY_NAME = cssmatch$(ARCH_BIN)
 
-# Dossier de sortie du fichier binaire
-BINARY_DIR = zip/addons
+# Règles de compilation
 
-# Détermination du dossier de sortie et rassemblement des options de compilation
-ifeq "$(DEBUG)" "true"
-	BIN_DIR = $(DEBUG_DIR)
-	CFLAGS = $(DEBUG_FLAGS)
-else
+ifeq "$(DEBUG)" "false"
 	BIN_DIR = $(RELEASE_DIR)
 	CFLAGS = $(OPT_FLAGS)
+else
+	BIN_DIR = $(DEBUG_DIR)
+	CFLAGS = $(DEBUG_FLAGS)
 endif
 CFLAGS += $(USER_CFLAGS) $(BASE_CFLAGS) $(ARCH_CFLAGS)
 
-# Règles de compilation des fichiers .cpp
-OBJ_LINUX := $(SRC:%.cpp=$(BIN_DIR)/%.o)
+OBJECTS := $(SRC:%.cpp=$(BIN_DIR)/%.o)
+
+compile_object = \
+	@mkdir -p $(2); \
+	echo "$(1) => $(3)"; \
+	$(CXX) $(INCLUDE) $(CFLAGS) -o $(3) -c $(1);
+
+$(BIN_DIR)/%.o: %.cpp %.h
+	$(call compile_object, $<, $(@D), $@)
 
 $(BIN_DIR)/%.o: %.cpp
-	@mkdir -p $(@D)
-	@echo "$< => $@"
-	@$(CXX) $(INCLUDE) $(CFLAGS) -o $@ -c $<
+	$(call compile_object, $<, $(@D), $@)
 
-all:
-	@$(MAKE) release
-
-release: $(OBJ_LINUX)
-	@$(CXX) $(INCLUDE) $(CFLAGS) $(OBJ_LINUX) $(LINK) -shared -o $(BINARY_DIR)/$(BINARY_NAME)
+all: $(OBJECTS)
+	@$(CXX) $(INCLUDE) $(CFLAGS) $(OBJECTS) $(LINK) -shared -o $(BINARY_DIR)/$(BINARY_NAME)
 	
-debug:
-	@$(MAKE) all DEBUG=true
+release:
+	@$(MAKE) all DEBUG=false
 
 clean:
 	@rm -rf $(RELEASE_DIR)
 	@rm -rf $(DEBUG_DIR)
+	@rm -rf $(BINARY_DIR)/$(BINARY_NAME)
+	
+.PHONY: clean
 

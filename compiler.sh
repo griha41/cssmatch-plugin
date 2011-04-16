@@ -1,3 +1,3 @@
 #!/bin/sh
-make 2>debug_make.txt
+make release 2>debug_make.txt
 more debug_make.txt | grep "\(\(e|E\)rror\|\(e|E\)rreur\)"

@@ -95,7 +95,7 @@ public:
 		cssmatch_version->SetValue(cssmatch_version->GetString());
 	}
 };
- #include "eiface.h"
+
 ServerPlugin::ServerPlugin()
 	: instances(0), updateThread(NULL), clientCommandIndex(0), adminMenu(NULL), bantimeMenu(NULL), match(NULL), i18n(NULL)
 {

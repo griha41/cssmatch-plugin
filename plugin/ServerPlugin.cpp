@@ -143,7 +143,8 @@ bool ServerPlugin::Load(CreateInterfaceFn interfaceFactory, CreateInterfaceFn ga
 			getInterface<IServerPluginHelpers>(interfaceFactory,interfaces.helpers,"ISERVERPLUGINHELPERS",1) && // INTERFACEVERSION_ISERVERPLUGINHELPERS
 			getInterface<IServerGameDLL>(gameServerFactory,interfaces.serverGameDll,"ServerGameDLL",6) && // INTERFACEVERSION_SERVERGAMEDLL
 			getInterface<IEngineSound>(interfaceFactory,interfaces.sounds,"IEngineSoundServer",3) && // IENGINESOUND_SERVER_INTERFACE_VERSION
-			getInterface<IServerTools>(gameServerFactory,interfaces.serverTools,"VSERVERTOOLS",1); // VSERVERTOOLS_INTERFACE_VERSION
+			getInterface<IServerTools>(gameServerFactory,interfaces.serverTools,"VSERVERTOOLS",1) && // VSERVERTOOLS_INTERFACE_VERSION
+    		getInterface<IFileSystem>(interfaceFactory,interfaces.filesystem,"VFileSystem",19); // FILESYSTEM_INTERFACE_VERSION
 
 		if (success)
 		{
@@ -295,7 +296,7 @@ bool ServerPlugin::Load(CreateInterfaceFn interfaceFactory, CreateInterfaceFn ga
 				Msg(CSSMATCH_NAME ": Failed to connect tier1 libs\n");
 			}
 
-			// Initialize the file system interface
+			/*// Initialize the file system interface
 			if (g_pFullFileSystem != NULL)
 			{
 				interfaces.filesystem = g_pFullFileSystem;
@@ -304,7 +305,7 @@ bool ServerPlugin::Load(CreateInterfaceFn interfaceFactory, CreateInterfaceFn ga
 			{
 				success = false;
 				Msg(CSSMATCH_NAME ": Failed to connect tier2 libs\n");
-			}
+			}*/
 			
 			// Start the check for updates thread
 			try

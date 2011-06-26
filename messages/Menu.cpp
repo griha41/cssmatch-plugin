@@ -32,7 +32,6 @@ using std::string;
 using std::vector;
 using std::map;
 using std::ostringstream;
-using std::min;
 
 Menu::Menu(Menu * parentMenu, const string & menuTitle, BaseMenuCallback * menuCallback)
 	: parent(parentMenu), title(menuTitle), callback(menuCallback)

@@ -33,10 +33,11 @@
 #include "../match/MatchManager.h"
 #include "../match/DisabledMatchState.h"
 
-#include "tier1.h"
-#include "tier2/tier2.h"
+#include "tier1.h" // ICVar * g_pCVar
+// #include "tier2/tier2.h" // IFileSystem * g_pFullFileSystem
+#include "filesystem.h"
 #include "edict.h"
-#include "eiface.h"
+#include "eiface.h" // IVEngineServer
 #include "iplayerinfo.h"
 #include "igameevents.h"
 #include "../convars/convar.h"
@@ -97,7 +98,7 @@ public:
 };
 
 ServerPlugin::ServerPlugin()
-	: instances(0), updateThread(NULL), clientCommandIndex(0), adminMenu(NULL), bantimeMenu(NULL), match(NULL), i18n(NULL)
+	: instances(0), loadSuccess(false), updateThread(NULL), clientCommandIndex(0), adminMenu(NULL), bantimeMenu(NULL), match(NULL), i18n(NULL)
 {
 }
 
@@ -134,9 +135,10 @@ bool ServerPlugin::Load(CreateInterfaceFn interfaceFactory, CreateInterfaceFn ga
 	if (instances == 1)
 	{
 		ConnectTier1Libraries(&interfaceFactory,1);
-		ConnectTier2Libraries(&interfaceFactory,1);
+		ConVar_Register(0);		
+		//ConnectTier2Libraries(&interfaceFactory,1);
 
-		success &= 
+		/*success &= 
 			getInterface<IPlayerInfoManager>(gameServerFactory,interfaces.playerinfomanager,"PlayerInfoManager",2) && // INTERFACEVERSION_PLAYERINFOMANAGER
 			getInterface<IVEngineServer>(interfaceFactory,interfaces.engine,"VEngineServer",21) && // INTERFACEVERSION_VENGINESERVER
 			getInterface<IGameEventManager2>(interfaceFactory,interfaces.gameeventmanager2,"GAMEEVENTSMANAGER",2) && // INTERFACEVERSION_GAMEEVENTSMANAGER2
@@ -144,13 +146,22 @@ bool ServerPlugin::Load(CreateInterfaceFn interfaceFactory, CreateInterfaceFn ga
 			getInterface<IServerGameDLL>(gameServerFactory,interfaces.serverGameDll,"ServerGameDLL",6) && // INTERFACEVERSION_SERVERGAMEDLL
 			getInterface<IEngineSound>(interfaceFactory,interfaces.sounds,"IEngineSoundServer",3) && // IENGINESOUND_SERVER_INTERFACE_VERSION
 			getInterface<IServerTools>(gameServerFactory,interfaces.serverTools,"VSERVERTOOLS",1) && // VSERVERTOOLS_INTERFACE_VERSION
-    		getInterface<IFileSystem>(interfaceFactory,interfaces.filesystem,"VFileSystem",19); // FILESYSTEM_INTERFACE_VERSION
+    		getInterface<IFileSystem>(interfaceFactory,interfaces.filesystem,"VFileSystem",19); // FILESYSTEM_INTERFACE_VERSION*/
+    		success &= 
+			    getInterface<IPlayerInfoManager>(gameServerFactory,interfaces.playerinfomanager,INTERFACEVERSION_PLAYERINFOMANAGER) &&
+			    getInterface<IVEngineServer>(interfaceFactory,interfaces.engine,INTERFACEVERSION_VENGINESERVER) &&
+			    getInterface<IGameEventManager2>(interfaceFactory,interfaces.gameeventmanager2,INTERFACEVERSION_GAMEEVENTSMANAGER2) &&
+			    getInterface<IServerPluginHelpers>(interfaceFactory,interfaces.helpers,INTERFACEVERSION_ISERVERPLUGINHELPERS) &&
+			    getInterface<IServerGameDLL>(gameServerFactory,interfaces.serverGameDll,"ServerGameDLL",7) && // INTERFACEVERSION_SERVERGAMEDLL
+			    getInterface<IEngineSound>(interfaceFactory,interfaces.sounds,IENGINESOUND_SERVER_INTERFACE_VERSION) &&
+			    getInterface<IServerTools>(gameServerFactory,interfaces.serverTools,VSERVERTOOLS_INTERFACE_VERSION) &&
+        		getInterface<IFileSystem>(interfaceFactory,interfaces.filesystem,FILESYSTEM_INTERFACE_VERSION);
 
 		if (success)
 		{
 			interfaces.gpGlobals = interfaces.playerinfomanager->GetGlobalVars();
 
-			MathLib_Init(2.2f,2.2f,0.0f,2);
+			//MathLib_Init(2.2f,2.2f,0.0f,2);
 
 			// Initialize the admin menus
 			adminMenu = new Menu(NULL,"menu_administration",
@@ -243,7 +254,6 @@ bool ServerPlugin::Load(CreateInterfaceFn interfaceFactory, CreateInterfaceFn ga
 			if (g_pCVar != NULL)
 			{
 				interfaces.cvars = g_pCVar;
-				ConVar_Register(0);
 				
 				// Grab some existing ConVars
 				ConVar * sv_cheats = interfaces.cvars->FindVar("sv_cheats");
@@ -327,6 +337,7 @@ bool ServerPlugin::Load(CreateInterfaceFn interfaceFactory, CreateInterfaceFn ga
 		success = false;
 	}
 
+    loadSuccess = success;
 	return success;
 }
 
@@ -337,10 +348,6 @@ void ServerPlugin::Unload()
 	instances--;
 	if (instances == 0)
 	{
-		ConVar_Unregister();
-		DisconnectTier1Libraries();
-		DisconnectTier2Libraries();
-
 		if (updateThread != NULL)
 		{
 			updateThread->End();
@@ -348,6 +355,10 @@ void ServerPlugin::Unload()
 			delete updateThread;
 			updateThread = NULL;
 		}
+		ConVar_Unregister();
+		if (loadSuccess) // Disconnect tier1 libraries if Load() returned false crashes the server
+    		DisconnectTier1Libraries(); 
+		//DisconnectTier2Libraries();		
 	}
 	Msg(CSSMATCH_NAME ": unloaded\n");
 }

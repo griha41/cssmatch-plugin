@@ -270,27 +270,11 @@
 			Name="link"
 			>
 			<File
-				RelativePath="..\hl2sdk-ob\lib\public\mathlib.lib"
-				>
-			</File>
-			<File
 				RelativePath="..\hl2sdk-ob\lib\public\tier0.lib"
 				>
 			</File>
 			<File
 				RelativePath="..\hl2sdk-ob\lib\public\tier1.lib"
-				>
-			</File>
-			<File
-				RelativePath="..\hl2sdk-ob\lib\public\tier2.lib"
-				>
-			</File>
-			<File
-				RelativePath="..\hl2sdk-ob\lib\public\tier3.lib"
-				>
-			</File>
-			<File
-				RelativePath="..\hl2sdk-ob\lib\public\vstdlib.lib"
 				>
 			</File>
 		</Filter>

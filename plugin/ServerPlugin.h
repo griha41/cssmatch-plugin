@@ -125,6 +125,11 @@ namespace cssmatch
 		 * If I'm equal to 0, ServerPlugin::Unload will unregister all ccommands
 		 */
 		int instances;
+		
+		/** true if ServerPlugin::Load() returned true, false otherwise
+		 * This is used to prevent a crash when disconnecting from tier1 libraries while the load failed
+		 */
+		bool loadSuccess;
 
 		/** Search-for-update thread */
 		UpdateNotifier * updateThread;
@@ -185,7 +190,7 @@ namespace cssmatch
 			bool success = false;
 
 			toInitialize = NULL;
-			while((toInitialize == NULL) && (minVersion <= 999))
+			while((! success) && (minVersion <= 999))
 			{	
 				std::ostringstream toget;
 				toget << interfaceName;
@@ -195,22 +200,38 @@ namespace cssmatch
 					toget << "0";
 				toget << minVersion;
 
-				toInitialize = (T *)factory(toget.str().c_str(),NULL);
+				success = getInterface<T>(factory, toInitialize, toget.str());
 
 				minVersion++;
 			}
 
-			if (toInitialize == NULL)
+			return success;
+		}
+		
+		/** Get a named interface from an interface factory
+		 * @param factory The factory provided by the game when the plugin is loaded
+		 * @param toInitialize Result variable
+		 * @param interfaceName The base name of the interface to get
+		 */
+		template<typename T>
+		static bool getInterface(	CreateInterfaceFn factory,
+									T * & toInitialize,
+									const std::string & interfaceName)
+		{
+    		bool success = false;
+    		
+    		toInitialize = (T *)factory(interfaceName.c_str(),NULL);
+            if (toInitialize == NULL)
 				Msg(std::string(CSSMATCH_NAME ": Unable to get the interface \"" + interfaceName + "\"\n").c_str());
 			else
 			{
 				success = true;
 #ifdef _DEBUG
-				Msg(std::string(CSSMATCH_NAME ": Got interface \"" + interfaceName + "\" v" + toString(minVersion - 1) + "\n").c_str());
-#endif // _DEBUG
-			}
-
-			return success;
+				Msg(std::string(CSSMATCH_NAME ": Got interface \"" + interfaceName + "\n").c_str());
+#endif // _DEBUG				
+		    }
+    		
+    		return success;
 		}
 	public:
 		/** Valve's interface accessor */

@@ -76,13 +76,8 @@ SRC= $(wildcard *.cpp) $(wildcard */*.cpp) $(wildcard */*/*.cpp)
 
 # Fichiers à lier
 LINK_SO =	$(SRCDS_BIN_DIR)/libtier0.so			
-LINK_A = 	$(SRCDS_A_DIR)/tier1_i486.a \
-			$(SRCDS_A_DIR)/mathlib_i486.a \
-			$(SRCDS_A_DIR)/dmxloader_i486.a \
-			$(SRCDS_A_DIR)/tier2_i486.a \
-			$(SRCDS_A_DIR)/tier3_i486.a \
-			$(SRCDS_A_DIR)/particles_i486.a \
-			$(SRCDS_A_DIR)/choreoobjects_i486.a
+LINK_A = 	$(SRCDS_A_DIR)/tier1_i486.a	$(SRCDS_A_DIR)/tier2_i486.a
+
 LINK = -lm -ldl $(LINK_A) $(LINK_SO)
 
 # Dossiers des fichiers inclus
@@ -97,8 +92,7 @@ INCLUDE = 	-I. \
 			-I$(SDK_SRC_DIR)/game \
 			-I$(SDK_SRC_DIR)/game/server \
 			-I$(SDK_SRC_DIR)/game/shared
-
-
+			
 
 # Règles de compilation
 

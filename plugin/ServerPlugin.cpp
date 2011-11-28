@@ -135,7 +135,6 @@ bool ServerPlugin::Load(CreateInterfaceFn interfaceFactory, CreateInterfaceFn ga
 	if (instances == 1)
 	{
 		ConnectTier1Libraries(&interfaceFactory,1);
-		ConVar_Register(0);		
 		//ConnectTier2Libraries(&interfaceFactory,1);
 
 		/*success &= 
@@ -152,7 +151,7 @@ bool ServerPlugin::Load(CreateInterfaceFn interfaceFactory, CreateInterfaceFn ga
 			    getInterface<IVEngineServer>(interfaceFactory,interfaces.engine,INTERFACEVERSION_VENGINESERVER) &&
 			    getInterface<IGameEventManager2>(interfaceFactory,interfaces.gameeventmanager2,INTERFACEVERSION_GAMEEVENTSMANAGER2) &&
 			    getInterface<IServerPluginHelpers>(interfaceFactory,interfaces.helpers,INTERFACEVERSION_ISERVERPLUGINHELPERS) &&
-			    getInterface<IServerGameDLL>(gameServerFactory,interfaces.serverGameDll,"ServerGameDLL",7) && // INTERFACEVERSION_SERVERGAMEDLL
+			    getInterface<IServerGameDLL>(gameServerFactory,interfaces.serverGameDll,INTERFACEVERSION_SERVERGAMEDLL) &&
 			    getInterface<IEngineSound>(interfaceFactory,interfaces.sounds,IENGINESOUND_SERVER_INTERFACE_VERSION) &&
 			    getInterface<IServerTools>(gameServerFactory,interfaces.serverTools,VSERVERTOOLS_INTERFACE_VERSION) &&
         		getInterface<IFileSystem>(interfaceFactory,interfaces.filesystem,FILESYSTEM_INTERFACE_VERSION);
@@ -254,6 +253,7 @@ bool ServerPlugin::Load(CreateInterfaceFn interfaceFactory, CreateInterfaceFn ga
 			if (g_pCVar != NULL)
 			{
 				interfaces.cvars = g_pCVar;
+				ConVar_Register(0);
 				
 				// Grab some existing ConVars
 				ConVar * sv_cheats = interfaces.cvars->FindVar("sv_cheats");

@@ -81,31 +81,34 @@ void ConCommandHook::Init()
 
 void ConCommandHook::Dispatch(const CCommand & args)
 {
-	// Call the corresponding callback, and eat the command call if asked
-	try
+	if (hooked != NULL)
 	{
-		ServerPlugin * plugin = ServerPlugin::getInstance();
-		ClanMember * user = NULL;
-		CSSMATCH_VALID_PLAYER(PlayerHavingIndex,plugin->GetCommandClient()+1,user)
+		// Call the corresponding callback, and eat the command call if asked
+		try
 		{
-			if (nospam)
+			ServerPlugin * plugin = ServerPlugin::getInstance();
+			ClanMember * user = NULL;
+			CSSMATCH_VALID_PLAYER(PlayerHavingIndex,plugin->GetCommandClient()+1,user)
 			{
-				if (user->isReferee() || user->canUseCommand())
+				if (nospam)
 				{
-					if (! callback(user,args))
-						hooked->Dispatch(args);
+					if (user->isReferee() || user->canUseCommand())
+					{
+						if (! callback(user,args))
+							hooked->Dispatch(args);
+					}
+					else
+						hooked->Dispatch(args); // TODO: review me
 				}
-				else
-					hooked->Dispatch(args); // TODO: review me
+				else if (! callback(user,args))
+						hooked->Dispatch(args);
 			}
-			else if (! callback(user,args))
-					hooked->Dispatch(args);
+			else // console?
+				hooked->Dispatch(args);
 		}
-		else // console?
-			hooked->Dispatch(args);
-	}
-	catch(const BaseException & e)
-	{
-		CSSMATCH_PRINT_EXCEPTION(e);
+		catch(const BaseException & e)
+		{
+			CSSMATCH_PRINT_EXCEPTION(e);
+		}
 	}
 }

@@ -1,23 +1,23 @@
-/* 
+/*
  * Copyright 2008-2011 Nicolas Maingot
- * 
+ *
  * This file is part of CSSMatch.
- * 
+ *
  * CSSMatch is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * CSSMatch is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with CSSMatch; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
- * Portions of this code are also Copyright © 1996-2005 Valve Corporation, All rights reserved
+ * Portions of this code are also Copyright Â© 1996-2005 Valve Corporation, All rights reserved
  */
 
 #ifndef __UPDATE_NOTIFIER_H__
@@ -29,12 +29,12 @@
 #ifdef _WIN32
 
 #pragma comment(lib,"ws2_32.lib")
-#include <winsock2.h> 
-#define SOCKET_ERROR_CODE WSAGetLastError() 
+#include <winsock2.h>
+#define SOCKET_ERROR_CODE WSAGetLastError()
 
 #else
 
-#include <errno.h> 
+#include <errno.h>
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
@@ -69,40 +69,41 @@ typedef in_addr IN_ADDR;
 namespace cssmatch
 {
 
-	class UpdateNotifierException : public BaseException
-	{
-	public:
-		UpdateNotifierException(const std::string & message) : BaseException(message){}
-	};
+    class UpdateNotifierException : public BaseException
+    {
+    public:
+        UpdateNotifierException(const std::string & message) : BaseException(message){}
+    };
 
-	/** Compares the current plugin version with the one from cssmatch.com */
-	class UpdateNotifier : public CThread
-	{
-	private:
-		/** Last plugin version found */
-		std::string version;
+    /** Compares the current plugin version with the one from cssmatch.com */
+    class UpdateNotifier : public CThread
+    {
+    private:
+        /** Last plugin version found */
+        std::string version;
 
-		bool alive; // thread can continue?
-		CThreadEvent wake; // kind of "interuptible" sleep (T O D O: better way?)
-		CThreadMutex mutex;
+        bool alive; // thread can continue?
+        CThreadEvent wake; // kind of "interuptible" sleep (T O D O: better way?)
+        CThreadMutex mutex;
 
-		/** Query the server and update "version" */
-		void query(const SOCKADDR_IN & serv, const SOCKET & socketfd, const std::string & hostname);
-	public:
-		/** 
-		 * @throws UpdateNotifierException If the socket api cannot being initialized
-		 */
-		UpdateNotifier();/* throw(UpdateNotifierException); => only useful under Windows, but only supported under Linux (see pragma) */
-		~UpdateNotifier();
+        /** Query the server and update "version" */
+        void query(const SOCKADDR_IN & serv, const SOCKET & socketfd, const std::string & hostname);
+    public:
+        /**
+         * @throws UpdateNotifierException If the socket api cannot being initialized
+         */
+        UpdateNotifier(); /* throw(UpdateNotifierException); => only useful under Windows, but only
+                           supported under Linux (see pragma) */
+        ~UpdateNotifier();
 
-		// CThread method
-		int Run();
+        // CThread method
+        int Run();
 
-		/** Tell to the thread that it must exit */
-		void End();
+        /** Tell to the thread that it must exit */
+        void End();
 
-		std::string getLastVer() const;
-	};
+        std::string getLastVer() const;
+    };
 }
 
 #endif // __UPDATE_NOTIFIER_H__

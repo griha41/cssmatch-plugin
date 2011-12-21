@@ -1,18 +1,18 @@
-/* 
+/*
  * Copyright 2008-2011 Nicolas Maingot
- * 
+ *
  * This file is part of CSSMatch.
- * 
+ *
  * CSSMatch is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * CSSMatch is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with CSSMatch; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
@@ -41,194 +41,199 @@ using std::vector;
 
 int UserMessagesManager::findMessageType(const std::string & typeName)
 {
-	int id = CSSMATCH_INVALID_MSG_TYPE;
-	
-	// Does this message type already known?
-	map<string,int>::iterator itTypeId = messageTypes.find(typeName);
-	if (itTypeId == messageTypes.end())
-	{
-		// No, search/cache it
-		ServerPlugin * plugin = ServerPlugin::getInstance();
-		ValveInterfaces * interfaces = plugin->getInterfaces();
-		
-		char foundName[20];
-		int foundNameSize = 0;
-		int i = 0;
-		int nbTypes = plugin->getConVar("cssmatch_usermessages")->GetInt();
-		while(i < nbTypes)
-		{
-			if (interfaces->serverGameDll->GetUserMessageInfo(i,foundName,sizeof(foundName),foundNameSize))
-			{
-				if (typeName == foundName)
-				{
-					messageTypes[typeName] = i;
-					id = i;
-					break;
-				}
-			}
-			i++;
-		}
-		if (id == CSSMATCH_INVALID_MSG_TYPE)
-			CSSMATCH_PRINT("Unknown message type " + typeName)
-	}
-	else
-	{
-		// Yes
-		id = itTypeId->second;
-	}
+    int id = CSSMATCH_INVALID_MSG_TYPE;
 
-	return id;
-}
+    // Does this message type already known?
+    map<string, int>::iterator itTypeId = messageTypes.find(typeName);
+    if (itTypeId == messageTypes.end())
+    {
+        // No, search/cache it
+        ServerPlugin * plugin = ServerPlugin::getInstance();
+        ValveInterfaces * interfaces = plugin->getInterfaces();
 
-UserMessagesManager::UserMessagesManager()
-{
-	engine = ServerPlugin::getInstance()->getInterfaces()->engine;
-}
+        char foundName[20];
+        int foundNameSize = 0;
+        int i = 0;
+        int nbTypes = plugin->getConVar("cssmatch_usermessages")->GetInt();
+        while(i < nbTypes)
+        {
+            if (interfaces->serverGameDll->GetUserMessageInfo(i, foundName, sizeof(foundName),
+                                                              foundNameSize))
+            {
+                if (typeName == foundName)
+                {
+                    messageTypes[typeName] = i;
+                    id = i;
+                    break;
+                }
+            }
+            i++;
+        }
+        if (id == CSSMATCH_INVALID_MSG_TYPE)
+            CSSMATCH_PRINT("Unknown message type " + typeName)
+            }
+            else
+            {
+                // Yes
+                id = itTypeId->second;
+            }
 
-UserMessagesManager::~UserMessagesManager()
-{
-}
+        return id;
+    }
 
-void UserMessagesManager::chatSay(RecipientFilter & recipients, const string & message, int playerIndex)
-{
-	ostringstream output;
-	output << "\004[" << CSSMATCH_NAME << "]\001 " << message << "\n";
+    UserMessagesManager::UserMessagesManager()
+    {
+        engine = ServerPlugin::getInstance()->getInterfaces()->engine;
+    }
 
-	bf_write * pBitBuf = engine->UserMessageBegin(&recipients,findMessageType("SayText"));
+    UserMessagesManager::~UserMessagesManager()
+    {}
 
-	pBitBuf->WriteByte(playerIndex);
-	pBitBuf->WriteString(output.str().c_str());
-	pBitBuf->WriteByte(1); // DOCUMENT ME
+    void UserMessagesManager::chatSay(RecipientFilter & recipients, const string & message,
+                                      int playerIndex)
+    {
+        ostringstream output;
+        output << "\004[" << CSSMATCH_NAME << "]\001 " << message << "\n";
 
-	engine->MessageEnd();
-}
+        bf_write * pBitBuf = engine->UserMessageBegin(&recipients, findMessageType("SayText"));
 
-void UserMessagesManager::chatWarning(RecipientFilter & recipients, const string & message)
-{
-	ostringstream output;
-	output << "\004[" << CSSMATCH_NAME << "]\003 " << message << "\n";
+        pBitBuf->WriteByte(playerIndex);
+        pBitBuf->WriteString(output.str().c_str());
+        pBitBuf->WriteByte(1); // DOCUMENT ME
 
-	bf_write * pBitBuf = engine->UserMessageBegin(&recipients,findMessageType("SayText"));
+        engine->MessageEnd();
+    }
 
-	pBitBuf->WriteByte(0x02); // \003 => team color
-	pBitBuf->WriteString(output.str().c_str());
-	pBitBuf->WriteByte(0x01); // \003 => team color
-	pBitBuf->WriteByte(1); // DOCUMENT ME
+    void UserMessagesManager::chatWarning(RecipientFilter & recipients, const string & message)
+    {
+        ostringstream output;
+        output << "\004[" << CSSMATCH_NAME << "]\003 " << message << "\n";
 
-	engine->MessageEnd();
-}
+        bf_write * pBitBuf = engine->UserMessageBegin(&recipients, findMessageType("SayText"));
 
-void UserMessagesManager::popupSay(	RecipientFilter & recipients,
-									const string & message,
-									int lifeTime,
-									int flags)
-{
-	// Only CSSMATCH_MAX_MSG_SIZE bytes can be sent in one user message
-	// So, as the popup menus are generally large, they are split in n messages of CSSMATCH_MAX_MSG_SIZE bytes
+        pBitBuf->WriteByte(0x02); // \003 => team color
+        pBitBuf->WriteString(output.str().c_str());
+        pBitBuf->WriteByte(0x01); // \003 => team color
+        pBitBuf->WriteByte(1); // DOCUMENT ME
 
-	int iBegin = 0;
-	int popupSize = message.size();
-	bool moreToSend = false;
+        engine->MessageEnd();
+    }
 
-	do
-	{
-		string toSend = message.substr(iBegin,CSSMATCH_MAX_MSG_SIZE);
-		iBegin += CSSMATCH_MAX_MSG_SIZE;
+    void UserMessagesManager::popupSay( RecipientFilter & recipients,
+                                        const string & message,
+                                        int lifeTime,
+                                        int flags)
+    {
+        // Only CSSMATCH_MAX_MSG_SIZE bytes can be sent in one user message
+        // So, as the popup menus are generally large, they are split in n messages of
+        // CSSMATCH_MAX_MSG_SIZE bytes
 
-		bf_write * pBuffer = engine->UserMessageBegin(&recipients,findMessageType("ShowMenu"));
+        int iBegin = 0;
+        int popupSize = message.size();
+        bool moreToSend = false;
 
-		pBuffer->WriteShort(flags); // set the flags
-		pBuffer->WriteChar(lifeTime); // set the lifetime
+        do
+        {
+            string toSend = message.substr(iBegin, CSSMATCH_MAX_MSG_SIZE);
+            iBegin += CSSMATCH_MAX_MSG_SIZE;
 
-		moreToSend = iBegin < popupSize;
-		pBuffer->WriteByte(moreToSend); // Is the message completed?
-		
-		pBuffer->WriteString(toSend.c_str()); // set the text
+            bf_write * pBuffer = engine->UserMessageBegin(&recipients, findMessageType("ShowMenu"));
 
-		engine->MessageEnd();
-	}
-	while(moreToSend);
-}
+            pBuffer->WriteShort(flags); // set the flags
+            pBuffer->WriteChar(lifeTime); // set the lifetime
 
-void UserMessagesManager::hintSay(RecipientFilter & recipients, const string & message)
-{
-	ServerPlugin * plugin = ServerPlugin::getInstance();
-	ValveInterfaces * interfaces = plugin->getInterfaces();
+            moreToSend = iBegin < popupSize;
+            pBuffer->WriteByte(moreToSend); // Is the message completed?
 
-	bf_write * pWrite = engine->UserMessageBegin(&recipients,findMessageType("HintText"));
+            pBuffer->WriteString(toSend.c_str()); // set the text
 
-	pWrite->WriteString(message.c_str());
+            engine->MessageEnd();
+        }
+        while(moreToSend);
+    }
 
-	engine->MessageEnd();
+    void UserMessagesManager::hintSay(RecipientFilter & recipients, const string & message)
+    {
+        ServerPlugin * plugin = ServerPlugin::getInstance();
+        ValveInterfaces * interfaces = plugin->getInterfaces();
 
-	// Stop the HintText annoying sound
-	const vector<int> * recipientlist = recipients.getVector();
-	vector<int>::const_iterator itIndex;
-	for (itIndex = recipientlist->begin(); itIndex != recipientlist->end(); itIndex++)
-	{
-		interfaces->sounds->StopSound(*itIndex,CHAN_STATIC,"UI/hint.wav");
-	}
-}
+        bf_write * pWrite = engine->UserMessageBegin(&recipients, findMessageType("HintText"));
 
-void UserMessagesManager::motdSay(RecipientFilter recipients, MotdType type, const string & title, const string & message)
-{
-	bf_write * pWrite = engine->UserMessageBegin(&recipients,findMessageType("VGUIMenu"));
+        pWrite->WriteString(message.c_str());
 
-	pWrite->WriteString("info"); // Let give some info about this message
-	pWrite->WriteByte(1); // 1=Show this message, 0=otherwise
-	pWrite->WriteByte(3); // "title", "type" and "msg"
+        engine->MessageEnd();
 
-	pWrite->WriteString("title");
-	pWrite->WriteString(title.c_str());
+        // Stop the HintText annoying sound
+        const vector<int> * recipientlist = recipients.getVector();
+        vector<int>::const_iterator itIndex;
+        for (itIndex = recipientlist->begin(); itIndex != recipientlist->end(); itIndex++)
+        {
+            interfaces->sounds->StopSound(*itIndex, CHAN_STATIC, "UI/hint.wav");
+        }
+    }
 
-	pWrite->WriteString("type");
-	pWrite->WriteString(toString(type).c_str());
+    void UserMessagesManager::motdSay(RecipientFilter recipients, MotdType type,
+                                      const string & title,
+                                      const string & message)
+    {
+        bf_write * pWrite = engine->UserMessageBegin(&recipients, findMessageType("VGUIMenu"));
 
-	pWrite->WriteString("msg");
-	pWrite->WriteString(message.c_str());
+        pWrite->WriteString("info"); // Let give some info about this message
+        pWrite->WriteByte(1); // 1=Show this message, 0=otherwise
+        pWrite->WriteByte(3); // "title", "type" and "msg"
 
-	engine->MessageEnd();
-}
+        pWrite->WriteString("title");
+        pWrite->WriteString(title.c_str());
 
-void UserMessagesManager::showPanel(RecipientFilter recipients, const std::string & panelName, bool show)
-{
-	bf_write * pWrite = engine->UserMessageBegin(&recipients,findMessageType("VGUIMenu"));
+        pWrite->WriteString("type");
+        pWrite->WriteString(toString(type).c_str());
 
-	pWrite->WriteString(panelName.c_str());
-	pWrite->WriteByte((int)show);
-	pWrite->WriteByte(0); // No more data
+        pWrite->WriteString("msg");
+        pWrite->WriteString(message.c_str());
 
-	engine->MessageEnd();
-}
+        engine->MessageEnd();
+    }
 
-void UserMessagesManager::centerSay(RecipientFilter & recipients, const string & message)
-{
-	bf_write * pWrite = engine->UserMessageBegin(&recipients,findMessageType("TextMsg"));
+    void UserMessagesManager::showPanel(RecipientFilter recipients, const std::string & panelName,
+                                        bool show)
+    {
+        bf_write * pWrite = engine->UserMessageBegin(&recipients, findMessageType("VGUIMenu"));
 
-	pWrite->WriteByte(4); // DOCUMENT ME 
-	pWrite->WriteString(message.c_str()); 
-	pWrite->WriteByte(0); // DOCUMENT ME 
+        pWrite->WriteString(panelName.c_str());
+        pWrite->WriteByte((int)show);
+        pWrite->WriteByte(0); // No more data
 
-	engine->MessageEnd();
-}
+        engine->MessageEnd();
+    }
 
-void UserMessagesManager::consoleSay(RecipientFilter & recipients, const string & message)
-{
-	bf_write * pWrite = engine->UserMessageBegin(&recipients,findMessageType("TextMsg"));
+    void UserMessagesManager::centerSay(RecipientFilter & recipients, const string & message)
+    {
+        bf_write * pWrite = engine->UserMessageBegin(&recipients, findMessageType("TextMsg"));
 
-	pWrite->WriteByte(HUD_PRINTNOTIFY);
-	pWrite->WriteString(message.c_str()); 
+        pWrite->WriteByte(4); // DOCUMENT ME
+        pWrite->WriteString(message.c_str());
+        pWrite->WriteByte(0); // DOCUMENT ME
 
-	engine->MessageEnd();
-}
+        engine->MessageEnd();
+    }
+
+    void UserMessagesManager::consoleSay(RecipientFilter & recipients, const string & message)
+    {
+        bf_write * pWrite = engine->UserMessageBegin(&recipients, findMessageType("TextMsg"));
+
+        pWrite->WriteByte(HUD_PRINTNOTIFY);
+        pWrite->WriteString(message.c_str());
+
+        engine->MessageEnd();
+    }
 
 /*void UserMessagesManager::consoleTell(int index, const string & message)
 {
-	edict_t * pEntity = engine->PEntityOfEntIndex(index);
+    edict_t * pEntity = engine->PEntityOfEntIndex(index);
 
-	if (isValidEntity(pEntity))
-	{
-		engine->ClientPrintf(pEntity,message.c_str()); // Crash if pEntity is a fake client or SourceTv
-		//engine->ClientCommand(pEntity,("echo " + message + "\n").c_str());
-	}
+    if (isValidEntity(pEntity))
+    {
+        engine->ClientPrintf(pEntity,message.c_str()); // Crash if pEntity is a fake client or SourceTv
+        //engine->ClientCommand(pEntity,("echo " + message + "\n").c_str());
+    }
 }*/

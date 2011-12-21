@@ -1,18 +1,18 @@
-/* 
+/*
  * Copyright 2008-2011 Nicolas Maingot
- * 
+ *
  * This file is part of CSSMatch.
- * 
+ *
  * CSSMatch is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * CSSMatch is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with CSSMatch; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
@@ -45,211 +45,214 @@ using std::list;
 
 void XmlReport::writeHeader()
 {
-	ticpp::Declaration * declaration = new ticpp::Declaration("1.0","UTF-8","yes");
-	document.LinkEndChild(declaration);
+    ticpp::Declaration * declaration = new ticpp::Declaration("1.0", "UTF-8", "yes");
+    document.LinkEndChild(declaration);
 
-	ticpp::StylesheetReference * stylesheet = new ticpp::StylesheetReference("text/xsl","cssmatch.xsl");
-	document.LinkEndChild(stylesheet);
+    ticpp::StylesheetReference * stylesheet = new ticpp::StylesheetReference("text/xsl",
+                                                                             "cssmatch.xsl");
+    document.LinkEndChild(stylesheet);
 }
 
 void XmlReport::writeCorpse()
 {
-	ticpp::Element * eCssmatch = new ticpp::Element("cssmatch");
+    ticpp::Element * eCssmatch = new ticpp::Element("cssmatch");
 
-	writePlugin(eCssmatch);
-	writeMatch(eCssmatch);
+    writePlugin(eCssmatch);
+    writeMatch(eCssmatch);
 
-	document.LinkEndChild(eCssmatch);
+    document.LinkEndChild(eCssmatch);
 }
 
 void XmlReport::writePlugin(ticpp::Element * cssmatch)
 {
-	ticpp::Element * ePlugin = new ticpp::Element("plugin");
+    ticpp::Element * ePlugin = new ticpp::Element("plugin");
 
-	ticpp::Element * eVersion = new ticpp::Element("version",CSSMATCH_VERSION);
-	ePlugin->LinkEndChild(eVersion);
+    ticpp::Element * eVersion = new ticpp::Element("version", CSSMATCH_VERSION);
+    ePlugin->LinkEndChild(eVersion);
 
-	ticpp::Element * eUrl = new ticpp::Element("url",CSSMATCH_SITE);
-	ePlugin->LinkEndChild(eUrl);
+    ticpp::Element * eUrl = new ticpp::Element("url", CSSMATCH_SITE);
+    ePlugin->LinkEndChild(eUrl);
 
-	cssmatch->LinkEndChild(ePlugin);
+    cssmatch->LinkEndChild(ePlugin);
 }
 
 void XmlReport::writeMatch(ticpp::Element * cssmatch)
 {
-	ServerPlugin * plugin = ServerPlugin::getInstance();
-	ValveInterfaces * interfaces = plugin->getInterfaces();
-	MatchManager * match = plugin->getMatch();
+    ServerPlugin * plugin = ServerPlugin::getInstance();
+    ValveInterfaces * interfaces = plugin->getInterfaces();
+    MatchManager * match = plugin->getMatch();
 
-	tm * date = getLocalTime();
+    tm * date = getLocalTime();
 
-	char formatMatchDate[20];
-	strftime(formatMatchDate,sizeof(formatMatchDate),"%Y/%m/%d",date);
+    char formatMatchDate[20];
+    strftime(formatMatchDate, sizeof(formatMatchDate), "%Y/%m/%d", date);
 
-	char formatEndMatchDate[20];
-	strftime(formatEndMatchDate,sizeof(formatEndMatchDate),"%Hh%M",date);
+    char formatEndMatchDate[20];
+    strftime(formatEndMatchDate, sizeof(formatEndMatchDate), "%Hh%M", date);
 
-	MatchLignup * lignup = match->getLignup();
-	
-	MatchInfo * infos = match->getInfos();
+    MatchLignup * lignup = match->getLignup();
 
-	char formatBeginMatchDate[20];
-	strftime(formatBeginMatchDate,sizeof(formatBeginMatchDate),"%Hh%M",&infos->startTime);
+    MatchInfo * infos = match->getInfos();
 
-	ticpp::Element * eMatch = new ticpp::Element("match");
+    char formatBeginMatchDate[20];
+    strftime(formatBeginMatchDate, sizeof(formatBeginMatchDate), "%Hh%M", &infos->startTime);
 
-	ticpp::Element * eDate = new ticpp::Element("date",formatMatchDate);
-	eMatch->LinkEndChild(eDate);
+    ticpp::Element * eMatch = new ticpp::Element("match");
 
-	ticpp::Element * eDebut = new ticpp::Element("debut",formatBeginMatchDate);
-	eMatch->LinkEndChild(eDebut);
+    ticpp::Element * eDate = new ticpp::Element("date", formatMatchDate);
+    eMatch->LinkEndChild(eDate);
 
-	ticpp::Element * eFin = new ticpp::Element("fin",formatEndMatchDate);
-	eMatch->LinkEndChild(eFin);
+    ticpp::Element * eDebut = new ticpp::Element("debut", formatBeginMatchDate);
+    eMatch->LinkEndChild(eDebut);
 
-	ticpp::Element * eNom = new ticpp::Element("nom",*lignup->clan1.getName() + " versus " + *lignup->clan2.getName());
-	eMatch->LinkEndChild(eNom);
+    ticpp::Element * eFin = new ticpp::Element("fin", formatEndMatchDate);
+    eMatch->LinkEndChild(eFin);
 
-	ticpp::Element * eMap = new ticpp::Element("map",interfaces->gpGlobals->mapname.ToCStr());
-	eMatch->LinkEndChild(eMap);
+    ticpp::Element * eNom = new ticpp::Element("nom",
+                                               *lignup->clan1.getName() + " versus " +
+                                               *lignup->clan2.getName());
+    eMatch->LinkEndChild(eNom);
 
-	if (! infos->kniferoundWinner.empty())
-	{
-		ticpp::Element * eTagcutround = new ticpp::Element("tagcutround",infos->kniferoundWinner);
-		eMatch->LinkEndChild(eTagcutround);
-	}
+    ticpp::Element * eMap = new ticpp::Element("map", interfaces->gpGlobals->mapname.ToCStr());
+    eMatch->LinkEndChild(eMap);
 
-	writeTeams(eMatch);
-	writeSpectateurs(eMatch);
-	writeSourcetv(eMatch);
+    if (! infos->kniferoundWinner.empty())
+    {
+        ticpp::Element * eTagcutround = new ticpp::Element("tagcutround", infos->kniferoundWinner);
+        eMatch->LinkEndChild(eTagcutround);
+    }
 
-	cssmatch->LinkEndChild(eMatch);
+    writeTeams(eMatch);
+    writeSpectateurs(eMatch);
+    writeSourcetv(eMatch);
+
+    cssmatch->LinkEndChild(eMatch);
 }
 
 void XmlReport::writeTeams(ticpp::Element * eMatch)
 {
-	ServerPlugin * plugin = ServerPlugin::getInstance();
-	MatchManager * match = plugin->getMatch();
-	MatchLignup * lignup = match->getLignup();
+    ServerPlugin * plugin = ServerPlugin::getInstance();
+    MatchManager * match = plugin->getMatch();
+    MatchLignup * lignup = match->getLignup();
 
-	ticpp::Element * eTeams = new ticpp::Element("teams");
+    ticpp::Element * eTeams = new ticpp::Element("teams");
 
-	writeTeam(eTeams,&lignup->clan1);
-	writeTeam(eTeams,&lignup->clan2);
+    writeTeam(eTeams, &lignup->clan1);
+    writeTeam(eTeams, &lignup->clan2);
 
-	eMatch->LinkEndChild(eTeams);
+    eMatch->LinkEndChild(eTeams);
 }
 
 void XmlReport::writeTeam(ticpp::Element * eTeams, MatchClan * clan)
 {
-	ClanStats * stats = clan->getStats();
+    ClanStats * stats = clan->getStats();
 
-	ticpp::Element * eTeam = new ticpp::Element("team");
+    ticpp::Element * eTeam = new ticpp::Element("team");
 
-	ticpp::Element * eTag = new ticpp::Element("tag",*clan->getName());
-	eTeam->LinkEndChild(eTag);
+    ticpp::Element * eTag = new ticpp::Element("tag", *clan->getName());
+    eTeam->LinkEndChild(eTag);
 
-	ticpp::Element * eScore = new ticpp::Element("score",stats->scoreT + stats->scoreCT);
-	eTeam->LinkEndChild(eScore);
+    ticpp::Element * eScore = new ticpp::Element("score", stats->scoreT + stats->scoreCT);
+    eTeam->LinkEndChild(eScore);
 
-	ticpp::Element * eScoret = new ticpp::Element("scoret",stats->scoreT);
-	eTeam->LinkEndChild(eScoret);
+    ticpp::Element * eScoret = new ticpp::Element("scoret", stats->scoreT);
+    eTeam->LinkEndChild(eScoret);
 
-	ticpp::Element * eScorect = new ticpp::Element("scorect",stats->scoreCT);
-	eTeam->LinkEndChild(eScorect);
+    ticpp::Element * eScorect = new ticpp::Element("scorect", stats->scoreCT);
+    eTeam->LinkEndChild(eScorect);
 
-	writeJoueurs(eTeam,clan);
+    writeJoueurs(eTeam, clan);
 
-	eTeams->LinkEndChild(eTeam);
+    eTeams->LinkEndChild(eTeam);
 }
 
 void XmlReport::writeJoueurs(ticpp::Element * eTeam, MatchClan * clan)
 {
-	list<ClanMember *> playerlist;
-	clan->getMembers(&playerlist);	
+    list<ClanMember *> playerlist;
+    clan->getMembers(&playerlist);
 
-	ticpp::Element * eJoueurs = new ticpp::Element("joueurs");
+    ticpp::Element * eJoueurs = new ticpp::Element("joueurs");
 
-	list<ClanMember *>::const_iterator itPlayer;
-	for(itPlayer = playerlist.begin(); itPlayer != playerlist.end(); itPlayer++)
-	{
-		writeJoueur(eJoueurs,*itPlayer);
-	}
+    list<ClanMember *>::const_iterator itPlayer;
+    for(itPlayer = playerlist.begin(); itPlayer != playerlist.end(); itPlayer++)
+    {
+        writeJoueur(eJoueurs, *itPlayer);
+    }
 
-	eTeam->LinkEndChild(eJoueurs);
+    eTeam->LinkEndChild(eJoueurs);
 }
 
 void XmlReport::writeJoueur(ticpp::Element * eJoueurs, ClanMember * player)
 {
-	IPlayerInfo * pInfo = player->getPlayerInfo();
-	PlayerScore * stats = player->getCurrentScore();
+    IPlayerInfo * pInfo = player->getPlayerInfo();
+    PlayerScore * stats = player->getCurrentScore();
 
-	if (isValidPlayerInfo(pInfo)) // excludes SourceTv
-	{
-		ticpp::Element * eJoueur = new ticpp::Element("joueur");
-		eJoueur->SetAttribute("steamid",pInfo->GetNetworkIDString());
+    if (isValidPlayerInfo(pInfo)) // excludes SourceTv
+    {
+        ticpp::Element * eJoueur = new ticpp::Element("joueur");
+        eJoueur->SetAttribute("steamid", pInfo->GetNetworkIDString());
 
-		ticpp::Element * ePseudo = new ticpp::Element("pseudo",pInfo->GetName());
-		eJoueur->LinkEndChild(ePseudo);
-		
-		ticpp::Element * eKills = new ticpp::Element("kills",stats->kills);
-		eJoueur->LinkEndChild(eKills);
+        ticpp::Element * ePseudo = new ticpp::Element("pseudo", pInfo->GetName());
+        eJoueur->LinkEndChild(ePseudo);
 
-		ticpp::Element * eDeaths = new ticpp::Element("deaths",stats->deaths);
-		eJoueur->LinkEndChild(eDeaths);
+        ticpp::Element * eKills = new ticpp::Element("kills", stats->kills);
+        eJoueur->LinkEndChild(eKills);
 
-		eJoueurs->LinkEndChild(eJoueur);
-	}
+        ticpp::Element * eDeaths = new ticpp::Element("deaths", stats->deaths);
+        eJoueur->LinkEndChild(eDeaths);
+
+        eJoueurs->LinkEndChild(eJoueur);
+    }
 }
 
 void XmlReport::writeSpectateurs(ticpp::Element * eMatch)
 {
-	ServerPlugin * plugin = ServerPlugin::getInstance();
-	list<ClanMember *> * playerlist = plugin->getPlayerlist();	
+    ServerPlugin * plugin = ServerPlugin::getInstance();
+    list<ClanMember *> * playerlist = plugin->getPlayerlist();
 
-	ticpp::Element * eSpectateurs = new ticpp::Element("spectateurs");
+    ticpp::Element * eSpectateurs = new ticpp::Element("spectateurs");
 
-	int nbSpec = 0;
-	list<ClanMember *>::const_iterator itPlayer;
-	for(itPlayer = playerlist->begin(); itPlayer != playerlist->end(); itPlayer++)
-	{
-		if ((*itPlayer)->getMyTeam() == SPEC_TEAM)
-		{
-			writeJoueur(eSpectateurs,*itPlayer);
-			nbSpec++;
-		}
-	}
+    int nbSpec = 0;
+    list<ClanMember *>::const_iterator itPlayer;
+    for(itPlayer = playerlist->begin(); itPlayer != playerlist->end(); itPlayer++)
+    {
+        if ((*itPlayer)->getMyTeam() == SPEC_TEAM)
+        {
+            writeJoueur(eSpectateurs, *itPlayer);
+            nbSpec++;
+        }
+    }
 
-	if (nbSpec > 0)
-		eMatch->LinkEndChild(eSpectateurs);
-	else
-		delete eSpectateurs;
+    if (nbSpec > 0)
+        eMatch->LinkEndChild(eSpectateurs);
+    else
+        delete eSpectateurs;
 }
 
 void XmlReport::writeSourcetv(ticpp::Element * eMatch)
 {
-	ServerPlugin * plugin = ServerPlugin::getInstance();
-	MatchManager * match = plugin->getMatch();
-	list<TvRecord *> * recordlist = match->getRecords();
+    ServerPlugin * plugin = ServerPlugin::getInstance();
+    MatchManager * match = plugin->getMatch();
+    list<TvRecord *> * recordlist = match->getRecords();
 
-	if (! recordlist->empty())
-	{
-		ticpp::Element * eSourcetv = new ticpp::Element("sourcetv");
+    if (! recordlist->empty())
+    {
+        ticpp::Element * eSourcetv = new ticpp::Element("sourcetv");
 
-		int recordId = 1;
-		list<TvRecord *>::const_iterator itRecord;
-		for(itRecord = recordlist->begin(); itRecord != recordlist->end(); itRecord++)
-		{
-			ticpp::Element * eManche = new ticpp::Element("manche",*(*itRecord)->getName());
-			eManche->SetAttribute("numero",recordId);
+        int recordId = 1;
+        list<TvRecord *>::const_iterator itRecord;
+        for(itRecord = recordlist->begin(); itRecord != recordlist->end(); itRecord++)
+        {
+            ticpp::Element * eManche = new ticpp::Element("manche", *(*itRecord)->getName());
+            eManche->SetAttribute("numero", recordId);
 
-			eSourcetv->LinkEndChild(eManche);
+            eSourcetv->LinkEndChild(eManche);
 
-			recordId++;
-		}
+            recordId++;
+        }
 
-		eMatch->LinkEndChild(eSourcetv);
-	}
+        eMatch->LinkEndChild(eSourcetv);
+    }
 }
 
 /*void XmlReport::writeFooter()
@@ -257,21 +260,20 @@ void XmlReport::writeSourcetv(ticpp::Element * eMatch)
 }*/
 
 XmlReport::XmlReport(MatchManager * matchManager) : BaseReport(matchManager)
-{
-}
+{}
 
 void XmlReport::write()
 {
-	try
-	{
-		writeHeader();
-		writeCorpse();
-		//writeFooter();
+    try
+    {
+        writeHeader();
+        writeCorpse();
+        //writeFooter();
 
-		document.SaveFile(reportPath + ".xml");
-	}
-	catch(const ticpp::Exception & e)
-	{
-		CSSMATCH_PRINT_EXCEPTION(e);
-	}
+        document.SaveFile(reportPath + ".xml");
+    }
+    catch(const ticpp::Exception & e)
+    {
+        CSSMATCH_PRINT_EXCEPTION(e);
+    }
 }

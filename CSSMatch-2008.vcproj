@@ -79,13 +79,12 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="/FORCE:MULTIPLE /IGNORE:4006"
 				AdditionalDependencies="odbc32.lib odbccp32.lib"
 				OutputFile="zip\addons\cssmatch.dll"
 				LinkIncremental="2"
 				SuppressStartupBanner="true"
 				AdditionalLibraryDirectories="..\hl2sdk-ob\lib\public"
-				IgnoreDefaultLibraryNames="LIBC,libcmt"
+				IgnoreDefaultLibraryNames="libc,libcd,libcmtd"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile=".\Debug/serverplugin_empty.pdb"
 				GenerateMapFile="true"

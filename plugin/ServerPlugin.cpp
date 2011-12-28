@@ -202,7 +202,7 @@ bool ServerPlugin::Load(CreateInterfaceFn interfaceFactory, CreateInterfaceFn ga
 
             match = new MatchManager(DisabledMatchState::getInstance());
 
-            //	Initialize the translations tools
+            //    Initialize the translations tools
             i18n = new I18nManager();
             I18nConVar * cssmatch_language =
                 new I18nConVar(i18n, "cssmatch_language", "english", FCVAR_NONE,
@@ -970,10 +970,25 @@ PLUGIN_RESULT ServerPlugin::ClientCommand(edict_t * pEntity, const CCommand &arg
         {
             string command = args.Arg(0);
 
+            // Is it a known client command?
             map<string, ClientCommandHook>::iterator invalidCmd = clientCommands.end();
             map<string, ClientCommandHook>::iterator itCmd = clientCommands.find(command);
 
-            if (itCmd != invalidCmd)
+            if (itCmd == invalidCmd)
+            {
+                // If not, and if the user is referee, maybe he tries to use a ConCommand
+                if (user->isReferee())
+                {
+                    map<string, ConCommand *>::iterator invalidConCmd = pluginConCommands.end();
+                    map<string, ConCommand *>::iterator itConCmd = pluginConCommands.find(command);
+                    if (itConCmd != invalidConCmd)
+                    {
+                        itConCmd->second->Dispatch(args);
+                        result = PLUGIN_STOP;
+                    }
+                }
+            }
+            else
             {
                 if (itCmd->second.nospam)
                 {

@@ -45,6 +45,38 @@ using std::map;
 using std::endl;
 using std::ostringstream;
 
+void MatchManager::updateHostname()
+{
+    ServerPlugin * plugin = ServerPlugin::getInstance();
+    ConVar * hostname = plugin->getConVar("hostname");
+
+    string newHostname = hostnameTemplate;
+
+    // Replace %s by the clan names
+    size_t clanNameSlot = newHostname.find("%s");
+    if (clanNameSlot != string::npos)
+    {
+        const string * clan1Name = lignup.clan1.getName();
+        newHostname.replace(clanNameSlot, 2, *clan1Name, 0, clan1Name->size());
+    }
+
+    clanNameSlot = newHostname.find("%s");
+    if (clanNameSlot != string::npos)
+    {
+        const std::string * clan2Name = lignup.clan2.getName();
+        newHostname.replace(clanNameSlot, 2, *clan2Name, 0, clan2Name->size());
+    }
+
+    // Set the new hostname
+    hostname->SetValue(newHostname.c_str());
+}
+
+void MatchManager::propagateClanNameChanges(MatchClan * clan)
+{
+    // Update hostname
+    updateHostname();
+}
+
 MatchManager::MatchManager(BaseMatchState * iniState) throw(MatchManagerException)
     : initialState(iniState), currentState(NULL)
 {
@@ -257,13 +289,10 @@ void MatchManager::detectClanName(TeamCode code, bool force) throw(MatchManagerE
         try
         {
             MatchClan * clan = getClan(code);
-            //bool isKniferoundWinner = *clan->getName() == infos.kniferoundWinner;
+            clan->detectClanName(force);        
 
-            clan->detectClanName(force);
-            //if (isKniferoundWinner)
-            //	infos.kniferoundWinner = *clan->getName();
-
-            updateHostname();
+            // Propagate the changes to the hostname, etc.
+            propagateClanNameChanges(clan);
         }
         catch(const MatchManagerException & e)
         {
@@ -274,30 +303,14 @@ void MatchManager::detectClanName(TeamCode code, bool force) throw(MatchManagerE
         throw MatchManagerException("No match in progress");
 }
 
-void MatchManager::updateHostname()
+void MatchManager::setClanName(TeamCode code, const string & newName)
 {
-    ServerPlugin * plugin = ServerPlugin::getInstance();
-    ConVar * hostname = plugin->getConVar("hostname");
+    // Update the clan's name
+    MatchClan * clan = getClan(code);
+    clan->setName(newName, true);
 
-    string newHostname = hostnameTemplate;
-
-    // Replace %s by the clan names
-    size_t clanNameSlot = newHostname.find("%s");
-    if (clanNameSlot != string::npos)
-    {
-        const string * clan1Name = lignup.clan1.getName();
-        newHostname.replace(clanNameSlot, 2, *clan1Name, 0, clan1Name->size());
-    }
-
-    clanNameSlot = newHostname.find("%s");
-    if (clanNameSlot != string::npos)
-    {
-        const std::string * clan2Name = lignup.clan2.getName();
-        newHostname.replace(clanNameSlot, 2, *clan2Name, 0, clan2Name->size());
-    }
-
-    // Set the new hostname
-    hostname->SetValue(newHostname.c_str());
+    // Propagate the changes to the hostname, etc.
+    propagateClanNameChanges(clan);
 }
 
 void MatchManager::setMatchState(BaseMatchState * newState)
@@ -331,7 +344,7 @@ throw(MatchManagerException)
         // Update match infos
         infos.halfNumber = 1;
         infos.roundNumber = 1;
-        infos.kniferoundWinner = "";
+        infos.kniferoundWinner = NULL;
 
         // Reset all clan related info
         lignup.clan1.reset();

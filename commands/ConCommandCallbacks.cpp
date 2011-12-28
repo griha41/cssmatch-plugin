@@ -406,18 +406,11 @@ void cssmatch::cssm_teamt(const CCommand & args)
     if (args.ArgC() > 1)
     {
         MatchManager * match = plugin->getMatch();
-        //MatchInfo * infos = match->getInfos();
         I18nManager * i18n = plugin->getI18nManager();
         try
         {
-            MatchClan * clan = match->getClan(T_TEAM);
             string name = args.ArgS();
-
-            //if (*clan->getName() == infos->kniferoundWinner)
-            //	infos->kniferoundWinner = name;
-            clan->setName(name, true);
-
-            match->updateHostname();
+            match->setClanName(T_TEAM, name);
 
             map<string, string> parameters;
             parameters["$team"] = name;
@@ -440,18 +433,11 @@ void cssmatch::cssm_teamct(const CCommand & args)
     if (args.ArgC() > 1)
     {
         MatchManager * match = plugin->getMatch();
-        //MatchInfo * infos = match->getInfos();
         I18nManager * i18n = plugin->getI18nManager();
         try
         {
-            MatchClan * clan = match->getClan(CT_TEAM);
             string name = args.ArgS();
-
-            //if (*clan->getName() == infos->kniferoundWinner)
-            //	infos->kniferoundWinner = name;
-            clan->setName(name, true);
-
-            match->updateHostname();
+            match->setClanName(CT_TEAM, name);
 
             map<string, string> parameters;
             parameters["$team"] = name;
@@ -625,13 +611,7 @@ bool cssmatch::say_hook(ClanMember * user, const CCommand & args)
 
                 try
                 {
-                    MatchClan * clan = match->getClan(T_TEAM);
-
-                    //if (*clan->getName() == infos->kniferoundWinner)
-                    //	infos->kniferoundWinner = newName;
-                    clan->setName(newName, true);
-
-                    match->updateHostname();
+                    match->setClanName(T_TEAM, newName);
 
                     recipients.addAllPlayers();
 
@@ -680,13 +660,7 @@ bool cssmatch::say_hook(ClanMember * user, const CCommand & args)
 
                 try
                 {
-                    MatchClan * clan = match->getClan(CT_TEAM);
-
-                    //if (*clan->getName() == infos->kniferoundWinner)
-                    //	infos->kniferoundWinner = newName;
-                    clan->setName(newName, true);
-
-                    match->updateHostname();
+                    match->setClanName(CT_TEAM, newName);
 
                     recipients.addAllPlayers();
 

@@ -85,7 +85,7 @@ void KnifeRoundMatchState::endKniferound(TeamCode winner)
 
     MatchInfo * infos = match->getInfos();
     // Save the winner of this round for the report
-    infos->kniferoundWinner = *match->getClan(winner)->getName();
+    infos->kniferoundWinner = match->getClan(winner);
     // note: winner is supposed valid
 
     // Re-allow the detection of the clan names as the teams can change
@@ -99,7 +99,7 @@ void KnifeRoundMatchState::endKniferound(TeamCode winner)
 
     // Announce the winner
     map<string, string> parameters;
-    parameters["$team"] = infos->kniferoundWinner;
+    parameters["$team"] = *infos->kniferoundWinner->getName();
     i18n->i18nChatSay(recipients, "kniferound_winner", parameters);
 
     // Invite the winners to choice a side

@@ -68,13 +68,13 @@ namespace cssmatch
         tm startTime;
 
         /** Knife round winner */
-        MatchClan * kniferoundWinner;
+        std::string kniferoundWinner;
 
         /** Did a warmup was asked by the admin? */
         bool warmup;
 
         MatchInfo()
-            : halfNumber(1), roundNumber(1), startTime(*getLocalTime()), kniferoundWinner(NULL), warmup(false){}
+            : halfNumber(1), roundNumber(1), startTime(*getLocalTime()), warmup(false){}
     };
 
     /** Match manager <br>
@@ -122,14 +122,6 @@ namespace cssmatch
         /** SourceTv record list */
         std::list<TvRecord *> records;
 
-        /** Update "hostname" according to the clan names */
-        void updateHostname();
-
-        /** Update thinks (e.g.: hostname) with the last name of a clan
-         * @param clan The clan
-         */
-        void propagateClanNameChanges(MatchClan * clan);
-
     public:
         /**
          * @param initialState Initial state of the match (e.g. "no match")
@@ -172,11 +164,8 @@ namespace cssmatch
          */
         void detectClanName(TeamCode code, bool force) throw(MatchManagerException);
 
-        /** Update things (e.g.: hostname) with the last name of a clan
-         * @param code The clan's team code
-         * @param newName New name for the clan
-         */
-        void setClanName(TeamCode code, const std::string & newName);
+        /** Update "hostname" according to the clan names */
+        void updateHostname();
 
         /** Set a new match state <br>
          * Call the endState method of the previous state, then the startState of the new state

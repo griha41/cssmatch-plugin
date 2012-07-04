@@ -101,11 +101,11 @@ namespace cssmatch
         bool nospam;
     };
 
-    /** Source plugin IServerPluginCallbacks implementation */
+/** Source plugin IServerPluginCallbacks implementation */
     class ServerPlugin : public BaseSingleton<ServerPlugin>, public IServerPluginCallbacks
     {
     private:
-        // Some data type the admin menu put into the menu lines
+// Some data type the admin menu put into the menu lines
         struct UseridMenuLineData : public BaseMenuLineData
         {
             int userid;
@@ -121,67 +121,67 @@ namespace cssmatch
                 : name(playername), userid(playerUserid){};
         };
 
-        /** Prevent multiple plugin load
-         * If I'm greater than 1, ServerPlugin::Load will return false
-         * If I'm equal to 0, ServerPlugin::Unload will unregister all ccommands
-         */
+/** Prevent multiple plugin load
+ * If I'm greater than 1, ServerPlugin::Load will return false
+ * If I'm equal to 0, ServerPlugin::Unload will unregister all ccommands
+ */
         int instances;
 
-        /** true if ServerPlugin::Load() returned true, false otherwise
-         * This is used to prevent a crash when disconnecting from tier1 libraries while the load failed
-         */
+/** true if ServerPlugin::Load() returned true, false otherwise
+ * This is used to prevent a crash when disconnecting from tier1 libraries while the load failed
+ */
         bool loadSuccess;
 
-        /** Search-for-update thread */
+/** Search-for-update thread */
         UpdateNotifier * updateThread;
 
-        /** Valve's interfaces accessor */
+/** Valve's interfaces accessor */
         ValveInterfaces interfaces;
 
-        /** Last client index who used a client command */
+/** Last client index who used a client command */
         int clientCommandIndex;
 
-        /** Global playerlist */
+/** Global playerlist */
         std::list<ClanMember *> playerlist;
 
-        /** Referee steamid list */
+/** Referee steamid list */
         std::list<std::string> adminlist;
 
-        /** Admin menu */
+/** Admin menu */
         Menu * adminMenu;
         Menu * bantimeMenu;
 
-        /** Match manager */
+/** Match manager */
         MatchManager * match;
 
-        /** Timer list */
+/** Timer list */
         std::list<BaseTimer *> timers;
 
-        /** Plugin console variable list */
+/** Plugin console variable list */
         std::map<std::string, ConVar *> pluginConVars;
 
-        /** Plugin console command list */
+/** Plugin console command list */
         std::map<std::string, ConCommand *> pluginConCommands;
 
-        /** Hook console command list */
+/** Hook console command list */
         std::map<std::string, ConCommandHook *> hookConCommands;
 
-        /** Client command callbacks */
+/** Client command callbacks */
         std::map<std::string, ClientCommandHook> clientCommands;
 
-        /** Internationalization tool */
+/** Internationalization tool */
         I18nManager * i18n;
 
         friend class BaseSingleton<ServerPlugin>;
         ServerPlugin();
         virtual ~ServerPlugin();
 
-        /** Get a named interface from an interface factory
-         * @param factory The factory provided by the game when the plugin is loaded
-         * @param toInitialize Result variable
-         * @param interfaceName The base name of the interface to get
-         * @param minVersion Minimum version of the interface to get
-         */
+/** Get a named interface from an interface factory
+ * @param factory The factory provided by the game when the plugin is loaded
+ * @param toInitialize Result variable
+ * @param interfaceName The base name of the interface to get
+ * @param minVersion Minimum version of the interface to get
+ */
         template<typename T>
         static bool getInterface(   CreateInterfaceFn factory,
                                     T * & toInitialize,
@@ -209,11 +209,11 @@ namespace cssmatch
             return success;
         }
 
-        /** Get a named interface from an interface factory
-         * @param factory The factory provided by the game when the plugin is loaded
-         * @param toInitialize Result variable
-         * @param interfaceName The base name of the interface to get
-         */
+/** Get a named interface from an interface factory
+ * @param factory The factory provided by the game when the plugin is loaded
+ * @param toInitialize Result variable
+ * @param interfaceName The base name of the interface to get
+ */
         template<typename T>
         static bool getInterface(   CreateInterfaceFn factory,
                                     T * & toInitialize,
@@ -237,26 +237,26 @@ namespace cssmatch
             return success;
         }
     public:
-        /** Valve's interface accessor */
+/** Valve's interface accessor */
         ValveInterfaces * getInterfaces();
 
-        /** Get the last player index wich used a rcon command */
+/** Get the last player index wich used a rcon command */
         int GetCommandClient() const;
 
-        /** Set the last player index wich used a rcon command */
+/** Set the last player index wich used a rcon command */
         virtual void SetCommandClient(int index);
 
-        /** Get the global playerlist */
+/** Get the global playerlist */
         std::list<ClanMember *> * getPlayerlist();
 
-        /** Get the update notifier thread (maybe NULL) */
+/** Get the update notifier thread (maybe NULL) */
         UpdateNotifier * getUpdateThread() const;
 
-        /** Get a player
-         * @param pred Predicat to use
-         * @param out Out var
-         * @return <code>true</code> if the player was found, <code>false</code> otherwise
-         */
+/** Get a player
+ * @param pred Predicat to use
+ * @param out Out var
+ * @return <code>true</code> if the player was found, <code>false</code> otherwise
+ */
         template<class Predicat>
         bool getPlayer(const Predicat & pred, ClanMember * & out)
         {
@@ -276,10 +276,10 @@ namespace cssmatch
             return found;
         }
 
-        /** Get the referee steamid list (read and write) */
+/** Get the referee steamid list (read and write) */
         std::list<std::string> * getAdminlist();
 
-        /** Show the admin menu (or its sub-menu) to a player */
+/** Show the admin menu (or its sub-menu) to a player */
         void showAdminMenu(Player * player);
         void showChangelevelMenu(Player * player); // maplist.txt content
         void constructPlayerlistMenu(Menu * to); // generates a player list menu
@@ -289,7 +289,7 @@ namespace cssmatch
         void showBanMenu(Player * player); // player list
         void showBanTimeMenu(Player * player); // ban time choose
 
-        // Menus callbacks
+// Menus callbacks
         void adminMenuCallback(Player * player, int choice, MenuLine * selected);
         void changelevelMenuCallback(Player * player, int choice, MenuLine * selected);
         void swapMenuCallback(Player * player, int choice, MenuLine * selected);
@@ -298,50 +298,50 @@ namespace cssmatch
         void banMenuCallback(Player * player, int choice, MenuLine * selected);
         void bantimeMenuCallback(Player * player, int choice, MenuLine * selected);
 
-        /** Get the match manager */
+/** Get the match manager */
         MatchManager * getMatch();
 
-        /** Add a plugin console variable */
+/** Add a plugin console variable */
         void addPluginConVar(ConVar * variable);
 
-        /** Access to a known ConVar
-         * @param name The name of the ConVar
-         * @return A pointer on the ConVar if found
-         */
+/** Access to a known ConVar
+ * @param name The name of the ConVar
+ * @return A pointer on the ConVar if found
+ */
         ConVar * getConVar(const std::string & name) /* throw(ServerPluginException)*//* but
                                                    std::exception */;
 
-        /** Add a plugin server command */
+/** Add a plugin server command */
         void addPluginConCommand(ConCommand * command);
 
-        /** Get the plugin command list */
+/** Get the plugin command list */
         const std::map<std::string, ConCommand *> * getPluginConCommands() const;
 
-        /** Hook a ConCommand (one hook = one callback)
-         * @param commandName The name of the ConCommand to hook
-         * @param callback Callback to invoke when the hooked command is used
-         * @param antispam Does this command need to be protected against spam?
-         */
+/** Hook a ConCommand (one hook = one callback)
+ * @param commandName The name of the ConCommand to hook
+ * @param callback Callback to invoke when the hooked command is used
+ * @param antispam Does this command need to be protected against spam?
+ */
         void hookConCommand(const std::string & commandName, HookCallback callback, bool antispam);
 
-        /** Add a plugin console command
-         * @param commandName The name of the ConCommand to hook
-         * @param callback Callback to invoke when the command is used
-         * @param antispam Does this command need to be protected against spam?
-        */
+/** Add a plugin console command
+ * @param commandName The name of the ConCommand to hook
+ * @param callback Callback to invoke when the command is used
+ * @param antispam Does this command need to be protected against spam?
+*/
         void addPluginClientCommand(const std::string & commandName, ClientCmdCallback callback,
                                     bool antispam);
 
-        /** Get the internationalization tool */
+/** Get the internationalization tool */
         I18nManager * getI18nManager();
 
-        /** Add a timer */
+/** Add a timer */
         void addTimer(BaseTimer * timer);
 
-        /** Remove all pending timers */
+/** Remove all pending timers */
         void removeTimers();
 
-        // IServerPluginCallbacks methods
+// IServerPluginCallbacks methods
         virtual bool Load(CreateInterfaceFn interfaceFactory, CreateInterfaceFn gameServerFactory);
         virtual void Unload();
         virtual void Pause();
@@ -366,36 +366,36 @@ namespace cssmatch
                                               EQueryCvarValueStatus eStatus, const char * pCvarName,
                                               const char * pCvarValue);
 
-        // Tools
+// Tools
 
-        /** Print a message to the logs
-         * @param message The message to display
-         */
+/** Print a message to the logs
+ * @param message The message to display
+ */
         void log(const std::string & message) const;
 
-        /** Append a command to the server command queue
-         * @param command The command to append
-         */
+/** Append a command to the server command queue
+ * @param command The command to append
+ */
         void queueCommand(const std::string & command) const;
 
-        /** Immedialty execute a command into the server console
-         * @param command The command to execute
-         */
+/** Immedialty execute a command into the server console
+ * @param command The command to execute
+ */
         void executeCommand(const std::string & command) const;
 
-        /** Check if SourceTV is connected to the server (ignores tv_enable)
-         * @return <code>true</code> if SourceTV was found, <code>false</code> otherwise
-         */
+/** Check if SourceTV is connected to the server (ignores tv_enable)
+ * @return <code>true</code> if SourceTV was found, <code>false</code> otherwise
+ */
         bool hltvConnected() const;
 
-        /** Get the current player count (ignores SourceTv)
-         * @param team If specified, only count the player from this team
-         * @return The player count
-         */
+/** Get the current player count (ignores SourceTv)
+ * @param team If specified, only count the player from this team
+ * @return The player count
+ */
         int getPlayerCount(TeamCode team = INVALID_TEAM) const;
 
-        /* Returns the game directory name */
-        //std::string getGameDir() const;
+/* Returns the game directory name */
+//std::string getGameDir() const;
     };
 
 /* Loop over all players excluding the 0 index

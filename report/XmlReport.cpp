@@ -38,9 +38,9 @@ using std::list;
 
 // FIXME: Loop ~4 times over the player list
 //  clan1->getMembers
-//        loop
+//		loop
 //  clan2->getMembers
-//        loop
+//	    loop
 //  get spectators
 
 void XmlReport::writeHeader()
@@ -116,10 +116,9 @@ void XmlReport::writeMatch(ticpp::Element * cssmatch)
     ticpp::Element * eMap = new ticpp::Element("map", interfaces->gpGlobals->mapname.ToCStr());
     eMatch->LinkEndChild(eMap);
 
-    if (infos->kniferoundWinner != NULL)
+    if (! infos->kniferoundWinner.empty())
     {
-        ticpp::Element * eTagcutround = 
-            new ticpp::Element("tagcutround", *infos->kniferoundWinner->getName());
+        ticpp::Element * eTagcutround = new ticpp::Element("tagcutround", infos->kniferoundWinner);
         eMatch->LinkEndChild(eTagcutround);
     }
 

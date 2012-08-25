@@ -91,7 +91,8 @@ namespace cssmatch
     {
     private:
         /** Who owns the item */
-        Player * owner;
+        int userid;
+		// userid (connection id), because when this timer ends the player may have disconnected
 
         /** Item to remove */
         std::string toRemove;
@@ -99,7 +100,12 @@ namespace cssmatch
         /** Force the player to take knife? */
         bool useKnife;
     public:
-        ItemRemoveTimer(Player * player, const std::string & item, bool switchKnife);
+		/**
+         * @param playerUserid Player's userid
+         * @param item Item to remove
+         * @see switchKnife <code>true</code> to force the user of the knife
+         */
+        ItemRemoveTimer(int playerUserid, const std::string & item, bool switchKnife);
 
         void execute();
     };

@@ -104,7 +104,7 @@ void Player::sendMenu(Menu * usedMenu, int page, const map<string, string> & par
 
     quitMenu();
 
-    menuTimer = new MenuReSendTimer(4.0f, this);
+	menuTimer = new MenuReSendTimer(4.0f, identity.userid);
     plugin->addTimer(menuTimer);
 
     menuHandler.menu = usedMenu;
@@ -582,18 +582,23 @@ void Player::give(const string & item)
     sv_cheats->m_nValue = 0;
 }*/
 
-MenuReSendTimer::MenuReSendTimer(float delay, Player * pl) : BaseTimer(delay), player(pl)
+MenuReSendTimer::MenuReSendTimer(float delay, int playerUserid)
+	: BaseTimer(delay), userid(playerUserid)
 {}
 
 void MenuReSendTimer::execute()
 {
-    if (player->menuHandler.menu != NULL)
+    ClanMember * player;
+    CSSMATCH_VALID_PLAYER(PlayerHavingUserid, userid, player)
     {
-        ServerPlugin * plugin = ServerPlugin::getInstance();
+        if (player->menuHandler.menu != NULL)
+        {
+            ServerPlugin * plugin = ServerPlugin::getInstance();
 
-        player->menuHandler.menu->send(player, player->menuHandler.page,
-                                       player->menuHandler.parameters);
-        player->menuTimer = new MenuReSendTimer(4.0f, player);
-        plugin->addTimer(player->menuTimer);
+		    player->menuHandler.menu->send(player, player->menuHandler.page,
+									       player->menuHandler.parameters);
+		    player->menuTimer = new MenuReSendTimer(4.0f, userid);
+		    plugin->addTimer(player->menuTimer);
+	    }
     }
 }

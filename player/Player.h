@@ -71,7 +71,6 @@ namespace cssmatch
         WEAPON_SLOT5
     };
 
-	/** Player's info memorized by Player instances */
     struct PlayerIdentity
     {
         /** Pointer to the player entity instance corresponding to this player */
@@ -90,7 +89,6 @@ namespace cssmatch
             userid(CSSMATCH_INVALID_USERID), steamid(""){};
     };
 
-	/** Info about the menu the player is using */
     struct PlayerMenuHandler
     {
         /** The Menu the player uses */
@@ -401,15 +399,14 @@ namespace cssmatch
     {
     private:
         /** Player to resend the popup */
-        int userid;
-		// userid (connection id), because when this timer ends the player may have disconnected
+        Player * player;
     public:
         /**
          * @param delay Delay before sending
-         * @param playerUserid Userid of the player who views the popup
+         * @param pl The player who views the popup
          * @see BaseTimer
          */
-        MenuReSendTimer(float delay, int playerUserid);
+        MenuReSendTimer(float delay, Player * pl);
 
         /** @see BaseTimer */
         void execute();

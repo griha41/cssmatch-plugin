@@ -356,22 +356,21 @@ void KnifeRoundMatchState::item_pickup(IGameEvent * event)
     ValveInterfaces * interfaces = plugin->getInterfaces();
 
     string item = event->GetString("item");
-	int userid = event->GetInt("userid");
 
     if (item != "knife")
     {
         ClanMember * player = NULL;
-        CSSMATCH_VALID_PLAYER(PlayerHavingUserid, userid, player)
+        CSSMATCH_VALID_PLAYER(PlayerHavingUserid, event->GetInt("userid"), player)
         {
             if (item == "c4")
             {
                 if (! plugin->getConVar("cssmatch_kniferound_allows_c4")->GetBool())
-                    plugin->addTimer(new ItemRemoveTimer(userid, "weapon_c4", false));
+                    plugin->addTimer(new ItemRemoveTimer(player, "weapon_c4", false));
             }
             else if (strstr(plugin->getConVar("cssmatch_weapons")->GetString(),
                             item.c_str()) != NULL)
             {
-                plugin->addTimer(new ItemRemoveTimer(userid, "weapon_" + item, true));
+                plugin->addTimer(new ItemRemoveTimer(player, "weapon_" + item, true));
             }
         }
         else
@@ -446,8 +445,8 @@ void KnifeRoundMatchState::bomb_beginplant(IGameEvent * event)
     }
 }*/
 
-ItemRemoveTimer::ItemRemoveTimer(int playerUserid, const string & item, bool switchKnife)
-    : BaseTimer(0.1f), userid(playerUserid), toRemove(item), useKnife(switchKnife)
+ItemRemoveTimer::ItemRemoveTimer(Player * player, const string & item, bool switchKnife)
+    : BaseTimer(0.1f), owner(player), toRemove(item), useKnife(switchKnife)
 {
 }
 
@@ -465,11 +464,7 @@ void ItemRemoveTimer::execute()
 
     if (useKnife)
     {
-		ClanMember * owner;
-		CSSMATCH_VALID_PLAYER(PlayerHavingUserid, userid, owner)
-		{
-			ValveInterfaces * interfaces = plugin->getInterfaces();
-			interfaces->helpers->ClientCommand(owner->getIdentity()->pEntity, "use weapon_knife");
-		}
+        ValveInterfaces * interfaces = plugin->getInterfaces();
+        interfaces->helpers->ClientCommand(owner->getIdentity()->pEntity, "use weapon_knife");
     }
 }

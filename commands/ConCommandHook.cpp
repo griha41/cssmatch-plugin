@@ -66,7 +66,13 @@ void ConCommandHook::Init()
         }
 #elif defined ENGINE_CSGO
 		hooked = (ConCommand *)interfaces->cvars->FindCommandBase(name);
-		success = hooked != NULL;
+		if (hooked != NULL)
+		{
+			// FIXME: Houla, que vont en penser les autres plugins ?
+			interfaces->cvars->UnregisterConCommand(hooked);
+
+			success = true;
+		}
 #else
 #error "Implement me"
 #endif

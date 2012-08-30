@@ -33,7 +33,7 @@ class ConVar;
 #include <map>
 #include <string>
 
-#define TRANSLATIONS_FOLDER "cstrike/cfg/cssmatch/languages/"
+#define TRANSLATIONS_FOLDER CSSMATCH_GAME_DIR "/cfg/cssmatch/languages/"
 
 namespace cssmatch
 {

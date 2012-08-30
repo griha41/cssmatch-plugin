@@ -31,7 +31,7 @@
 #include <list>
 
 /** cfg folder path */
-#define CFG_FOLDER_PATH "cstrike/cfg/"
+#define CFG_FOLDER_PATH CSSMATCH_GAME_DIR "/cfg/"
 
 namespace cssmatch
 {

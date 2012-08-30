@@ -26,7 +26,7 @@
 #include <string>
 
 /** Default report folder */
-#define REPORTS_PATH "cstrike/cfg/cssmatch/reports"
+#define REPORTS_PATH CSSMATCH_GAME_DIR "/cfg/cssmatch/reports"
 
 namespace cssmatch
 {

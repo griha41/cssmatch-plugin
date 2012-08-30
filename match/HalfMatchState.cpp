@@ -445,6 +445,13 @@ void HalfMatchState::FireGameEvent(IGameEvent * event)
     }
 }
 
+#ifdef ENGINE_CSGO
+int HalfMatchState::GetEventDebugID()
+{
+	return EVENT_DEBUG_ID_INIT;
+}
+#endif
+
 void HalfMatchState::player_death(IGameEvent * event)
 {
     // Update the score [history] of the involved players

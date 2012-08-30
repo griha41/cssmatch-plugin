@@ -101,9 +101,16 @@ void WarmupMatchState::removeC4()
     ServerPlugin * plugin = ServerPlugin::getInstance();
     ConVar * sv_cheats = plugin->getConVar("sv_cheats");
 
-    sv_cheats->m_nValue = 1;
+#if defined ENGINE_ORANGEBOX
+	int & cheatVal = sv_cheats->m_nValue;
+#elif defined ENGINE_CSGO
+	int & cheatVal = sv_cheats->GetRawValue().m_nValue;
+#else
+#error "Implement me"
+#endif
+	cheatVal = 1;
     plugin->executeCommand("ent_remove weapon_c4\n");
-    sv_cheats->m_nValue = 0;
+	cheatVal = 0;
 }
 
 void WarmupMatchState::doGo(Player * player)
@@ -324,6 +331,13 @@ void WarmupMatchState::FireGameEvent(IGameEvent * event)
         CSSMATCH_PRINT_EXCEPTION(e);
     }
 }
+
+#ifdef ENGINE_CSGO
+int WarmupMatchState::GetEventDebugID()
+{
+	return EVENT_DEBUG_ID_INIT;
+}
+#endif
 
 void WarmupMatchState::player_spawn(IGameEvent * event)
 {

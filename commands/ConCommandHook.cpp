@@ -48,9 +48,10 @@ void ConCommandHook::Init()
 
     if (interfaces->cvars != NULL)
     {
-        const ConCommandBase * listedCommand = interfaces->cvars->GetCommands();
         bool success = false;
 
+#if defined ENGINE_ORANGEBOX
+		const ConCommandBase * listedCommand = interfaces->cvars->GetCommands();
         while(listedCommand != NULL)
         {
             if (listedCommand->IsCommand() &&
@@ -63,6 +64,12 @@ void ConCommandHook::Init()
             }
             listedCommand = listedCommand->GetNext();
         }
+#elif defined ENGINE_CSGO
+		hooked = (ConCommand *)interfaces->cvars->FindCommandBase(name);
+		success = hooked != NULL;
+#else
+#error "Implement me"
+#endif
 
         if (success)
         {

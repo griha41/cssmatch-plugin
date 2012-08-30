@@ -76,7 +76,7 @@ namespace cssmatch
     };
 
     /** Compares the current plugin version with the one from cssmatch.com */
-    class UpdateNotifier : public CThread
+    class UpdateNotifier //: public CThread
     {
     private:
         /** Last plugin version found */

@@ -50,8 +50,8 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\hl2sdk-ob\public,..\hl2sdk-ob\public\engine,..\hl2sdk-ob\public\tier0,..\hl2sdk-ob\public\tier1,..\hl2sdk-ob\public\vstdlib,..\hl2sdk-ob\public\game\server,..\hl2sdk-ob\tier0,..\hl2sdk-ob\tier1,..\hl2sdk-ob\game,..\hl2sdk-ob\game\server,..\hl2sdk-ob\game\shared"
-				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;serverplugin_emptyONLY;TIXML_USE_TICPP"
+				AdditionalIncludeDirectories="..\hl2sdk-csgo\public,..\hl2sdk-csgo\public\engine,..\hl2sdk-csgo\public\tier0,..\hl2sdk-csgo\public\tier1,..\hl2sdk-csgo\public\vstdlib,..\hl2sdk-csgo\public\game\server,..\hl2sdk-csgo\tier0,..\hl2sdk-csgo\tier1,..\hl2sdk-csgo\game,..\hl2sdk-csgo\game\server,..\hl2sdk-csgo\game\shared"
+				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;serverplugin_emptyONLY;TIXML_USE_TICPP;COMPILER_MSVC;COMPILER_MSVC32;ENGINE_CSGO"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
 				RuntimeTypeInfo="true"
@@ -82,7 +82,7 @@
 				OutputFile="zip\addons\cssmatch.dll"
 				LinkIncremental="2"
 				SuppressStartupBanner="true"
-				AdditionalLibraryDirectories="..\hl2sdk-ob\lib\public"
+				AdditionalLibraryDirectories="..\hl2sdk-csgo\lib\public"
 				IgnoreDefaultLibraryNames="LIBC,libcmt"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile=".\Debug/serverplugin_empty.pdb"
@@ -262,7 +262,7 @@
 			Name="valve"
 			>
 			<File
-				RelativePath="..\hl2sdk-ob\public\tier0\memoverride.cpp"
+				RelativePath="..\hl2sdk-csgo\public\tier0\memoverride.cpp"
 				>
 			</File>
 		</Filter>
@@ -270,11 +270,15 @@
 			Name="link"
 			>
 			<File
-				RelativePath="..\hl2sdk-ob\lib\public\tier0.lib"
+				RelativePath="..\hl2sdk-csgo\lib\public\interfaces.lib"
 				>
 			</File>
 			<File
-				RelativePath="..\hl2sdk-ob\lib\public\tier1.lib"
+				RelativePath="..\hl2sdk-csgo\lib\public\tier0.lib"
+				>
+			</File>
+			<File
+				RelativePath="..\hl2sdk-csgo\lib\public\tier1.lib"
 				>
 			</File>
 		</Filter>

@@ -43,7 +43,13 @@
 
 struct tm; // will be defined in <ctime>
 
-#include "../convars/convar.h" // define our version of convar.h first so the valve's one will not be
+#if defined ENGINE_ORANGEBOX
+#include "../convars/css/convar.h" // define our version of convar.h first so the valve's one will not be
+#elif defined ENGINE_CSGO
+#include "convar.h"
+#else
+#error "Implement me"
+#endif
 
 #define GAME_DLL 1 // required by cbase.h
 #include "cbase.h" // TEAM_INVALID, TEAM_UNASSIGNED, TEAM_SPECTATOR + some headers
@@ -61,11 +67,11 @@ class IServerUnknown;
 class CBasePlayer;
 class CBaseCombatCharacter;
 
-//#define CSSMATCH_BETA
+#define CSSMATCH_BETA
 
 #define CSSMATCH_NAME "CSSMatch"
 
-#define CSSMATCH_PLUGIN_PRINT_BASE "2.2.2"
+#define CSSMATCH_PLUGIN_PRINT_BASE "2.3.0"
 #ifdef CSSMATCH_BETA
 #define CSSMATCH_VERSION CSSMATCH_PLUGIN_PRINT_BASE " BETA"
 #else
@@ -207,6 +213,18 @@ namespace cssmatch
     {
         return bCombatCharacter != NULL;
     }
+
+	/** Get the index of an entity.
+	 * @param entity The entity.
+	 * @return Its index.
+	 */
+	int indexOfEdict(const edict_t * entity);
+	
+	/** Get an entity by index. 
+	 * @param index The index.
+	 * @return The corresponding entity.
+	 */
+	edict_t * edictOfIndex(int index);
 
     /** Get a server entity pointer corresponding to this entity
      * @param entity The entity

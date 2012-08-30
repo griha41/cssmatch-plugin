@@ -365,6 +365,11 @@ namespace cssmatch
         virtual void OnQueryCvarValueFinished(QueryCvarCookie_t iCookie, edict_t * pPlayerEntity,
                                               EQueryCvarValueStatus eStatus, const char * pCvarName,
                                               const char * pCvarValue);
+#ifdef ENGINE_CSGO
+		virtual void ClientFullyConnect(edict_t *pEntity);
+		virtual void OnEdictAllocated(edict_t *edict);
+		virtual void OnEdictFreed(const edict_t *edict);
+#endif
 
         // Tools
 

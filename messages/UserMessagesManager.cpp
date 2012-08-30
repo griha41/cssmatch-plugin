@@ -95,7 +95,11 @@ int UserMessagesManager::findMessageType(const std::string & typeName)
         ostringstream output;
         output << "\004[" << CSSMATCH_NAME << "]\001 " << message << "\n";
 
-        bf_write * pBitBuf = engine->UserMessageBegin(&recipients, findMessageType("SayText"));
+        bf_write * pBitBuf = engine->UserMessageBegin(&recipients, findMessageType("SayText")
+#ifdef ENGINE_CSGO
+			, "chatSay"
+#endif			
+			);
 
         pBitBuf->WriteByte(playerIndex);
         pBitBuf->WriteString(output.str().c_str());
@@ -109,7 +113,11 @@ int UserMessagesManager::findMessageType(const std::string & typeName)
         ostringstream output;
         output << "\004[" << CSSMATCH_NAME << "]\003 " << message << "\n";
 
-        bf_write * pBitBuf = engine->UserMessageBegin(&recipients, findMessageType("SayText"));
+        bf_write * pBitBuf = engine->UserMessageBegin(&recipients, findMessageType("SayText")
+#ifdef ENGINE_CSGO
+			, "chatSay"
+#endif			
+			);
 
         pBitBuf->WriteByte(0x02); // \003 => team color
         pBitBuf->WriteString(output.str().c_str());
@@ -137,7 +145,11 @@ int UserMessagesManager::findMessageType(const std::string & typeName)
             string toSend = message.substr(iBegin, CSSMATCH_MAX_MSG_SIZE);
             iBegin += CSSMATCH_MAX_MSG_SIZE;
 
-            bf_write * pBuffer = engine->UserMessageBegin(&recipients, findMessageType("ShowMenu"));
+            bf_write * pBuffer = engine->UserMessageBegin(&recipients, findMessageType("ShowMenu")
+#ifdef ENGINE_CSGO
+			, "chatSay"
+#endif			
+			);
 
             pBuffer->WriteShort(flags); // set the flags
             pBuffer->WriteChar(lifeTime); // set the lifetime
@@ -157,12 +169,17 @@ int UserMessagesManager::findMessageType(const std::string & typeName)
         ServerPlugin * plugin = ServerPlugin::getInstance();
         ValveInterfaces * interfaces = plugin->getInterfaces();
 
-        bf_write * pWrite = engine->UserMessageBegin(&recipients, findMessageType("HintText"));
+        bf_write * pWrite = engine->UserMessageBegin(&recipients, findMessageType("HintText")
+#ifdef ENGINE_CSGO
+			, "chatSay"
+#endif			
+			);
 
         pWrite->WriteString(message.c_str());
 
         engine->MessageEnd();
 
+#ifdef ENGINE_ORANGEBOX
         // Stop the HintText annoying sound
         const vector<int> * recipientlist = recipients.getVector();
         vector<int>::const_iterator itIndex;
@@ -170,13 +187,18 @@ int UserMessagesManager::findMessageType(const std::string & typeName)
         {
             interfaces->sounds->StopSound(*itIndex, CHAN_STATIC, "UI/hint.wav");
         }
+#endif
     }
 
     void UserMessagesManager::motdSay(RecipientFilter recipients, MotdType type,
                                       const string & title,
                                       const string & message)
     {
-        bf_write * pWrite = engine->UserMessageBegin(&recipients, findMessageType("VGUIMenu"));
+        bf_write * pWrite = engine->UserMessageBegin(&recipients, findMessageType("VGUIMenu")
+#ifdef ENGINE_CSGO
+			, "chatSay"
+#endif			
+			);
 
         pWrite->WriteString("info"); // Let give some info about this message
         pWrite->WriteByte(1); // 1=Show this message, 0=otherwise
@@ -197,7 +219,11 @@ int UserMessagesManager::findMessageType(const std::string & typeName)
     void UserMessagesManager::showPanel(RecipientFilter recipients, const std::string & panelName,
                                         bool show)
     {
-        bf_write * pWrite = engine->UserMessageBegin(&recipients, findMessageType("VGUIMenu"));
+        bf_write * pWrite = engine->UserMessageBegin(&recipients, findMessageType("VGUIMenu")
+#ifdef ENGINE_CSGO
+			, "chatSay"
+#endif			
+			);
 
         pWrite->WriteString(panelName.c_str());
         pWrite->WriteByte((int)show);
@@ -208,7 +234,11 @@ int UserMessagesManager::findMessageType(const std::string & typeName)
 
     void UserMessagesManager::centerSay(RecipientFilter & recipients, const string & message)
     {
-        bf_write * pWrite = engine->UserMessageBegin(&recipients, findMessageType("TextMsg"));
+        bf_write * pWrite = engine->UserMessageBegin(&recipients, findMessageType("TextMsg")
+#ifdef ENGINE_CSGO
+			, "chatSay"
+#endif			
+			);
 
         pWrite->WriteByte(4); // DOCUMENT ME
         pWrite->WriteString(message.c_str());
@@ -219,7 +249,11 @@ int UserMessagesManager::findMessageType(const std::string & typeName)
 
     void UserMessagesManager::consoleSay(RecipientFilter & recipients, const string & message)
     {
-        bf_write * pWrite = engine->UserMessageBegin(&recipients, findMessageType("TextMsg"));
+        bf_write * pWrite = engine->UserMessageBegin(&recipients, findMessageType("TextMsg")
+#ifdef ENGINE_CSGO
+			, "chatSay"
+#endif			
+			);
 
         pWrite->WriteByte(HUD_PRINTNOTIFY);
         pWrite->WriteString(message.c_str());

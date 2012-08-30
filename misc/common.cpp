@@ -31,7 +31,6 @@
 #include "iplayerinfo.h"
 #include "eiface.h"
 #include "igameevents.h"
-#include "../convars/convar.h"
 #include "icvar.h"
 #include "bitbuf.h"
 #include "baseentity.h"
@@ -115,6 +114,41 @@ void cssmatch::printException(const exception & e, const string & fileName, int 
     parameters["$site"] = CSSMATCH_SITE;
 
     i18n->i18nChatWarning(recipients,"error_general",parameters);*/
+}
+
+int cssmatch::indexOfEdict(const edict_t * entity)
+{
+	int index = CSSMATCH_INVALID_INDEX;
+	ServerPlugin * plugin = ServerPlugin::getInstance();
+	ValveInterfaces * interfaces = plugin->getInterfaces();
+#if defined ENGINE_ORANGEBOX
+	index = interfaces->engine->IndexOfEdict(pEntity);
+#elif defined ENGINE_CSGO
+	index = (int)(entity - interfaces->gpGlobals->pEdicts);
+#else
+#error "Implement me"
+#endif
+	return index;
+}
+
+edict_t * cssmatch::edictOfIndex(int index)
+{
+	ServerPlugin * plugin = ServerPlugin::getInstance();
+	ValveInterfaces * interfaces = plugin->getInterfaces();
+
+	edict_t * entity = NULL;
+#if defined ENGINE_ORANGEBOX
+	entity = interfaces->engine->PEntityOfEntIndex(index);
+#elif defined ENGINE_CSGO
+	if (index >= CSSMATCH_INVALID_INDEX && index < interfaces->gpGlobals->maxEntities)
+	{
+		entity = (edict_t *)(interfaces->gpGlobals->pEdicts + index);
+	}
+#else
+#error "Implement me"
+#endif
+
+	return entity;
 }
 
 IServerEntity * cssmatch::getServerEntity(edict_t * entity)

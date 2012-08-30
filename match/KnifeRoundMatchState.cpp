@@ -323,6 +323,13 @@ void KnifeRoundMatchState::FireGameEvent(IGameEvent * event)
     }
 }
 
+#ifdef ENGINE_CSGO
+int KnifeRoundMatchState::GetEventDebugID()
+{
+	return EVENT_DEBUG_ID_INIT;
+}
+#endif
+
 void KnifeRoundMatchState::round_start(IGameEvent * event)
 {
     // Do the needed restarts then announce the begin of the knife round
@@ -458,9 +465,16 @@ void ItemRemoveTimer::execute()
     ostringstream command;
     command << "ent_remove_all " << toRemove << "\n";
 
-    sv_cheats->m_nValue = 1;
+#if defined ENGINE_ORANGEBOX
+	int & cheatVal = sv_cheats->m_nValue;
+#elif defined ENGINE_CSGO
+	int & cheatVal = sv_cheats->GetRawValue().m_nValue;
+#else
+#error "Implement me"
+#endif
+	cheatVal = 1;
     plugin->executeCommand(command.str());
-    sv_cheats->m_nValue = 0;
+	cheatVal = 0;
 
     if (useKnife)
     {

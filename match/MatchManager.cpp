@@ -161,6 +161,13 @@ void MatchManager::FireGameEvent(IGameEvent * event)
     }
 }
 
+#ifdef ENGINE_CSGO
+int MatchManager::GetEventDebugID()
+{
+	return EVENT_DEBUG_ID_INIT;
+}
+#endif
+
 void MatchManager::player_activate(IGameEvent * event)
 {
     // Announce any connection

@@ -160,6 +160,9 @@ namespace cssmatch
 
         // Game event callbacks
         void FireGameEvent(IGameEvent * event); // IGameEventListener2 method
+#ifdef ENGINE_CSGO
+		int GetEventDebugID(); // IGameEventListener2 method
+#endif
         void player_activate(IGameEvent * event);
         void player_disconnect(IGameEvent * event);
         void player_team(IGameEvent * event);

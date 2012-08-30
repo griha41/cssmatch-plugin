@@ -41,7 +41,6 @@
 #include "eiface.h" // IVEngineServer
 #include "iplayerinfo.h"
 #include "igameevents.h"
-#include "../convars/convar.h"
 #include "interface.h"
 #include "IEngineSound.h"
 #include "toolframework/itoolentity.h"
@@ -370,7 +369,7 @@ bool ServerPlugin::Load(CreateInterfaceFn interfaceFactory, CreateInterfaceFn ga
             try
             {
                 updateThread = new UpdateNotifier();
-                updateThread->Start();
+                //updateThread->Start();
             }
             catch(const UpdateNotifierException & e)
             {
@@ -399,8 +398,8 @@ void ServerPlugin::Unload()
     {
         if (updateThread != NULL)
         {
-            updateThread->End();
-            updateThread->Join();
+            //updateThread->End();
+            //updateThread->Join();
             delete updateThread;
             updateThread = NULL;
         }
@@ -916,7 +915,7 @@ void ServerPlugin::ClientDisconnect(edict_t * pEntity)
 
 void ServerPlugin::ClientPutInServer(edict_t * pEntity, char const * playername)
 {
-    int index = interfaces.engine->IndexOfEdict(pEntity);
+    int index = indexOfEdict(pEntity);
     if (isValidPlayerInfoIndex(index, interfaces.gpGlobals->maxClients))
     {
         // First remove the player if he's already in the list
@@ -1026,6 +1025,20 @@ void ServerPlugin::OnQueryCvarValueFinished(QueryCvarCookie_t iCookie, edict_t *
                                             const char * pCvarValue)
 {
 }
+
+#ifdef ENGINE_CSGO
+void ServerPlugin::ClientFullyConnect(edict_t *pEntity)
+{
+}
+
+void ServerPlugin::OnEdictAllocated(edict_t *edict)
+{
+}
+
+void ServerPlugin::OnEdictFreed(const edict_t *edict)
+{
+}
+#endif
 
 void ServerPlugin::log(const std::string & message) const
 {

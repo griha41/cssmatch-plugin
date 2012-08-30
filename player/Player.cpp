@@ -51,7 +51,7 @@ Player::Player(int index) throw (PlayerException) : lastCommandDate(0.0f), menuT
 
     identity.index = index;
 
-    identity.pEntity = interfaces->engine->PEntityOfEntIndex(index);
+    identity.pEntity = edictOfIndex(index);
     if (! isValidEntity(identity.pEntity))
         throw PlayerException(
             "The plugin was unable to construct a Player instance => player entity not found");
@@ -564,9 +564,14 @@ void Player::give(const string & item)
     ostringstream command;
     command << "give " << item << "\n";
 
-    sv_cheats->m_nValue = 1;
+#if defined ENGINE_ORANGEBOX
+	int & cheatVal = sv_cheats->m_nValue;
+#elif defined ENGINE_CSGO
+	int & cheatVal = sv_cheats->GetRawValue().m_nValue;
+#endif
+	cheatVal = 1;
     sexec(command.str());
-    sv_cheats->m_nValue = 0;
+    cheatVal = 0;
 }
 
 /*void Player::setang(const QAngle & angle)

@@ -33,7 +33,6 @@
 #include "igameevents.h"
 #include "icvar.h"
 #include "bitbuf.h"
-#include "baseentity.h"
 
 #include <sstream>
 #include <ctime>

@@ -54,9 +54,9 @@ namespace cssmatch
     /** Team id */
     typedef enum TeamCode
     {
-        INVALID_TEAM = TEAM_INVALID,
-        UN_TEAM = TEAM_UNASSIGNED,
-        SPEC_TEAM = TEAM_SPECTATOR,
+        INVALID_TEAM = -1,
+		UN_TEAM,
+		SPEC_TEAM,
         T_TEAM,
         CT_TEAM
     };

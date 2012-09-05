@@ -38,12 +38,12 @@
 // #include "tier2/tier2.h" // IFileSystem * g_pFullFileSystem
 #include "filesystem.h"
 #include "edict.h"
-#include "eiface.h" // IVEngineServer
 #include "iplayerinfo.h"
 #include "igameevents.h"
 #include "interface.h"
 #include "IEngineSound.h"
 #include "toolframework/itoolentity.h"
+#include "eiface.h" // IServerGameDLL
 
 using namespace cssmatch;
 

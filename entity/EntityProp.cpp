@@ -23,7 +23,9 @@
 #include "EntityProp.h"
 
 #include "edict.h" // BaseEntity, edict_t
+#include "eiface.h" // IServerGameDLL
 #include "dt_send.h" // SendTable
+#include "server_class.h" // ServerClass
 
 #include "../plugin/ServerPlugin.h"
 

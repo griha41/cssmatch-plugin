@@ -51,10 +51,12 @@ struct tm; // will be defined in <ctime>
 #error "Implement me"
 #endif
 
-#define GAME_DLL 1 // required by cbase.h
+/*#define GAME_DLL 1 // required by cbase.h
 #include "cbase.h" // TEAM_INVALID, TEAM_UNASSIGNED, TEAM_SPECTATOR + some headers
-#undef GAME_DLL // however, we're not the game dll...
+#undef GAME_DLL // however, we're not the game dll...*/
 
+#include "shareddefs.h" // HUD_PRINTNOTIFY...
+#include "eiface.h" // IVEngineServer
 #include "edict.h" // required by iplayerinfo.h
 #include "iplayerinfo.h"
 

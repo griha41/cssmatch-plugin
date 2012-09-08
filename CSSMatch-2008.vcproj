@@ -189,7 +189,7 @@
 				OutputFile="zip\addons\cssmatch.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
-				AdditionalLibraryDirectories="..\hl2sdk\lib\public"
+				AdditionalLibraryDirectories="..\hl2sdk-ob\lib\public"
 				IgnoreDefaultLibraryNames="libcmtd.lib"
 				DelayLoadDLLs=""
 				GenerateDebugInformation="true"

@@ -121,7 +121,7 @@ int cssmatch::indexOfEdict(const edict_t * entity)
 	ServerPlugin * plugin = ServerPlugin::getInstance();
 	ValveInterfaces * interfaces = plugin->getInterfaces();
 #if defined ENGINE_ORANGEBOX
-	index = interfaces->engine->IndexOfEdict(pEntity);
+	index = interfaces->engine->IndexOfEdict(entity);
 #elif defined ENGINE_CSGO
 	index = (int)(entity - interfaces->gpGlobals->pEdicts);
 #else

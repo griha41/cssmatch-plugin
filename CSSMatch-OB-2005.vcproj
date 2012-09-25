@@ -2,8 +2,8 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="8,00"
-	Name="CSSMatch"
-	ProjectGUID="{B6572CBE-7C7F-4FFF-94DE-AFBBBAB11C64}"
+	Name="CSSMatch-OB"
+	ProjectGUID="{A8A050E4-B86C-4271-8905-9E86ABD2648A}"
 	RootNamespace="CSSMatch"
 	>
 	<Platforms>

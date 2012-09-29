@@ -172,6 +172,9 @@ namespace cssmatch
         /** Internationalization tool */
         I18nManager * i18n;
 
+        /** Game directory */
+        std::string gameDir;
+
         friend class BaseSingleton<ServerPlugin>;
         ServerPlugin();
         virtual ~ServerPlugin();
@@ -400,7 +403,7 @@ namespace cssmatch
         int getPlayerCount(TeamCode team = INVALID_TEAM) const;
 
         /* Returns the game directory name */
-        //std::string getGameDir() const;
+        const std::string * getGameDir() const;
     };
 
 /* Loop over all players excluding the 0 index

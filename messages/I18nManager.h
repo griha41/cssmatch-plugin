@@ -33,8 +33,6 @@ class ConVar;
 #include <map>
 #include <string>
 
-#define TRANSLATIONS_FOLDER CSSMATCH_GAME_DIR "/cfg/cssmatch/languages/"
-
 namespace cssmatch
 {
     class TranslationFile;
@@ -52,6 +50,9 @@ namespace cssmatch
     class I18nManager : public CannotBeCopied, public UserMessagesManager
     {
     private:
+        /** Translations directory */
+        std::string translationsDir;
+
         /** What is the default language? */
         ConVar * defaultLanguage;
 
@@ -67,6 +68,7 @@ namespace cssmatch
 
         /** {language => I18nMessage} */
         std::map<std::string, I18nMessage> messageCache;
+
 
         /** Update the message cache */
         void updateMessageCache(    int recipientIndex,

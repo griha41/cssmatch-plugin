@@ -228,7 +228,7 @@ void DisabledMatchState::showConfigQuestion(Player * recipient)
     // Search for all .cfg files into cfg/cssmatch/configurations
     FileFindHandle_t fh;
     const char * cfg = interfaces->filesystem->FindFirstEx(
-        "cfg/" MATCH_CONFIGURATIONS_PATH "/*.cfg", "MOD", &fh);
+        "cfg/cssmatch/configurations/*.cfg", "MOD", &fh);
     while(cfg != NULL)
     {
         string filename = cfg;
@@ -236,8 +236,8 @@ void DisabledMatchState::showConfigQuestion(Player * recipient)
         if (normalizeFileName(filename))
         {
             interfaces->filesystem->RenameFile(
-                ("cfg/" MATCH_CONFIGURATIONS_PATH "/" + copy).c_str(),
-                ("cfg/" MATCH_CONFIGURATIONS_PATH "/" + filename).c_str());
+                ("cfg/cssmatch/configurations/" + copy).c_str(),
+                ("cfg/cssmatch/configurations/" + filename).c_str());
             plugin->log(copy + " has been renamed to " + filename);
         }
 
@@ -262,7 +262,7 @@ void DisabledMatchState::configQuestionCallback(Player * player, int choice, Men
         try
         {
             RunnableConfigurationFile config(
-                CFG_FOLDER_PATH MATCH_CONFIGURATIONS_PATH + selected->text);
+                *plugin->getGameDir() + "/cfg/cssmatch/configurations/" + selected->text);
 
             /*RecipientFilter recipients;
             recipients.addAllPlayers();

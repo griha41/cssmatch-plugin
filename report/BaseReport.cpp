@@ -45,7 +45,7 @@ BaseReport::BaseReport(MatchManager * matchManager) : match(matchManager)
     strftime(formatDate, sizeof(formatDate), "%Y-%m-%d_%Hh%M", date);
 
     ostringstream bufferedReportPath;
-    bufferedReportPath << REPORTS_PATH << '/' << formatDate << '_' <<
+    bufferedReportPath << plugin->getGameDir() << "/cfg/cssmatch/reports/" << formatDate << '_' <<
     interfaces->gpGlobals->mapname.ToCStr();
 
     reportPath = bufferedReportPath.str();

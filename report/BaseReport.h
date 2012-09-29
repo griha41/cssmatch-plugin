@@ -25,9 +25,6 @@
 
 #include <string>
 
-/** Default report folder */
-#define REPORTS_PATH CSSMATCH_GAME_DIR "/cfg/cssmatch/reports"
-
 namespace cssmatch
 {
     class MatchManager;

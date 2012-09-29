@@ -21,6 +21,7 @@
  */
 
 #include "ConfigurationFile.h"
+#include "../plugin/ServerPlugin.h"
 
 #include <fstream>
 #include <sstream>
@@ -103,9 +104,11 @@ string ConfigurationFile::getPatchFromCfg() const
 {
     string path;
 
-    size_t iCfg = filePath.find_first_of(CFG_FOLDER_PATH);
+    const string CFG_DIR = *ServerPlugin::getInstance()->getGameDir() + "/cfg/";
+
+    size_t iCfg = filePath.find_first_of(CFG_DIR);
     if (iCfg != string::npos)
-        path = filePath.substr(iCfg+strlen(CFG_FOLDER_PATH));
+        path = filePath.substr(iCfg + CFG_DIR.size());
     else
         CSSMATCH_PRINT(filePath + " isn't localized in the cstrike directory");
 

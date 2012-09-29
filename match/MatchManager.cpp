@@ -600,7 +600,7 @@ void MatchManager::EndOfMatchCountdown::finish()
     {
         configPatch = plugin->getConVar("cssmatch_default_config")->GetString();
 
-        RunnableConfigurationFile config(string(CFG_FOLDER_PATH) + configPatch);
+        RunnableConfigurationFile config(*plugin->getGameDir() + "/cfg/" + configPatch);
         config.execute();
     }
     catch(const ConfigurationFileException & e)

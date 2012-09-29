@@ -91,15 +91,8 @@ class CBaseCombatCharacter;
 /** invalid player userid */
 #define CSSMATCH_INVALID_USERID -1
 
-#if defined ENGINE_ORANGEBOX
-/** Game directory */
-#define CSSMATCH_GAME_DIR "cstrike"
-#elif defined ENGINE_CSGO
-/** Game directory */
-#define CSSMATCH_GAME_DIR "csgo"
-#else
-#error "Implement me"
-#endif
+/** Default config name */
+#define DEFAULT_CONFIGURATION_FILE "mr15.cfg"
 
 namespace cssmatch
 {

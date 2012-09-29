@@ -121,7 +121,7 @@ void cssmatch::cssm_start(const CCommand & args)
         try
         {
             RunnableConfigurationFile configuration(
-                CFG_FOLDER_PATH MATCH_CONFIGURATIONS_PATH + configurationFile);
+                *plugin->getGameDir() + "/cfg/cssmatch/configurations/" + configurationFile);
 
             // Determine the initial match state
             BaseMatchState * initialState = NULL;

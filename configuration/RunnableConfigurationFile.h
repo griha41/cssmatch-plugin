@@ -23,12 +23,6 @@
 #ifndef __RUNNABLE_CONFIGURATION_FILE_H__
 #define __RUNNABLE_CONFIGURATION_FILE_H__
 
-/** Match config files path (not including cstrike nor cfg) */
-#define MATCH_CONFIGURATIONS_PATH "cssmatch/configurations/"
-
-/** Default config name */
-#define DEFAULT_CONFIGURATION_FILE "mr15.cfg"
-
 #include "ConfigurationFile.h"
 
 //#include <map>

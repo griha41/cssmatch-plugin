@@ -61,7 +61,9 @@ void I18nManager::updateMessageCache(   int recipientIndex,
 }
 
 I18nManager::I18nManager() : defaultLanguage(NULL)
-{}
+{
+    translationsDir = *ServerPlugin::getInstance()->getGameDir() + "/cfg/cssmatch/languages/";
+}
 
 I18nManager::~I18nManager()
 {
@@ -94,7 +96,7 @@ TranslationFile * I18nManager::getTranslationFile(const string & language)
         // No, put these translations in the cache
         try
         {
-            translationSet = new TranslationFile(TRANSLATIONS_FOLDER + language + ".txt");
+            translationSet = new TranslationFile(translationsDir + language + ".txt");
 
             languages[language] = translationSet;
         }
@@ -111,7 +113,7 @@ TranslationFile * I18nManager::getTranslationFile(const string & language)
                     try
                     {
                         translationSet = new TranslationFile(
-                            TRANSLATIONS_FOLDER + defaultLanguageName + ".txt");
+                            translationsDir + defaultLanguageName + ".txt");
                         languages[defaultLanguageName] = translationSet;
                     }
                     catch(const ConfigurationFileException & e)

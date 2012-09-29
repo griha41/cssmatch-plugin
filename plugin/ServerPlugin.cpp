@@ -84,22 +84,22 @@ using std::endl;
  */
 class MakePublicTimer : public BaseTimer // TODO: Review me each SRCDS release
 {
-public:
-MakePublicTimer() : BaseTimer(5.0)
-{
-}
+    public:
+    MakePublicTimer() : BaseTimer(5.0)
+    {
+    }
 
-void execute()
-{
-    ServerPlugin * plugin = ServerPlugin::getInstance();
-    ConVar * cssmatch_version = plugin->getConVar("cssmatch_version");
-    cssmatch_version->SetValue(cssmatch_version->GetString());
-}
+    void execute()
+    {
+        ServerPlugin * plugin = ServerPlugin::getInstance();
+        ConVar * cssmatch_version = plugin->getConVar("cssmatch_version");
+        cssmatch_version->SetValue(cssmatch_version->GetString());
+    }
 };
 
 ServerPlugin::ServerPlugin()
     : instances(0), loadSuccess(false), updateThread(NULL), clientCommandIndex(0), adminMenu(NULL),
-    bantimeMenu(NULL), match(NULL), i18n(NULL)
+    bantimeMenu(NULL), match(NULL), i18n(NULL), gameDir("cstrike")
 {
 }
 
@@ -354,26 +354,41 @@ bool ServerPlugin::Load(CreateInterfaceFn interfaceFactory, CreateInterfaceFn ga
                 Msg(CSSMATCH_NAME ": Failed to connect tier1 libs\n");
             }
 
-            /*// Initialize the file system interface
-            if (g_pFullFileSystem != NULL)
+            /*
+            if (success)
             {
-                interfaces.filesystem = g_pFullFileSystem;
-            }
-            else
-            {
-                success = false;
-                Msg(CSSMATCH_NAME ": Failed to connect tier2 libs\n");
+                // Initialize the file system interface
+                if (g_pFullFileSystem != NULL)
+                {
+                    interfaces.filesystem = g_pFullFileSystem;
+                }
+                else
+                {
+                    success = false;
+                    Msg(CSSMATCH_NAME ": Failed to connect tier2 libs\n");
+                }
             }*/
 
-            // Start the check for updates thread
-            try
+            if (success)
             {
-                updateThread = new UpdateNotifier();
-                //updateThread->Start();
-            }
-            catch(const UpdateNotifierException & e)
-            {
-                Msg(CSSMATCH_NAME ": %s (%s, l.%i)\n", e.what(), __FILE__, __LINE__);
+                // Get the game directory name
+                char dirName[MAX_PATH];
+                interfaces.engine->GetGameDir((char *)dirName, sizeof(dirName));
+                gameDir = dirName;
+#ifdef _DEBUG
+                Msg("%s\n", (CSSMATCH_NAME ": Game directory is " + gameDir).c_str());
+#endif
+
+                // Start the check for updates thread
+                try
+                {
+                    updateThread = new UpdateNotifier();
+                    //updateThread->Start();
+                }
+                catch(const UpdateNotifierException & e)
+                {
+                    Msg(CSSMATCH_NAME ": %s (%s, l.%i)\n", e.what(), __FILE__, __LINE__);
+                }
             }
 
             Msg(CSSMATCH_NAME ": loaded\n");
@@ -454,7 +469,7 @@ void ServerPlugin::showChangelevelMenu(Player * player)
 
     try
     {
-        ConfigurationFile maplistfile(CFG_FOLDER_PATH "cssmatch/maplist.txt");
+        ConfigurationFile maplistfile(gameDir + "/cfg/cssmatch/maplist.txt");
 
         list<string> maps;
         maplistfile.getLines(maps);
@@ -870,7 +885,7 @@ void ServerPlugin::LevelInit(char const * pMapName)
     adminlist.clear();
     try
     {
-        ConfigurationFile adminlistFile(CFG_FOLDER_PATH "cssmatch/adminlist.txt");
+        ConfigurationFile adminlistFile(gameDir + "/cfg/cssmatch/adminlist.txt");
         adminlistFile.getLines(adminlist);
     }
     catch(const ConfigurationFileException & e)
@@ -1077,12 +1092,10 @@ int ServerPlugin::getPlayerCount(TeamCode team) const
 
     return playerCount;
 }
-/*string ServerPlugin::getGameDir() const
+const string * ServerPlugin::getGameDir() const
 {
-    char buffer[30];
-    interfaces.engine->GetGameDir(buffer,sizeof(buffer));
-    return buffer;
-}*/
+    return &gameDir;
+}
 
 EXPOSE_SINGLE_INTERFACE_GLOBALVAR(ServerPlugin,
                                   IServerPluginCallbacks,

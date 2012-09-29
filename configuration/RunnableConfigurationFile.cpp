@@ -101,7 +101,7 @@ void RunnableConfigurationFile::getData()
 }*/
 
 RunnableConfigurationFile::RunnableConfigurationFile(const string & filePath)
-throw (ConfigurationFileException) : ConfigurationFile(filePath)
+    throw (ConfigurationFileException) : ConfigurationFile(filePath)
 {
 }
 

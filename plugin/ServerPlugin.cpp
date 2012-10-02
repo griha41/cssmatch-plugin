@@ -179,6 +179,14 @@ bool ServerPlugin::Load(CreateInterfaceFn interfaceFactory, CreateInterfaceFn ga
 
             //MathLib_Init(2.2f,2.2f,0.0f,2);
 
+		    // Get the game directory name
+            char dirName[MAX_PATH];
+            interfaces.engine->GetGameDir((char *)dirName, sizeof(dirName));
+            gameDir = dirName;
+#ifdef _DEBUG
+            Msg("%s\n", (CSSMATCH_NAME ": Game directory is " + gameDir).c_str());
+#endif
+
             // Initialize the admin menus
             adminMenu = new Menu(NULL, "menu_administration",
                                  new MenuCallback<ServerPlugin>(this,
@@ -371,15 +379,7 @@ bool ServerPlugin::Load(CreateInterfaceFn interfaceFactory, CreateInterfaceFn ga
 
             if (success)
             {
-                // Get the game directory name
-                char dirName[MAX_PATH];
-                interfaces.engine->GetGameDir((char *)dirName, sizeof(dirName));
-                gameDir = dirName;
-#ifdef _DEBUG
-                Msg("%s\n", (CSSMATCH_NAME ": Game directory is " + gameDir).c_str());
-#endif
-
-                // Start the check for updates thread
+				// Start the check for updates thread
                 try
                 {
                     updateThread = new UpdateNotifier();

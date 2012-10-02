@@ -265,10 +265,20 @@ bool ServerPlugin::Load(CreateInterfaceFn interfaceFactory, CreateInterfaceFn ga
             addPluginConVar(new I18nConVar(i18n, "cssmatch_updatesite", "www.cssmatch.com",
                                            FCVAR_NONE, "cssmatch_updatesite"));
             addPluginConVar(new I18nConVar(i18n, "cssmatch_weapons",
-                                           "awp g3sg1 sg550 galil ak47 scout sg552 famas m4a1 aug "
-                                           "glock usp p228 deagle elite fiveseven m3 xm1014 mac10 "
-                                           "tmp mp5navy ump45 p90 m249 flashbang hegrenade "
-                                           "smokegrenade"
+#if defined ENGINE_ORANGEBOX
+                                           "ak47 aug awp deagle elite famas fiveseven flashbang "
+										   "g3sg1 galil glock hegrenade m249 m3 m4a1 mac10 "
+										   "mp5navy p90 p228 scout sg550 sg552 smokegrenade tmp "
+										   "ump45 usp xm1014"
+#elif defined ENGINE_CSGO
+                                           "ak47 aug awp bizon deagle decoy elite famas "
+										   "fiveseven flashbang g3sg1 galilar glock hegrenade "
+										   "hkp2000 incgrenade m249 m4a1 mac10 mag7 molotov mp7 "
+										   "mp9 negev nova p250 p90 sawedoff scar20 sg556 "
+										   "smokegrenade ssg08 taser tec9 ump45 xm1014"
+#else
+#error "Implement me"
+#endif
                                            , FCVAR_NONE, "cssmatch_weapons"));
 
             // Create the plugin's commands

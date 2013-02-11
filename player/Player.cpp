@@ -545,10 +545,10 @@ void Player::spawn()
     setLifeState(512); // review me
     //
 
-    IServerUnknown * unknown = getServerUnknow(identity.pEntity);
-    if (isValidServerUnknown(unknown))
+    CBaseEntity * baseEntity = getBaseEntity(identity.pEntity);
+    if (isValidBaseEntity(baseEntity))
     {
-        interfaces->serverTools->DispatchSpawn(unknown);
+        interfaces->serverTools->DispatchSpawn(baseEntity);
     }
     else
     {

@@ -149,13 +149,13 @@ bool ServerPlugin::Load(CreateInterfaceFn interfaceFactory, CreateInterfaceFn ga
             // INTERFACEVERSION_ISERVERPLUGINHELPERS
             getInterface<IServerPluginHelpers>(interfaceFactory,interfaces.helpers,"ISERVERPLUGINHELPERS",1) &&
             // INTERFACEVERSION_SERVERGAMEDLL
-            getInterface<IServerGameDLL>(gameServerFactory,interfaces.serverGameDll,"ServerGameDLL",6) &&
+            getInterface<IServerGameDLL>(gameServerFactory,interfaces.serverGameDll,"ServerGameDLL",8) &&
             // IENGINESOUND_SERVER_INTERFACE_VERSION
             getInterface<IEngineSound>(interfaceFactory,interfaces.sounds,"IEngineSoundServer",3) &&
             // VSERVERTOOLS_INTERFACE_VERSION
             getInterface<IServerTools>(gameServerFactory,interfaces.serverTools,"VSERVERTOOLS",1) &&
             // FILESYSTEM_INTERFACE_VERSION
-            getInterface<IFileSystem>(interfaceFactory,interfaces.filesystem,"VFileSystem",19);*/
+            getInterface<IFileSystem>(interfaceFactory,interfaces.filesystem,"VFileSystem",20);*/
         success &=
             getInterface<IPlayerInfoManager>(gameServerFactory, interfaces.playerinfomanager,
                                              INTERFACEVERSION_PLAYERINFOMANAGER) &&

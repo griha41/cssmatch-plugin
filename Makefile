@@ -75,8 +75,8 @@ DEBUG_FLAGS = -g -ggdb3 -O0 -D_DEBUG
 SRC= $(wildcard *.cpp) $(wildcard */*.cpp) $(wildcard */*/*.cpp) 			
 
 # Fichiers à lier
-LINK_SO =	$(SRCDS_BIN_DIR)/libtier0.so			
-LINK_A = 	$(SRCDS_A_DIR)/tier1_i486.a	$(SRCDS_A_DIR)/tier2_i486.a
+LINK_SO =	$(SRCDS_BIN_DIR)/libtier0_srv.so			
+LINK_A = 	$(SRCDS_A_DIR)/tier1_i486.a
 
 LINK = -lm -ldl $(LINK_A) $(LINK_SO)
 

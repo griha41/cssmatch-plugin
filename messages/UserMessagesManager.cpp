@@ -67,7 +67,7 @@ int UserMessagesManager::findMessageType(const std::string & typeName)
                     break;
                 }
             }
-            i++;
+            ++i;
         }
         if (id == CSSMATCH_INVALID_MSG_TYPE)
             CSSMATCH_PRINT("Unknown message type " + typeName)
@@ -166,7 +166,7 @@ int UserMessagesManager::findMessageType(const std::string & typeName)
         // Stop the HintText annoying sound
         const vector<int> * recipientlist = recipients.getVector();
         vector<int>::const_iterator itIndex;
-        for (itIndex = recipientlist->begin(); itIndex != recipientlist->end(); itIndex++)
+        for (itIndex = recipientlist->begin(); itIndex != recipientlist->end(); ++itIndex)
         {
             interfaces->sounds->StopSound(*itIndex, CHAN_STATIC, "UI/hint.wav");
         }

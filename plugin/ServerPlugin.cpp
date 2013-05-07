@@ -86,16 +86,16 @@ using std::endl;
 class MakePublicTimer : public BaseTimer // TODO: Review me each SRCDS release
 {
 public:
-MakePublicTimer() : BaseTimer(5.0)
-{
-}
+	MakePublicTimer() : BaseTimer(5.0)
+	{
+	}
 
-void execute()
-{
-    ServerPlugin * plugin = ServerPlugin::getInstance();
-    ConVar * cssmatch_version = plugin->getConVar("cssmatch_version");
-    cssmatch_version->SetValue(cssmatch_version->GetString());
-}
+	void execute()
+	{
+		ServerPlugin * plugin = ServerPlugin::getInstance();
+		ConVar * cssmatch_version = plugin->getConVar("cssmatch_version");
+		cssmatch_version->SetValue(cssmatch_version->GetString());
+	}
 };
 
 ServerPlugin::ServerPlugin()
@@ -133,7 +133,7 @@ bool ServerPlugin::Load(CreateInterfaceFn interfaceFactory, CreateInterfaceFn ga
 
     bool success = true;
 
-    instances++;
+    ++instances;
     if (instances == 1)
     {
         ConnectTier1Libraries(&interfaceFactory, 1);
@@ -461,7 +461,7 @@ void ServerPlugin::showChangelevelMenu(Player * player)
         maplistfile.getLines(maps);
 
         list<string>::const_iterator itMap;
-        for(itMap = maps.begin(); itMap != maps.end(); itMap++)
+        for(itMap = maps.begin(); itMap != maps.end(); ++itMap)
         {
             maplist->addLine(false, *itMap);
         }
@@ -477,7 +477,7 @@ void ServerPlugin::showChangelevelMenu(Player * player)
 void ServerPlugin::constructPlayerlistMenu(Menu * to)
 {
     list<ClanMember *>::const_iterator itPlayer;
-    for(itPlayer = playerlist.begin(); itPlayer != playerlist.end(); itPlayer++)
+    for(itPlayer = playerlist.begin(); itPlayer != playerlist.end(); ++itPlayer)
     {
         IPlayerInfo * pInfo = (*itPlayer)->getPlayerInfo();
         if (isValidPlayerInfo(pInfo))
@@ -664,7 +664,6 @@ void ServerPlugin::kickMenuCallback(Player * player, int choice, MenuLine * sele
         ClanMember * target = NULL;
         CSSMATCH_VALID_PLAYER(PlayerHavingUserid, useridData->userid, target)
         {
-            PlayerIdentity * identity = player->getIdentity();
             IPlayerInfo * pInfo = player->getPlayerInfo();
 
             target->kick("admin_kick");
@@ -716,7 +715,6 @@ void ServerPlugin::bantimeMenuCallback(Player * player, int choice, MenuLine * s
         ClanMember * target = NULL;
         CSSMATCH_VALID_PLAYER(PlayerHavingUserid, targetData->userid, target)
         {
-            PlayerIdentity * identity = player->getIdentity();
             IPlayerInfo * adminInfo = player->getPlayerInfo();
 
             int time = 0;
@@ -841,7 +839,7 @@ void ServerPlugin::addTimer(BaseTimer * timer)
 void ServerPlugin::removeTimers()
 {
     list<BaseTimer *>::iterator itTimer;
-    for(itTimer = timers.begin(); itTimer != timers.end(); itTimer++)
+    for(itTimer = timers.begin(); itTimer != timers.end(); ++itTimer)
     {
         delete *itTimer;
     }

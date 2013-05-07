@@ -90,8 +90,6 @@ namespace cssmatch
         /** End of match time-out countdown */
         class EndOfMatchCountdown : public BaseCountdown
         {
-        private:
-            int duration;
         public:
             // BaseCountdown methods
             void finish();

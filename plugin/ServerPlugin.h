@@ -203,7 +203,7 @@ namespace cssmatch
 
                 success = getInterface<T>(factory, toInitialize, toget.str());
 
-                minVersion++;
+                ++minVersion;
             }
 
             return success;
@@ -221,7 +221,7 @@ namespace cssmatch
         {
             bool success = false;
 
-            toInitialize = (T *)factory(interfaceName.c_str(), NULL);
+            toInitialize = static_cast<T *>(factory(interfaceName.c_str(), NULL));
             if (toInitialize == NULL)
                 Msg(std::string(
                         CSSMATCH_NAME ": Unable to get the interface \"" + interfaceName +
@@ -401,7 +401,7 @@ namespace cssmatch
 /* Loop over all players excluding the 0 index
 #define FOREACH_PLAYER(indexVar) \
     int maxplayers = ServerPlugin::getInstance()->getInterfaces()->gpGlobals->maxClients; \
-    for (int indexVar=1;indexVar<=maxplayers;indexVar++)*/
+    for (int indexVar=1;indexVar<=maxplayers;++indexVar)*/
 
 /** Search for a valid player pointer satisfying a predicat */
 #define CSSMATCH_VALID_PLAYER(Predicat, criteria, out) \

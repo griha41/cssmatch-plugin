@@ -67,7 +67,7 @@ I18nManager::I18nManager() : defaultLanguage(NULL)
 I18nManager::~I18nManager()
 {
     map<string, TranslationFile *>::iterator itLanguage;
-    for(itLanguage = languages.begin(); itLanguage != languages.end(); itLanguage++)
+    for(itLanguage = languages.begin(); itLanguage != languages.end(); ++itLanguage)
     {
         delete itLanguage->second;
     }
@@ -157,7 +157,7 @@ string I18nManager::getTranslation( const string & lang,
             // FIXME: unnecessarily called as many times as recipients
             //	Make a lang cache system in the I18nManager methods ?
             map<string, string>::const_iterator itParameters;
-            for(itParameters = parameters.begin(); itParameters != parameters.end(); itParameters++)
+            for(itParameters = parameters.begin(); itParameters != parameters.end(); ++itParameters)
             {
                 const string * parameter = &itParameters->first;
                 size_t parameterSize = parameter->size();
@@ -194,14 +194,14 @@ void I18nManager::i18nChatSay(  RecipientFilter & recipients,
 {
     const vector<int> * recipientVector = recipients.getVector();
     vector<int>::const_iterator itIndex;
-    for(itIndex = recipientVector->begin(); itIndex != recipientVector->end(); itIndex++)
+    for(itIndex = recipientVector->begin(); itIndex != recipientVector->end(); ++itIndex)
     {
         string language = engine->GetClientConVarValue(*itIndex, "cl_language");
         updateMessageCache(*itIndex, language, keyword, parameters);
     }
 
     map<string, I18nMessage>::iterator itMessage;
-    for(itMessage = messageCache.begin(); itMessage != messageCache.end(); itMessage++)
+    for(itMessage = messageCache.begin(); itMessage != messageCache.end(); ++itMessage)
     {
         chatSay(itMessage->second.recipients, itMessage->second.message, playerIndex);
     }
@@ -214,14 +214,14 @@ void I18nManager::i18nChatWarning(  RecipientFilter & recipients,
 {
     const vector<int> * recipientVector = recipients.getVector();
     vector<int>::const_iterator itIndex;
-    for(itIndex = recipientVector->begin(); itIndex != recipientVector->end(); itIndex++)
+    for(itIndex = recipientVector->begin(); itIndex != recipientVector->end(); ++itIndex)
     {
         string language = engine->GetClientConVarValue(*itIndex, "cl_language");
         updateMessageCache(*itIndex, language, keyword, parameters);
     }
 
     map<string, I18nMessage>::iterator itMessage;
-    for(itMessage = messageCache.begin(); itMessage != messageCache.end(); itMessage++)
+    for(itMessage = messageCache.begin(); itMessage != messageCache.end(); ++itMessage)
     {
         chatWarning(itMessage->second.recipients, itMessage->second.message);
     }
@@ -236,14 +236,14 @@ void I18nManager::i18nPopupSay( RecipientFilter & recipients,
 {
     const vector<int> * recipientVector = recipients.getVector();
     vector<int>::const_iterator itIndex;
-    for(itIndex = recipientVector->begin(); itIndex != recipientVector->end(); itIndex++)
+    for(itIndex = recipientVector->begin(); itIndex != recipientVector->end(); ++itIndex)
     {
         string language = engine->GetClientConVarValue(*itIndex, "cl_language");
         updateMessageCache(*itIndex, language, keyword, parameters);
     }
 
     map<string, I18nMessage>::iterator itMessage;
-    for(itMessage = messageCache.begin(); itMessage != messageCache.end(); itMessage++)
+    for(itMessage = messageCache.begin(); itMessage != messageCache.end(); ++itMessage)
     {
         popupSay(itMessage->second.recipients, itMessage->second.message, lifeTime, flags);
     }
@@ -256,14 +256,14 @@ void I18nManager::i18nHintSay(  RecipientFilter & recipients,
 {
     const vector<int> * recipientVector = recipients.getVector();
     vector<int>::const_iterator itIndex;
-    for(itIndex = recipientVector->begin(); itIndex != recipientVector->end(); itIndex++)
+    for(itIndex = recipientVector->begin(); itIndex != recipientVector->end(); ++itIndex)
     {
         string language = engine->GetClientConVarValue(*itIndex, "cl_language");
         updateMessageCache(*itIndex, language, keyword, parameters);
     }
 
     map<string, I18nMessage>::iterator itMessage;
-    for(itMessage = messageCache.begin(); itMessage != messageCache.end(); itMessage++)
+    for(itMessage = messageCache.begin(); itMessage != messageCache.end(); ++itMessage)
     {
         hintSay(itMessage->second.recipients, itMessage->second.message);
     }
@@ -276,14 +276,14 @@ void I18nManager::i18nCenterSay(RecipientFilter & recipients,
 {
     const vector<int> * recipientVector = recipients.getVector();
     vector<int>::const_iterator itIndex;
-    for(itIndex = recipientVector->begin(); itIndex != recipientVector->end(); itIndex++)
+    for(itIndex = recipientVector->begin(); itIndex != recipientVector->end(); ++itIndex)
     {
         string language = engine->GetClientConVarValue(*itIndex, "cl_language");
         updateMessageCache(*itIndex, language, keyword, parameters);
     }
 
     map<string, I18nMessage>::iterator itMessage;
-    for(itMessage = messageCache.begin(); itMessage != messageCache.end(); itMessage++)
+    for(itMessage = messageCache.begin(); itMessage != messageCache.end(); ++itMessage)
     {
         centerSay(itMessage->second.recipients, itMessage->second.message);
     }
@@ -296,14 +296,14 @@ void I18nManager::i18nConsoleSay(   RecipientFilter & recipients,
 {
     const vector<int> * recipientVector = recipients.getVector();
     vector<int>::const_iterator itIndex;
-    for(itIndex = recipientVector->begin(); itIndex != recipientVector->end(); itIndex++)
+    for(itIndex = recipientVector->begin(); itIndex != recipientVector->end(); ++itIndex)
     {
         string language = engine->GetClientConVarValue(*itIndex, "cl_language");
         updateMessageCache(*itIndex, language, keyword, parameters);
     }
 
     map<string, I18nMessage>::iterator itMessage;
-    for(itMessage = messageCache.begin(); itMessage != messageCache.end(); itMessage++)
+    for(itMessage = messageCache.begin(); itMessage != messageCache.end(); ++itMessage)
     {
         consoleSay(itMessage->second.recipients, itMessage->second.message);
     }

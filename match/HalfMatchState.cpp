@@ -86,7 +86,7 @@ void HalfMatchState::startState()
 
     // Subscribe to the needed game events
     map<string, EventCallback>::iterator itEvent;
-    for(itEvent = eventCallbacks.begin(); itEvent != eventCallbacks.end(); itEvent++)
+    for(itEvent = eventCallbacks.begin(); itEvent != eventCallbacks.end(); ++itEvent)
     {
         interfaces->gameeventmanager2->AddListener(this, itEvent->first.c_str(), true);
     }
@@ -108,11 +108,10 @@ void HalfMatchState::startState()
         recordName << dateBuffer << '_' << interfaces->gpGlobals->mapname.ToCStr() << "_set" <<
         infos->halfNumber;
 
-        TvRecord * record = NULL;
         try
         {
             string finalName = recordName.str();
-            record = new TvRecord(finalName);
+            TvRecord * record = new TvRecord(finalName);
             record->start();
             match->getRecords()->push_back(record);
         }
@@ -389,7 +388,7 @@ void HalfMatchState::endHalf()
         }
 
         // One more half started
-        infos->halfNumber++;
+        ++infos->halfNumber;
 
         // Swap every players
         plugin->addTimer(new SwapTimer((float)timeoutDuration));
@@ -449,14 +448,12 @@ void HalfMatchState::player_death(IGameEvent * event)
 {
     // Update the score [history] of the involved players
 
-    ServerPlugin * plugin = ServerPlugin::getInstance();
-
     int idVictim = event->GetInt("userid");
     ClanMember * victim = NULL;
     CSSMATCH_VALID_PLAYER(PlayerHavingUserid, idVictim, victim)
     {
         PlayerScore * currentScore = victim->getCurrentScore();
-        currentScore->deaths++;
+        ++currentScore->deaths;
     }
 
     int idAttacker = event->GetInt("attacker");
@@ -467,9 +464,9 @@ void HalfMatchState::player_death(IGameEvent * event)
         {
             PlayerScore * currentScore = attacker->getCurrentScore();
             if (attacker->getMyTeam() != victim->getMyTeam())
-                currentScore->kills++;
+                ++currentScore->kills;
             else
-                currentScore->kills--;
+                --currentScore->kills;
         }
     }
 }
@@ -572,10 +569,10 @@ void HalfMatchState::round_end(IGameEvent * event)
                 switch(winnerTeam)
                 {
                 case T_TEAM:
-                    winner->getStats()->scoreT++;
+                    ++winner->getStats()->scoreT;
                     break;
                 case CT_TEAM:
-                    winner->getStats()->scoreCT++;
+                    ++winner->getStats()->scoreCT;
                     break;
                 }
                 if (infos->roundNumber >= plugin->getConVar("cssmatch_rounds")->GetInt())
@@ -604,7 +601,7 @@ void SwapTimer::execute()
 
     list<ClanMember *> * playerlist = plugin->getPlayerlist();
     list<ClanMember *>::iterator itPlayer;
-    for(itPlayer = playerlist->begin(); itPlayer != playerlist->end(); itPlayer++)
+    for(itPlayer = playerlist->begin(); itPlayer != playerlist->end(); ++itPlayer)
     {
         (*itPlayer)->swap(/*false*/);
     }

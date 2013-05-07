@@ -47,6 +47,8 @@ namespace cssmatch
             /** The state to lauch once the time-out is ended */
             BaseMatchState * nextState;
         public:
+			TimeoutCountdown() : nextState(NULL){}
+
             // BaseCountdown method
             /**
              * @param seconds Countdown duration

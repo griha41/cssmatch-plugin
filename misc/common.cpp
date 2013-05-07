@@ -61,7 +61,7 @@ bool cssmatch::normalizeFileName(std::string & fileName)
     bool change = false;
 
     string::iterator itChar;
-    for(itChar = fileName.begin(); itChar != fileName.end(); itChar++)
+    for(itChar = fileName.begin(); itChar != fileName.end(); ++itChar)
     {
         char currentChar = *itChar;
         if (currentChar == '/' ||

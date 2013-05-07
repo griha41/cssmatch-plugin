@@ -386,7 +386,7 @@ throw(MatchManagerException)
 
         // Start to listen some events
         map<string, EventCallback>::iterator itEvent;
-        for(itEvent = eventCallbacks.begin(); itEvent != eventCallbacks.end(); itEvent++)
+        for(itEvent = eventCallbacks.begin(); itEvent != eventCallbacks.end(); ++itEvent)
         {
             interfaces->gameeventmanager2->AddListener(this, itEvent->first.c_str(), true);
         }
@@ -572,7 +572,7 @@ void MatchManager::sendStatus(RecipientFilter & recipients) const
 
     list<ClanMember *> * playerlist = plugin->getPlayerlist();
     list<ClanMember *>::const_iterator itPlayer;
-    for (itPlayer = playerlist->begin(); itPlayer != playerlist->end(); itPlayer++)
+    for (itPlayer = playerlist->begin(); itPlayer != playerlist->end(); ++itPlayer)
     {
         status.str("");
         IPlayerInfo * pInfo = (*itPlayer)->getPlayerInfo();

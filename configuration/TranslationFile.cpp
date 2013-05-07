@@ -86,7 +86,7 @@ void TranslationFile::parseTranslations(list<string> & lines)
         bool equalFound = false;
         while((itChar != lastChar) && (! equalFound))
         {
-            iEqual++;
+            ++iEqual;
             switch(*itChar)
             {
             case '"': // Quoted string
@@ -98,7 +98,7 @@ void TranslationFile::parseTranslations(list<string> & lines)
                 break;
             }
 
-            itChar++;
+            ++itChar;
         }
 
         // Is the symbol between quotation marks ?

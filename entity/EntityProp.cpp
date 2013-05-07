@@ -71,7 +71,7 @@ void EntityProp::getOffset(SendTable * table,  istringstream & propPathLeft)
                 i = nbrProps; // break
             }
         }
-        i++;
+        ++i;
     }
 }
 

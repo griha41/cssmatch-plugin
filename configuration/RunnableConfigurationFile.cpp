@@ -49,11 +49,11 @@ using std::ostringstream;
     while((itChar != lastChar) && (! allFound))
     {
         if ((*itChar != ' ') && (*itChar != '\t'))
-            iDataBegin++;
+            ++iDataBegin;
         else
             allFound = true;
 
-        itChar++;
+        ++itChar;
     }
     if (iDataBegin > 0)
         varName = line.substr(0,iDataBegin);
@@ -62,8 +62,8 @@ using std::ostringstream;
     size_t iDataLength = 0;
     while((itChar != lastChar) && (*itChar == ' ') || (*itChar == '\t'))
     {
-        iDataBegin++;
-        itChar++;
+        ++iDataBegin;
+        ++itChar;
     }
 
     // Try to find the server variable value
@@ -86,7 +86,7 @@ void RunnableConfigurationFile::getData()
     getLines(lines);
 
     list<string>::iterator itLine;
-    for(itLine = lines.begin(); itLine != lines.end(); itLine++)
+    for(itLine = lines.begin(); itLine != lines.end(); ++itLine)
     {
         pair<string, string> lineData = searchData(*itLine);
         if ((lineData.first.size() > 0) && (lineData.second.size() > 0))

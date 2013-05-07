@@ -98,8 +98,6 @@ PLUGIN_RESULT cssmatch::clientcmd_jointeam(ClanMember * user, const CCommand & a
 
 PLUGIN_RESULT cssmatch::clientcmd_menuselect(ClanMember * user, const CCommand & args)
 {
-    ServerPlugin * plugin = ServerPlugin::getInstance();
-
     Menu * menu = user->getMenu();
     if (menu != NULL)
     {
@@ -168,7 +166,7 @@ PLUGIN_RESULT cssmatch::clientcmd_rates(ClanMember * user, const CCommand & args
 
     list<ClanMember *> * playerlist = plugin->getPlayerlist();
     list<ClanMember *>::const_iterator currentPlayer;
-    for(currentPlayer = playerlist->begin(); currentPlayer != playerlist->end(); currentPlayer++)
+    for(currentPlayer = playerlist->begin(); currentPlayer != playerlist->end(); ++currentPlayer)
     {
         int playerIndex = (*currentPlayer)->getIdentity()->index;
 

@@ -253,7 +253,6 @@ void DisabledMatchState::configQuestionCallback(Player * player, int choice, Men
 {
     if (choice != 10)
     {
-        DisabledMatchState * state = DisabledMatchState::getInstance();
         ServerPlugin * plugin = ServerPlugin::getInstance();
         MatchManager * match = plugin->getMatch();
         MatchMenuLineData * const matchSettings =

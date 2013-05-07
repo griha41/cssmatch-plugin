@@ -107,9 +107,8 @@ void KnifeRoundMatchState::endKniferound(TeamCode winner)
 
     list<ClanMember *> * playerlist = plugin->getPlayerlist();
     list<ClanMember *>::iterator itPlayer;
-    for(itPlayer = playerlist->begin(); itPlayer != playerlist->end(); itPlayer++)
+    for(itPlayer = playerlist->begin(); itPlayer != playerlist->end(); ++itPlayer)
     {
-        PlayerIdentity * identity = (*itPlayer)->getIdentity();
         IPlayerInfo * pInfo = (*itPlayer)->getPlayerInfo();
         TeamCode playerTeam = (*itPlayer)->getMyTeam();
         if (playerTeam == winner)
@@ -177,7 +176,7 @@ void KnifeRoundMatchState::startState()
 
     // Register to the needed events
     map<string, EventCallback>::iterator itEvent;
-    for(itEvent = eventCallbacks.begin(); itEvent != eventCallbacks.end(); itEvent++)
+    for(itEvent = eventCallbacks.begin(); itEvent != eventCallbacks.end(); ++itEvent)
     {
         interfaces->gameeventmanager2->AddListener(this, itEvent->first.c_str(), true);
     }

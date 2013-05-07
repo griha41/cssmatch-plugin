@@ -59,7 +59,7 @@ bool MatchClan::isValidClanName(const string & newName, const list<ClanMember *>
                 string name = pInfo->GetName();
                 if (name.find(newName) != string::npos)
                 {
-                    occurences++;
+                    ++occurences;
                     if (occurences > majority)
                     {
                         valid = true;
@@ -67,7 +67,7 @@ bool MatchClan::isValidClanName(const string & newName, const list<ClanMember *>
                     }
                 }
             }
-            itMember++;
+            ++itMember;
         }
     }
 
@@ -96,7 +96,7 @@ void MatchClan::getMembers(list<ClanMember *> * members)
 
         list<ClanMember *> * playerlist = plugin->getPlayerlist();
         list<ClanMember *>::iterator itMembers;
-        for(itMembers = playerlist->begin(); itMembers != playerlist->end(); itMembers++)
+        for(itMembers = playerlist->begin(); itMembers != playerlist->end(); ++itMembers)
         {
             //Msg("%i team%i\n",(*itMembers)->getIdentity()->userid,(*itMembers)->getMyTeam());
             if ((*itMembers)->getMyTeam() == team)
@@ -147,9 +147,6 @@ void MatchClan::detectClanName(bool force)
 
     if (allowAutoDetect || force)
     {
-        ServerPlugin * plugin = ServerPlugin::getInstance();
-        ValveInterfaces * interfaces = plugin->getInterfaces();
-
         list<ClanMember *> memberlist;
         getMembers(&memberlist);
 
@@ -175,7 +172,7 @@ void MatchClan::detectClanName(bool force)
             if (occurences > majority)
                 break;
 
-            itMember++;
+            ++itMember;
         }
 
         if (! mostUsed.empty())
@@ -216,7 +213,7 @@ void MatchClan::detectClanName(bool force)
             while((iMember <= majority) && (! foundName))
             {
                 list<ClanMember *>::const_iterator itMember2 = itMember;
-                itMember2++;
+                ++itMember2;
                 while(itMember2 != memberlist.end() && (! foundName))
                 {
                     ClanMember * member1 = *itMember;
@@ -254,8 +251,8 @@ void MatchClan::detectClanName(bool force)
                                 {         // Found a common character
                                     newName += *itMemberName1;
 
-                                    itMemberName1++;
-                                    //itMemberName2++; // see below
+                                    ++itMemberName1;
+                                    //++itMemberName2; // see below
                                 }
                                 else if (MatchClan::isValidClanName(newName, memberlist))
                                 {         // Found a coherent clan name
@@ -270,18 +267,18 @@ void MatchClan::detectClanName(bool force)
                                 else
                                     newName = "";
 
-                                itMemberName2++;
+                                ++itMemberName2;
                             }
 
                             if (itMemberName1 != endMemberName1)
-                                itMemberName1++;
+                                ++itMemberName1;
                         }
                     }
 
-                    itMember2++;
+                    ++itMember2;
                 }
-                itMember++;
-                iMember++;
+                ++itMember;
+                ++iMember;
             }
 
             // If no coherent name was found, we set a neutral name

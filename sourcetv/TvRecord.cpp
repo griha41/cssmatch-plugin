@@ -62,7 +62,7 @@ TvRecord::TvRecord(std::string & recordName) throw (TvRecordException) : recordi
 
             tempName = newName.str();
 
-            fileCount++;
+            ++fileCount;
         }
         name = baseName + ".dem";
     }

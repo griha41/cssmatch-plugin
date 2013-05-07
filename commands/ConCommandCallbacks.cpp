@@ -70,7 +70,7 @@ void cssmatch::cssm_help(const CCommand & args)
             Msg("%s\n", helpText);
             delete helpText;
 
-            itConCommand++;
+            ++itConCommand;
         }
     }
     else
@@ -292,7 +292,7 @@ void cssmatch::cssm_adminlist(const CCommand & args)
 
     plugin->log("Admin list:");
     list<string>::const_iterator itSteamid;
-    for(itSteamid = adminlist->begin(); itSteamid != adminlist->end(); itSteamid++)
+    for(itSteamid = adminlist->begin(); itSteamid != adminlist->end(); ++itSteamid)
     {
         plugin->log(*itSteamid);
     }
@@ -579,7 +579,7 @@ bool cssmatch::say_hook(ClanMember * user, const CCommand & args)
             TeamCode team = user->getMyTeam();
             list<ClanMember *> * playerlist = plugin->getPlayerlist();
             list<ClanMember *>::const_iterator itPlayer;
-            for (itPlayer = playerlist->begin(); itPlayer != playerlist->end(); itPlayer++)
+            for (itPlayer = playerlist->begin(); itPlayer != playerlist->end(); ++itPlayer)
             {
                 if ((*itPlayer)->getMyTeam() == team)
                     recipients.addRecipient(*itPlayer);

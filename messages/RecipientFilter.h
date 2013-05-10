@@ -45,7 +45,7 @@ namespace cssmatch
         virtual bool IsReliable() const;
 
         /** FIXME: not implemented
-         * @see IRecipientFilter::IsReliable
+         * @see IRecipientFilter::IsInitMessage
          */
         virtual bool IsInitMessage() const;
 

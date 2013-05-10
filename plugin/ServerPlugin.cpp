@@ -1025,7 +1025,7 @@ void ServerPlugin::OnQueryCvarValueFinished(QueryCvarCookie_t iCookie, edict_t *
 {
 }
 
-void ServerPlugin::log(const std::string & message) const
+void ServerPlugin::log(const string & message) const
 {
     ostringstream buffer;
     buffer << CSSMATCH_NAME << ": " << message << "\n";

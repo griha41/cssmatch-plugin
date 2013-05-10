@@ -39,7 +39,7 @@ using std::string;
 using std::ostringstream;
 using std::vector;
 
-int UserMessagesManager::findMessageType(const std::string & typeName)
+int UserMessagesManager::findMessageType(const string & typeName)
 {
     int id = CSSMATCH_INVALID_MSG_TYPE;
 
@@ -172,7 +172,7 @@ int UserMessagesManager::findMessageType(const std::string & typeName)
         }
     }
 
-    void UserMessagesManager::motdSay(RecipientFilter recipients, MotdType type,
+    void UserMessagesManager::motdSay(RecipientFilter & recipients, MotdType type,
                                       const string & title,
                                       const string & message)
     {
@@ -194,7 +194,7 @@ int UserMessagesManager::findMessageType(const std::string & typeName)
         engine->MessageEnd();
     }
 
-    void UserMessagesManager::showPanel(RecipientFilter recipients, const std::string & panelName,
+    void UserMessagesManager::showPanel(RecipientFilter & recipients, const std::string & panelName,
                                         bool show)
     {
         bf_write * pWrite = engine->UserMessageBegin(&recipients, findMessageType("VGUIMenu"));

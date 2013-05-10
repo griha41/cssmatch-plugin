@@ -40,9 +40,9 @@ using std::vector;
 map<string, string> I18nManager::WITHOUT_PARAMETERS;
 
 void I18nManager::updateMessageCache(   int recipientIndex,
-                                        const std::string & language,
-                                        const std::string & keyword,
-                                        const std::map<std::string, std::string> & parameters)
+                                        const string & language,
+                                        const string & keyword,
+                                        const map<string, string> & parameters)
 {
     // Is the message already in the cache?
     map<string, I18nMessage>::iterator itCache = messageCache.find(language);
@@ -104,8 +104,8 @@ TranslationFile * I18nManager::getTranslationFile(const string & language)
             // The file was not found, we'll use the default language instead
             if (defaultLanguage != NULL)
             {
-                std::string defaultLanguageName = defaultLanguage->GetString();
-                std::map<std::string, TranslationFile *>::iterator itDefault = languages.find(
+                string defaultLanguageName = defaultLanguage->GetString();
+                map<string, TranslationFile *>::iterator itDefault = languages.find(
                     defaultLanguageName);
                 if (itDefault == lastLanguages)
                 {
@@ -229,7 +229,7 @@ void I18nManager::i18nChatWarning(  RecipientFilter & recipients,
 }
 
 void I18nManager::i18nPopupSay( RecipientFilter & recipients,
-                                const std::string & keyword,
+                                const string & keyword,
                                 int lifeTime,
                                 const map<string, string> & parameters,
                                 int flags)

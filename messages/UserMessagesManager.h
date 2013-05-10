@@ -147,7 +147,7 @@ namespace cssmatch
          * @param message Message or URL
          * @see enum MotdType
          */
-        void motdSay(RecipientFilter recipients, MotdType type, const std::string & title,
+        void motdSay(RecipientFilter & recipients, MotdType type, const std::string & title,
                      const std::string & message);
 
         /** Show/Hide an existing vgui panel
@@ -155,7 +155,7 @@ namespace cssmatch
          * @param panelName Panel name
          * @param show <code>true</code>: show the panel, <code>false</code>: hide the panel
          */
-        void showPanel(RecipientFilter recipients, const std::string & panelName, bool show);
+        void showPanel(RecipientFilter & recipients, const std::string & panelName, bool show);
 
         /** Send a centered message
          * @param recipients Recipient list

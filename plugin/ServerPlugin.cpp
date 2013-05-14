@@ -288,10 +288,10 @@ bool ServerPlugin::Load(CreateInterfaceFn interfaceFactory, CreateInterfaceFn ga
             addPluginConCommand(new I18nConCommand(i18n, "cssm_spec", cssm_spec, "cssm_spec"));
 
             // Hook needed commands
-            hookConCommand("say", say_hook, true);
-            hookConCommand("say_team", say_hook, true);
-            //hookConCommand("tv_stoprecord",tv_stoprecord_hook);
-            //hookConCommand("tv_stop",tv_stoprecord_hook);
+            hookConCommand("say", FCVAR_GAMEDLL, say_hook, true);
+            hookConCommand("say_team", FCVAR_GAMEDLL, say_hook, true);
+            //hookConCommand("tv_stoprecord", tv_stoprecord_hook);
+            //hookConCommand("tv_stop", tv_stoprecord_hook);
 
             addPluginClientCommand("jointeam", clientcmd_jointeam, false);
             addPluginClientCommand("menuselect", clientcmd_menuselect, false);
@@ -787,7 +787,7 @@ const map<string, ConCommand *> * ServerPlugin::getPluginConCommands() const
     return &pluginConCommands;
 }
 
-void ServerPlugin::hookConCommand(const std::string & commandName, HookCallback callback,
+void ServerPlugin::hookConCommand(const std::string & commandName, int flags, HookCallback callback,
                                   bool antispam)
 {
     map<string, ConCommandHook *>::iterator invalidHook = hookConCommands.end();
@@ -798,7 +798,7 @@ void ServerPlugin::hookConCommand(const std::string & commandName, HookCallback 
         char * cName = new char [commandName.size() + 1];
         V_strcpy(cName, commandName.c_str());
 
-        hookConCommands[commandName] = new ConCommandHook(cName, callback, antispam);
+        hookConCommands[commandName] = new ConCommandHook(cName, flags, callback, antispam);
     }
     else
     {

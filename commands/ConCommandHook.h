@@ -53,10 +53,11 @@ namespace cssmatch
     public:
         /** Similar to the ConCommand's constructor
          * @param name The name must be dynamically allocated with new!
+		 * @param flags The command's flags (see iconvar.h)
          * @param hookCallback The function to call when the hooked command is used
          * @param antispam Does this command need to be protected against spam?
          */
-        ConCommandHook(const char * name, HookCallback hookCallback, bool antispam);
+        ConCommandHook(const char * name, int flags, HookCallback hookCallback, bool antispam);
 
         /**
          * @see ConCommand

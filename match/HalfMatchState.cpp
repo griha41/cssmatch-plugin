@@ -558,9 +558,10 @@ void HalfMatchState::round_end(IGameEvent * event)
 
     if (infos->roundNumber > 0) // otherwise the restarts haven't even occured yet
     {
+		const char * message = event->GetString("message");
         if ((plugin->getPlayerCount(T_TEAM) > 0) && (plugin->getPlayerCount(CT_TEAM) > 0)
-            && (strcmp(event->GetString("message"), "#Round_Draw") != 0)
-            && (strcmp(event->GetString("message"), "#Game_Commencing") != 0))
+            && (strcmp(message, "#Round_Draw") != 0)
+            && (strcmp(message, "#Game_Commencing") != 0))
         {
             try
             {
@@ -580,7 +581,7 @@ void HalfMatchState::round_end(IGameEvent * event)
             }
             catch(const MatchManagerException & e)
             {
-                // CSSMATCH_PRINT_EXCEPTION(e); // round draw
+                CSSMATCH_PRINT_EXCEPTION(e);
             }
         }
         else

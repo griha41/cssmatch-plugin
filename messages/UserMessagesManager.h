@@ -168,6 +168,12 @@ namespace cssmatch
          * @param message The message to send
          */
         void consoleSay(RecipientFilter & recipients, const std::string & message);
+
+        /** Send a right-side (windowed) popup message
+         * @param recipients Recipient list
+         * @param message The message to send
+         */
+        void keyHintSay(RecipientFilter & recipients, const std::string & message);
     };
 }
 

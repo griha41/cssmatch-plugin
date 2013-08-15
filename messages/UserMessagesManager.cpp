@@ -172,6 +172,19 @@ int UserMessagesManager::findMessageType(const string & typeName)
         }
     }
 
+	void UserMessagesManager::keyHintSay(RecipientFilter & recipients, const std::string & message)
+	{
+        ServerPlugin * plugin = ServerPlugin::getInstance();
+        ValveInterfaces * interfaces = plugin->getInterfaces();
+
+        bf_write * pWrite = engine->UserMessageBegin(&recipients, findMessageType("KeyHintText"));
+
+		pWrite->WriteByte(1); // DOCUMENT ME
+        pWrite->WriteString(message.c_str());
+
+        engine->MessageEnd();
+	}
+
     void UserMessagesManager::motdSay(RecipientFilter & recipients, MotdType type,
                                       const string & title,
                                       const string & message)

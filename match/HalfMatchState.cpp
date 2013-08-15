@@ -558,7 +558,7 @@ void HalfMatchState::round_end(IGameEvent * event)
 
     if (infos->roundNumber > 0) // otherwise the restarts haven't even occured yet
     {
-		const char * message = event->GetString("message");
+        const char * message = event->GetString("message");
         if ((plugin->getPlayerCount(T_TEAM) > 0) && (plugin->getPlayerCount(CT_TEAM) > 0)
             && (strcmp(message, "#Round_Draw") != 0)
             && (strcmp(message, "#Game_Commencing") != 0))

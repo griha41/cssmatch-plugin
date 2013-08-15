@@ -319,7 +319,7 @@ namespace cssmatch
 
         /** Hook a ConCommand (one hook = one callback)
          * @param commandName The name of the ConCommand to hook
-		 * @param flags The command's flags (see iconvar.h)
+         * @param flags The command's flags (see iconvar.h)
          * @param callback Callback to invoke when the hooked command is used
          * @param antispam Does this command need to be protected against spam?
          */

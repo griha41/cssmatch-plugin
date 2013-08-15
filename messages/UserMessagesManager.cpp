@@ -173,7 +173,7 @@ int UserMessagesManager::findMessageType(const string & typeName)
     }
 
 	void UserMessagesManager::keyHintSay(RecipientFilter & recipients, const std::string & message)
-	{
+    {
         ServerPlugin * plugin = ServerPlugin::getInstance();
         ValveInterfaces * interfaces = plugin->getInterfaces();
 
@@ -183,7 +183,7 @@ int UserMessagesManager::findMessageType(const string & typeName)
         pWrite->WriteString(message.c_str());
 
         engine->MessageEnd();
-	}
+    }
 
     void UserMessagesManager::motdSay(RecipientFilter & recipients, MotdType type,
                                       const string & title,

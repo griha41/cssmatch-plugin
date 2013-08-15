@@ -68,11 +68,17 @@ namespace cssmatch
         /** {language => I18nMessage} */
         std::map<std::string, I18nMessage> messageCache;
 
-        /** Update the message cache */
-        void updateMessageCache(    int recipientIndex,
-                                    const std::string & language,
-                                    const std::string & keyword,
-                                    const std::map<std::string, std::string> & parameters);
+        /** Build the message cache 
+         * @param recipients Recipient list
+         * @param keyword The identifier of the translation to use
+         * @param parameters If specified, the message's parameters and their values
+         */
+        void buildMessageCache(  const RecipientFilter & recipients,
+                                 const std::string & keyword,
+                                 const std::map<std::string, std::string> & parameters);
+
+        /** Clear the message cache */
+        void clearMessageCache();
     public:
         /** Empty map for messages which have no option to parse */
         static std::map<std::string, std::string> WITHOUT_PARAMETERS;

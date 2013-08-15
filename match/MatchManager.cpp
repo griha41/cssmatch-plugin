@@ -180,11 +180,6 @@ void MatchManager::player_activate(IGameEvent * event)
 
             i18n->i18nChatSay(recipients, "player_join_game", parameters);
         }
-
-        /*RecipientFilter newplayerRecipient;
-        newplayerRecipient.addRecipient(player);
-
-        i18n->i18nPopupSay(newplayerRecipient,"player_match_hosted_popup",0);*/
     }
 }
 
@@ -444,8 +439,6 @@ void MatchManager::stop() throw (MatchManagerException)
         // Send all the announcements
         RecipientFilter recipients;
         recipients.addAllPlayers();
-
-        i18n->i18nChatSay(recipients, "match_end");
 
         const string * tagClan1 = lignup.clan1.getName();
         ClanStats * clan1Stats = lignup.clan1.getStats();

@@ -416,20 +416,26 @@ void HalfMatchState::finish()
     recipients.addAllPlayers();
     map<string, string> parameters;
 
-    parameters["$current"] = toString(infos->halfNumber);
+    if (infos->halfNumber < plugin->getConVar("cssmatch_sets")->GetInt())
+    {
+        parameters["$current"] = toString(infos->halfNumber);
+        //i18n->i18nChatSay(recipients, "match_end_current_manche", parameters);
 
-    i18n->i18nChatSay(recipients, "match_end_current_manche", parameters);
+        ClanStats * statsClan1 = lignup->clan1.getStats();
+        parameters["$team1"] = *lignup->clan1.getName();
+        parameters["$score1"] = toString(statsClan1->scoreCT + statsClan1->scoreT);
 
-    ClanStats * statsClan1 = lignup->clan1.getStats();
-    parameters["$team1"] = *lignup->clan1.getName();
-    parameters["$score1"] = toString(statsClan1->scoreCT + statsClan1->scoreT);
+        ClanStats * statsClan2 = lignup->clan2.getStats();
+        parameters["$team2"] = *lignup->clan2.getName();
+        parameters["$score2"] = toString(statsClan2->scoreCT + statsClan2->scoreT);
 
-    ClanStats * statsClan2 = lignup->clan2.getStats();
-    parameters["$team2"] = *lignup->clan2.getName();
-    parameters["$score2"] = toString(statsClan2->scoreCT + statsClan2->scoreT);
-
-    i18n->i18nPopupSay(recipients, "match_end_manche_popup", 6, parameters);
-    //i18n->i18nConsoleSay(recipients,"match_end_manche_popup",parameters);
+        i18n->i18nPopupSay(recipients, "match_end_manche_popup", 6, parameters);
+        //i18n->i18nConsoleSay(recipients,"match_end_manche_popup",parameters);
+    }
+    else
+    {
+        i18n->i18nChatSay(recipients, "match_end");
+    }
 }
 
 void HalfMatchState::FireGameEvent(IGameEvent * event)

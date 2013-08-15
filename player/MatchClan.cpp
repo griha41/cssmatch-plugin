@@ -37,7 +37,7 @@ using std::list;
 using std::ostringstream;
 using std::map;
 
-MatchClan::MatchClan() : name("Nobody"), allowAutoDetect(true), ready(false)
+MatchClan::MatchClan() : name("?"), allowAutoDetect(true), ready(false)
 {}
 
 // I'm static
@@ -287,13 +287,11 @@ void MatchClan::detectClanName(bool force)
                 IPlayerInfo * pInfo = memberlist.front()->getPlayerInfo();
                 if (isValidPlayerInfo(pInfo))
                 {
-                    ostringstream buffer;
-                    buffer << pInfo->GetName() << "'s clan";
-                    setName(buffer.str());
+                    setName(pInfo->GetName());
                 }
                 else
                 {
-                    setName("Nobody");
+                    setName("?");
                     CSSMATCH_PRINT("Failed to find a clan name")
                 }
             }

@@ -14,6 +14,8 @@
 //  (Alt+03) = verde claro o el color del equipo
 //  (Alt+04) = verde
 //  (Alt+05) = verde oscuro
+// rrggbb    = hexadecimal RGB code
+// rrggbbaa   = hexadecimal RGBA code
 
 [Spanish]
 
@@ -78,7 +80,7 @@ match_in_progress =				"La War ya está en proceso..."
 match_not_in_progress =			"La War no está en proceso..."
 match_round_popup =				"Ronda $current / $total\n$team1 : $score1\n$team2 : $score2"
 match_password_popup =			"Contraseña Servidor : $password"
-match_password_remember =		"¡ RECUERDA ! La contraseña del servidor es $password"
+match_password_remember =		"¡ RECUERDA ! La contraseña del servidor es FF0000$password"
 match_name =					"$team1 VS $team2"
 match_config_error =			"¡ Error : el archivo de configuración no tiene la información de war !"
 match_scores =					"Scores :"

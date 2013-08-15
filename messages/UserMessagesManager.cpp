@@ -107,13 +107,12 @@ int UserMessagesManager::findMessageType(const string & typeName)
     void UserMessagesManager::chatWarning(RecipientFilter & recipients, const string & message)
     {
         ostringstream output;
-        output << "\004[" << CSSMATCH_NAME << "]\003 " << message << "\n";
+        output << "\004[" << CSSMATCH_NAME << "]\007FF0000 " << message << "\n";
 
         bf_write * pBitBuf = engine->UserMessageBegin(&recipients, findMessageType("SayText"));
 
-        pBitBuf->WriteByte(0x02); // \003 => team color
+        pBitBuf->WriteByte(00); // no player index
         pBitBuf->WriteString(output.str().c_str());
-        pBitBuf->WriteByte(0x01); // \003 => team color
         pBitBuf->WriteByte(1); // DOCUMENT ME
 
         engine->MessageEnd();

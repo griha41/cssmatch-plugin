@@ -14,6 +14,8 @@
 //  (Alt+03) = vert clair (ou couleur de la team)
 //  (Alt+04) = vert
 //  (Alt+05) = vert foncé
+// rrggbb    = code hexadecimal RGB
+// rrggbbaa   = code hexadecimal RGBA
 
 [French]
 
@@ -78,7 +80,7 @@ match_in_progress =				"Un match est déjà en cours..."
 match_not_in_progress =			"Il n'y a aucun match en cours..."
 match_round_popup =				"Round $current / $total\n$team1 : $score1\n$team2 : $score2"
 match_password_popup =			"Mot de passe du serveur : $password"
-match_password_remember =		"RAPPEL : Le mot de passe du serveur est $password"
+match_password_remember =		"RAPPEL : Le mot de passe du serveur est FF0000$password"
 match_name =					"$team1 VS $team2"
 match_config_error =			"Erreur : le fichier de configuration n'impose aucune phase de match !"
 match_scores =					"Scores :"

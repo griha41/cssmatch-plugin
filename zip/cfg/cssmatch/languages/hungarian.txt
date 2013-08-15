@@ -26,6 +26,8 @@
 //  (Alt+03) = light green or team color
 //  (Alt+04) = green
 //  (Alt+05) = dark green
+// rrggbb    = hexadecimal RGB code
+// rrggbbaa   = hexadecimal RGBA code
 
 [Hungarian]
 
@@ -90,7 +92,7 @@ match_in_progress =				"A mecss már fut ..."
 match_not_in_progress =			"Nincs futó meccs ..."
 match_round_popup =				"Körök: $current / $total\n$team1 : $score1\n$team2 : $score2"
 match_password_popup =			"Szerver jelszava : $password"
-match_password_remember =		"EMLÉKEZTETŐ ! A szerver jelszava: $password"
+match_password_remember =		"EMLÉKEZTETŐ ! A szerver jelszava: FF0000$password"
 match_name =					"$team1 VS $team2"
 match_config_error =			"Hiba : a konfigurációs fájl nem tartalmaz meccs információt !"
 match_scores =					"Pontok :"

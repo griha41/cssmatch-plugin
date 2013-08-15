@@ -14,6 +14,8 @@
 //  (Alt+03) = light green or team color
 //  (Alt+04) = green
 //  (Alt+05) = dark green
+// rrggbb    = hexadecimal RGB code
+// rrggbbaa   = hexadecimal RGBA code
 
 [English]
 
@@ -78,7 +80,7 @@ match_in_progress =				"Match already running..."
 match_not_in_progress =			"No match running..."
 match_round_popup =				"Round $current / $total\n$team1 : $score1\n$team2 : $score2"
 match_password_popup =			"Server password : $password"
-match_password_remember =		"REMINDER ! Server password is $password"
+match_password_remember =		"REMINDER ! Server password is FF0000$password"
 match_name =					"$team1 VS $team2"
 match_config_error =			"Error : config file has no match information !"
 match_scores =					"Scores :"

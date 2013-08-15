@@ -541,7 +541,7 @@ void HalfMatchState::round_start(IGameEvent * event)
             parameters["$score1"] = toString(statsClan1->scoreCT + statsClan1->scoreT);
             parameters["$team2"] = *lignup->clan2.getName();
             parameters["$score2"] = toString(statsClan2->scoreCT + statsClan2->scoreT);
-            plugin->addTimer(new TimerI18nPopupSay(1.5f, recipients, "match_round_popup", 5,
+            plugin->addTimer(new TimerI18nKeyHintSay(4.5f, recipients, "match_round_popup",
                                                    parameters));
         }
         }

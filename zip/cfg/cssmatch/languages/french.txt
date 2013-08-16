@@ -14,8 +14,8 @@
 //  (Alt+03) = vert clair (ou couleur de la team)
 //  (Alt+04) = vert
 //  (Alt+05) = vert foncé
-// rrggbb    = code hexadecimal RGB
-// rrggbbaa   = code hexadecimal RGBA
+// rrggbb (Alt+07) = code hexadecimal RGB
+// rrggbbaa (Alt+08) = code hexadecimal RGBA
 
 [French]
 

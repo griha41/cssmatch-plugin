@@ -296,45 +296,40 @@ void I18nManager::i18nMsg(const string & keyword, const map<string, string> & pa
     // FIXME: uses the default language
 }
 
-TimerI18nChatSay::TimerI18nChatSay( float delay,
-                                    RecipientFilter & recip,
+TimerI18nChatSay::TimerI18nChatSay( RecipientFilter & recip,
                                     const string & key,
                                     const map<string, string> & param,
                                     int pIndex)
-    : BaseTimer(delay), recipients(recip), keyword(key), parameters(param), playerIndex(pIndex)
+    : recipients(recip), keyword(key), parameters(param), playerIndex(pIndex)
 {}
 
-void TimerI18nChatSay::execute()
+void TimerI18nChatSay::operator()()
 {
     ServerPlugin::getInstance()->getI18nManager()->i18nChatSay(recipients, keyword, parameters,
                                                                playerIndex);
 }
 
-TimerI18nPopupSay::TimerI18nPopupSay(   float delay,
-                                        RecipientFilter & recip,
+TimerI18nPopupSay::TimerI18nPopupSay(   RecipientFilter & recip,
                                         const string & key,
                                         int life,
                                         const map<string, string> & param,
                                         int fl)
-    :   BaseTimer(delay), recipients(recip), keyword(key), lifeTime(life), parameters(param),
-    flags(fl)
+    :   recipients(recip), keyword(key), lifeTime(life), parameters(param), flags(fl)
 {}
 
-void TimerI18nPopupSay::execute()
+void TimerI18nPopupSay::operator()()
 {
     ServerPlugin::getInstance()->getI18nManager()->i18nPopupSay(recipients, keyword, lifeTime,
-                                                                parameters,
-                                                                flags);
+                                                                parameters, flags);
 }
 
-TimerI18nKeyHintSay::TimerI18nKeyHintSay(   float delay,
-                                        RecipientFilter & recip,
-                                        const string & key,
-                                        const map<string, string> & param)
-    :   BaseTimer(delay), recipients(recip), keyword(key), parameters(param)
+TimerI18nKeyHintSay::TimerI18nKeyHintSay(   RecipientFilter & recip,
+                                            const string & key,
+                                            const map<string, string> & param)
+    :   recipients(recip), keyword(key), parameters(param)
 {}
 
-void TimerI18nKeyHintSay::execute()
+void TimerI18nKeyHintSay::operator()()
 {
     ServerPlugin::getInstance()->getI18nManager()->i18nKeyHintSay(recipients, keyword, 
                                                                 parameters);

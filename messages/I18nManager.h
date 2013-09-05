@@ -26,7 +26,7 @@
 #include "UserMessagesManager.h"
 #include "RecipientFilter.h"
 #include "../misc/CannotBeCopied.h"
-#include "../plugin/BaseTimer.h"
+#include "../plugin/Timer.h"
 
 class ConVar;
 
@@ -203,7 +203,7 @@ namespace cssmatch
     /** Send a delayed message in the chat area
      * @see BaseTimer
      */
-    class TimerI18nChatSay : public BaseTimer
+    class TimerI18nChatSay : public TimerCallback
     {
     private:
         /** The message manager */
@@ -222,29 +222,27 @@ namespace cssmatch
         std::map<std::string, std::string> parameters;
     public:
         /**
-         * @param executionDate When this timer will be executed
          * @param recipients Recipient list
          * @param keyword Translation identifier to use
          * @param parameters If specified, the message's parameters and their values
          * @param playerIndex If specified, any part of the message after \003 will appear in the color corresponding to the player's team
          * @see I18nManager::I18nChatSay
          */
-        TimerI18nChatSay(   float executionDate,
-                            RecipientFilter & recipients,
+        TimerI18nChatSay(   RecipientFilter & recipients,
                             const std::string & keyword,
                             const std::map<std::string,
                                            std::string> & parameters =
                                 I18nManager::WITHOUT_PARAMETERS,
                             int playerIndex = CSSMATCH_INVALID_INDEX);
 
-        /** @see BaseTimer */
-        void execute();
+        /** @see TimerCallback */
+        void operator()();
     };
 
     /** Send a delayed popup message
      * @see BaseTimer
      */
-    class TimerI18nPopupSay : public BaseTimer
+    class TimerI18nPopupSay : public TimerCallback
     {
     private:
         /** The message manager */
@@ -266,7 +264,6 @@ namespace cssmatch
         std::map<std::string, std::string> parameters;
     public:
         /**
-         * @param executionDate When this timer will be executed
          * @param recipients Recipient list
          * @param keyword Translation identifier to use
          * @param lifeTime Display time (in seconds)
@@ -274,8 +271,7 @@ namespace cssmatch
          * @param flags Options that the player can select
          * @see I18nManager::I18nPopupSay
          */
-        TimerI18nPopupSay(  float executionDate,
-                            RecipientFilter & recipients,
+        TimerI18nPopupSay(  RecipientFilter & recipients,
                             const std::string & keyword,
                             int lifeTime,
                             const std::map<std::string,
@@ -283,14 +279,14 @@ namespace cssmatch
                                 I18nManager::WITHOUT_PARAMETERS,
                             int flags = OPTION_ALL);
 
-        /** @see BaseTimer */
-        void execute();
+        /** @see TimerCallback */
+        void operator()();
     };
 
     /** Send a delayed right-side hint message
      * @see BaseTimer
      */
-    class TimerI18nKeyHintSay : public BaseTimer
+    class TimerI18nKeyHintSay : public TimerCallback
     {
     private:
         /** The message manager */
@@ -306,20 +302,18 @@ namespace cssmatch
         std::map<std::string, std::string> parameters;
     public:
         /**
-         * @param executionDate When this timer will be executed
          * @param recipients Recipient list
          * @param keyword Translation identifier to use
          * @see I18nManager::I18nKeyHintSay
          */
-        TimerI18nKeyHintSay(  float executionDate,
-                            RecipientFilter & recipients,
-                            const std::string & keyword,
-                            const std::map<std::string,
+        TimerI18nKeyHintSay(    RecipientFilter & recipients,
+                                const std::string & keyword,
+                                const std::map<std::string,
                                            std::string> & parameters =
                                 I18nManager::WITHOUT_PARAMETERS);
 
-        /** @see BaseTimer */
-        void execute();
+        /** @see TimerCallback */
+        void operator()();
     };
 }
 

@@ -31,6 +31,7 @@
 #include "../commands/ClientCommandCallbacks.h"
 #include "../commands/ConCommandHook.h"
 #include "../messages/Menu.h"
+#include "Timer.h"
 
 #include "engine/iserverplugin.h"
 
@@ -61,6 +62,7 @@ namespace cssmatch
     class BaseTimer;
     class MatchManager;
     class UpdateNotifier;
+    class TimerEngine;
 
 /** Valve's interface instances */
     struct ValveInterfaces
@@ -154,8 +156,8 @@ namespace cssmatch
         /** Match manager */
         MatchManager * match;
 
-        /** Timer list */
-        std::list<BaseTimer *> timers;
+        /** Timer manager */
+        TimerEngine timers;
 
         /** Plugin console variable list */
         std::map<std::string, ConVar *> pluginConVars;
@@ -336,11 +338,8 @@ namespace cssmatch
         /** Get the internationalization tool */
         I18nManager * getI18nManager();
 
-        /** Add a timer */
-        void addTimer(BaseTimer * timer);
-
-        /** Remove all pending timers */
-        void removeTimers();
+        /** Get the timer engine */
+        TimerEngine * getTimerEngine();
 
         // IServerPluginCallbacks methods
         virtual bool Load(CreateInterfaceFn interfaceFactory, CreateInterfaceFn gameServerFactory);

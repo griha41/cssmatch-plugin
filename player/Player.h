@@ -28,7 +28,7 @@
 #include "../messages/RecipientFilter.h"
 #include "../misc/common.h"
 #include "../messages/I18nManager.h"
-#include "../plugin/Timer.h"
+#include "../plugin/BaseTimer.h"
 
 class IVEngineServer;
 class CBasePlayer;
@@ -145,7 +145,7 @@ namespace cssmatch
 
         /** Menus handler */
         PlayerMenuHandler menuHandler;
-        uint menuTimer;
+        MenuReSendTimer * menuTimer;
 
     public:
         /**
@@ -179,7 +179,7 @@ namespace cssmatch
         void sendMenu(  Menu * usedMenu,
                         int page,
                         const std::map<std::string,
-                        std::string> & parameters = I18nManager::WITHOUT_PARAMETERS,
+                                       std::string> & parameters = I18nManager::WITHOUT_PARAMETERS,
                         bool toDelete = false);
         Menu * getMenu() const;
         int getPage() const;
@@ -397,15 +397,12 @@ namespace cssmatch
     };
 
     /** Timer to resend popup the player is viewing */
-    class MenuReSendTimer : public TimerCallback
+    class MenuReSendTimer : public BaseTimer
     {
     private:
         /** Player to resend the popup */
         int userid;
 		// userid (connection id), because when this timer ends the player may have disconnected
-
-        /** Timer delay */
-        float delay;
     public:
         /**
          * @param delay Delay before sending
@@ -414,8 +411,8 @@ namespace cssmatch
          */
         MenuReSendTimer(float delay, int playerUserid);
 
-        /** @see TimerCallback */
-        void operator()();
+        /** @see BaseTimer */
+        void execute();
     };
 }
 

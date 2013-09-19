@@ -44,8 +44,7 @@ EntityProp Player::playerStateHandler("CCSPlayer", "m_iPlayerState");
 //EntityProp Player::eyeAngles1Handler("CCSPlayer","m_angEyeAngles[1]");
 //EntityProp Player::armorHandler("CCSPlayer","m_ArmorValue");
 
-Player::Player(int index) throw (PlayerException)
-    : lastCommandDate(0.0f), menuTimer(TimerEngine::INVALID_HANDLE)
+Player::Player(int index) throw (PlayerException) : lastCommandDate(0.0f), menuTimer(NULL)
 {
     ServerPlugin * plugin = ServerPlugin::getInstance();
     ValveInterfaces * interfaces = plugin->getInterfaces();
@@ -102,11 +101,11 @@ void Player::sendMenu(Menu * usedMenu, int page, const map<string, string> & par
                       bool toDelete)
 {
     ServerPlugin * plugin = ServerPlugin::getInstance();
-    TimerEngine * timers = plugin->getTimerEngine();
 
     quitMenu();
 
-    menuTimer = timers->addTimer(4, MenuReSendTimer(4, identity.userid));
+	menuTimer = new MenuReSendTimer(4.0f, identity.userid);
+    plugin->addTimer(menuTimer);
 
     menuHandler.menu = usedMenu;
     menuHandler.page = page;
@@ -157,10 +156,7 @@ void Player::quitMenu()
 {
     if (menuHandler.menu != NULL)
     {
-        ServerPlugin * plugin = ServerPlugin::getInstance();
-        TimerEngine * timers = plugin->getTimerEngine();
-
-        timers->cancelTimer(menuTimer);
+        menuTimer->cancel();
 
         if (menuHandler.toDelete)
             delete menuHandler.menu;
@@ -584,11 +580,11 @@ void Player::give(const string & item)
     sv_cheats->m_nValue = 0;
 }*/
 
-MenuReSendTimer::MenuReSendTimer(float timerDelay, int playerUserid)
-    : delay(timerDelay), userid(playerUserid)
+MenuReSendTimer::MenuReSendTimer(float delay, int playerUserid)
+	: BaseTimer(delay), userid(playerUserid)
 {}
 
-void MenuReSendTimer::operator()()
+void MenuReSendTimer::execute()
 {
     ClanMember * player;
     CSSMATCH_VALID_PLAYER(PlayerHavingUserid, userid, player)
@@ -596,12 +592,11 @@ void MenuReSendTimer::operator()()
         if (player->menuHandler.menu != NULL)
         {
             ServerPlugin * plugin = ServerPlugin::getInstance();
-            TimerEngine * timers = plugin->getTimerEngine();
 
 		    player->menuHandler.menu->send(player, player->menuHandler.page,
 									       player->menuHandler.parameters);
-
-		    player->menuTimer = timers->addTimer(delay, MenuReSendTimer(4.0f, userid));
+		    player->menuTimer = new MenuReSendTimer(4.0f, userid);
+		    plugin->addTimer(player->menuTimer);
 	    }
     }
 }

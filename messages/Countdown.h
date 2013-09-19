@@ -24,7 +24,7 @@
 #define __COUNTDOWN_H__
 
 #include "../misc/BaseSingleton.h"
-#include "../plugin/Timer.h"
+#include "../plugin/BaseTimer.h"
 
 namespace cssmatch
 {
@@ -33,7 +33,7 @@ namespace cssmatch
     {
     protected:
         /** BaseCountdown step */
-        class CountdownTick : public TimerCallback
+        class CountdownTick : public BaseTimer
         {
         private:
             /** Owner */
@@ -44,15 +44,18 @@ namespace cssmatch
         public:
             /**
              * @param owner Corresponding countdown instance
+             * @param executionDate see BaseTimer
              * @param timeLeft Seconds left
              */
-            CountdownTick(BaseCountdown * owner, int timeLeft);
+            CountdownTick(BaseCountdown * owner, float executionDate, int timeLeft);
 
-            /** @see TimerCallback */
-            void operator()();
+            /**
+             * @see BaseTimer
+             */
+            virtual void execute();
         };
-        /** Next countdown step (timer handle) */
-        uint nextTick;
+        /** Next countdown step */
+        CountdownTick * nextTick;
 
         /** Seconds left before the end of the countdown */
         int left;
@@ -64,6 +67,7 @@ namespace cssmatch
         virtual void finish() = 0;
     public:
         BaseCountdown();
+        virtual ~BaseCountdown();
 
         /** Start the countdown
          * @param seconds Seconds left until the end of the countdown

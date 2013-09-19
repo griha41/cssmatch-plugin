@@ -27,7 +27,7 @@
 #include "../misc/BaseSingleton.h"
 #include "../player/Player.h" // TeamCode
 #include "../messages/Menu.h"
-#include "../plugin/Timer.h"
+#include "../plugin/BaseTimer.h"
 
 #include "igameevents.h" // IGameEventListener2, IGameEvent
 
@@ -87,7 +87,7 @@ namespace cssmatch
     };
 
     /** Removes an item the player has */
-    class ItemRemoveTimer : public TimerCallback
+    class ItemRemoveTimer : public BaseTimer
     {
     private:
         /** Who owns the item */
@@ -107,8 +107,7 @@ namespace cssmatch
          */
         ItemRemoveTimer(int playerUserid, const std::string & item, bool switchKnife);
 
-        /** @see TimerCallback */
-        void operator()();
+        void execute();
     };
 
 }

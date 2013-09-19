@@ -20,23 +20,11 @@
  * Portions of this code are also Copyright © 1996-2005 Valve Corporation, All rights reserved
  */
 
-#ifndef __CANNOT_BE_COPIED_H__
-#define __CANNOT_BE_COPIED_H__
 
-namespace cssmatch
-{
-    /** A object which cannot be copied */
-    class CannotBeCopied
-    {
-    private:
-        // These methods don't have a definition: they can't be called
-        CannotBeCopied(const CannotBeCopied & toCopy);
-        CannotBeCopied & operator =(const CannotBeCopied & toCopy);
-    protected:
-        // Allow the instanciation of the children
-        CannotBeCopied();
-        /*virtual causes crash*/ ~CannotBeCopied();
-    };
-}
+#include "CannotBeCopied.h"
 
-#endif // __CANNOT_BE_COPIED_H__
+using namespace cssmatch;
+
+CannotBeCopied::CannotBeCopied(){}
+
+CannotBeCopied::~CannotBeCopied(){}

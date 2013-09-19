@@ -23,6 +23,7 @@
 #include "UpdateNotifier.h" // leave it here so Source SDK can undef/redefine the microsoft's
                             // ARRAYSIZE macro
 #include "ServerPlugin.h"
+#include "BaseTimer.h"
 #include "../configuration/ConfigurationFile.h"
 #include "../convars/I18nConVar.h"
 #include "../commands/I18nConCommand.h"
@@ -82,11 +83,14 @@ using std::endl;
  * their values are set during the game (after a map change)
  * This class set the value of cssmatch_version after ~5 seconds
  */
-class MakePublicTimer : public TimerCallback // TODO: Review me each SRCDS release
+class MakePublicTimer : public BaseTimer // TODO: Review me each SRCDS release
 {
 public:
-    /** @see TimerCallback */
-	void operator()()
+	MakePublicTimer() : BaseTimer(5.0)
+	{
+	}
+
+	void execute()
 	{
 		ServerPlugin * plugin = ServerPlugin::getInstance();
 		ConVar * cssmatch_version = plugin->getConVar("cssmatch_version");
@@ -102,6 +106,8 @@ ServerPlugin::ServerPlugin()
 
 ServerPlugin::~ServerPlugin()
 {
+    removeTimers();
+
     for_each(playerlist.begin(), playerlist.end(), PlayerToRemove());
 
     if (adminMenu != NULL)
@@ -823,9 +829,21 @@ I18nManager * ServerPlugin::getI18nManager()
     return i18n;
 }
 
-TimerEngine * ServerPlugin::getTimerEngine()
+void ServerPlugin::addTimer(BaseTimer * timer)
 {
-    return &timers;
+    timers.push_front(timer);
+    // push front, to allow timer invoking others timers, which could have to be immediately
+    // executed
+}
+
+void ServerPlugin::removeTimers()
+{
+    list<BaseTimer *>::iterator itTimer;
+    for(itTimer = timers.begin(); itTimer != timers.end(); ++itTimer)
+    {
+        delete *itTimer;
+    }
+    timers.clear();
 }
 
 void ServerPlugin::Pause()
@@ -860,10 +878,10 @@ void ServerPlugin::LevelInit(char const * pMapName)
     }
 
     // Delete all pending timers
-    timers.cancelAll();
+    removeTimers();
 
     // Workaround for CS:S OB (see MakePublicTimer)
-    timers.addTimer(5, MakePublicTimer());
+    addTimer(new MakePublicTimer());
 }
 
 void ServerPlugin::ServerActivate(edict_t * pEdictList, int edictCount, int clientMax)
@@ -872,7 +890,8 @@ void ServerPlugin::ServerActivate(edict_t * pEdictList, int edictCount, int clie
 
 void ServerPlugin::GameFrame(bool simulating)
 {
-    timers.frame(interfaces.gpGlobals->curtime);
+    // Execute and remove the timers out of date
+    timers.remove_if(TimerOutOfDate(interfaces.gpGlobals->curtime));
 }
 
 void ServerPlugin::LevelShutdown() // !!!!this can get called multiple times per map change

@@ -188,7 +188,6 @@ void MatchManager::player_disconnect(IGameEvent * event)
     // Announce any disconnection
 
     ServerPlugin * plugin = ServerPlugin::getInstance();
-    TimerEngine * timers = plugin->getTimerEngine();
     I18nManager * i18n = plugin->getI18nManager();
 
     RecipientFilter recipients;
@@ -202,7 +201,7 @@ void MatchManager::player_disconnect(IGameEvent * event)
     // Announce the password too
     map<string, string> passParameters;
     passParameters["$password"] = plugin->getConVar("sv_password")->GetString();
-    timers->addTimer(2, TimerI18nChatSay(recipients, "match_password_remember",
+    plugin->addTimer(new TimerI18nChatSay(2.0f, recipients, "match_password_remember",
                                           passParameters));
 
     // If all the players have disconnected, stop the match (and thus the SourceTv record)
@@ -216,7 +215,6 @@ void MatchManager::player_team(IGameEvent * event)
     // i.e. n player to less than 2 players, 0 player to 1 player, 1 player to 2 players
 
     ServerPlugin * plugin = ServerPlugin::getInstance();
-    TimerEngine * timers = plugin->getTimerEngine();
     I18nManager * i18n = plugin->getI18nManager();
 
     TeamCode newSide = (TeamCode)event->GetInt("team");
@@ -239,7 +237,7 @@ void MatchManager::player_team(IGameEvent * event)
     {
         // "< 2" because the game has not update the player's team got via IPlayerInfo yet
         // And that's why we use a timer to redetect the clan's name
-        timers->addTimer(1, ClanNameDetectionTimer(toReDetect));
+        plugin->addTimer(new ClanNameDetectionTimer(1.0f, toReDetect));
     }
 
     toReDetect = INVALID_TEAM;
@@ -256,7 +254,7 @@ void MatchManager::player_team(IGameEvent * event)
     }
     if ((toReDetect != INVALID_TEAM) && (playercount == 2)) // "== 2" see above
     {
-        timers->addTimer(1, ClanNameDetectionTimer(toReDetect));
+        plugin->addTimer(new ClanNameDetectionTimer(1.0f, toReDetect));
     }
 
     // http://code.google.com/p/cssmatch-plugin/issues/detail?id=75
@@ -268,7 +266,6 @@ void MatchManager::player_changename(IGameEvent * event)
     // i.e. if the player is alone in his team
 
     ServerPlugin * plugin = ServerPlugin::getInstance();
-    TimerEngine * timers = plugin->getTimerEngine();
     I18nManager * i18n = plugin->getI18nManager();
 
     ClanMember * player = NULL;
@@ -276,7 +273,7 @@ void MatchManager::player_changename(IGameEvent * event)
     {
         TeamCode playerteam = player->getMyTeam();
         if ((playerteam > SPEC_TEAM) && (plugin->getPlayerCount(playerteam) == 1))
-            timers->addTimer(1, ClanNameDetectionTimer(playerteam));
+            plugin->addTimer(new ClanNameDetectionTimer(1.0f, playerteam));
     }
 }
 
@@ -333,7 +330,6 @@ throw(MatchManagerException)
     if (currentState == initialState)
     {
         ServerPlugin * plugin = ServerPlugin::getInstance();
-        TimerEngine * timers = plugin->getTimerEngine();
         ValveInterfaces * interfaces = plugin->getInterfaces();
 
         // Global recipient list
@@ -354,7 +350,7 @@ throw(MatchManagerException)
         for_each(playerlist->begin(), playerlist->end(), ResetClanMember());
 
         // Cancel any timers in progress
-        timers->cancelAll();
+        plugin->removeTimers();
 
         // Execute the configuration file
         ConVar * hostname = plugin->getConVar("hostname");
@@ -391,9 +387,9 @@ throw(MatchManagerException)
         }
 
         // Monitor some variable
-        timers->addTimer(1, ConVarMonitorTimer(plugin->getConVar("sv_alltalk"), "0",
+        plugin->addTimer(new ConVarMonitorTimer(1.0f, plugin->getConVar("sv_alltalk"), "0",
                                                 "sv_alltalk"));
-        timers->addTimer(1, ConVarMonitorTimer(plugin->getConVar("sv_cheats"), "0",
+        plugin->addTimer(new ConVarMonitorTimer(1.0f, plugin->getConVar("sv_cheats"), "0",
                                                 "sv_cheats"));
 
         // Set the new server password
@@ -415,7 +411,7 @@ throw(MatchManagerException)
 
         map<string, string> parameters;
         parameters["$password"] = password;
-        timers->addTimer(5, TimerI18nPopupSay(recipients, "match_password_popup", 5,
+        plugin->addTimer(new TimerI18nPopupSay(5.0f, recipients, "match_password_popup", 5,
                                                parameters));
 
         // Maybe no warmup is needed
@@ -438,7 +434,6 @@ void MatchManager::stop() throw (MatchManagerException)
     if (currentState != initialState)
     {
         ServerPlugin * plugin = ServerPlugin::getInstance();
-        TimerEngine * timers = plugin->getTimerEngine();
         I18nManager * i18n = plugin->getI18nManager();
 
         // Send all the announcements
@@ -496,7 +491,7 @@ void MatchManager::stop() throw (MatchManagerException)
                                                   // still count a while
                 map<string, string> timeoutParameters;
                 timeoutParameters["$time"] = toString(timeoutDuration);
-                timers->addTimer(2, TimerI18nChatSay(recipients, "match_dead_time",
+                plugin->addTimer(new TimerI18nChatSay(2.0f, recipients, "match_dead_time",
                                                       timeoutParameters));
                 endCountdown.fire(timeoutDuration);
             }
@@ -513,14 +508,13 @@ void MatchManager::stop() throw (MatchManagerException)
 void MatchManager::switchToInitialState()
 {
     ServerPlugin * plugin = ServerPlugin::getInstance();
-    TimerEngine * timers = plugin->getTimerEngine();
     ValveInterfaces * interfaces = plugin->getInterfaces();
 
     // Stop all event listeners
     interfaces->gameeventmanager2->RemoveListener(this);
 
     // Stop all pending timers
-    timers->cancelAll();
+    plugin->removeTimers();
 
     // Return to the initial state
     setMatchState(initialState);
@@ -610,29 +604,29 @@ void MatchManager::EndOfMatchCountdown::finish()
 }
 
 
-ClanNameDetectionTimer::ClanNameDetectionTimer(TeamCode teamCode)
-    : team(teamCode)
+ClanNameDetectionTimer::ClanNameDetectionTimer(float delay, TeamCode teamCode)
+    : BaseTimer(delay), team(teamCode)
 {
 }
 
-void ClanNameDetectionTimer::operator()()
+void ClanNameDetectionTimer::execute()
 {
     ServerPlugin * plugin = ServerPlugin::getInstance();
     MatchManager * manager = plugin->getMatch();
     manager->detectClanName(team, false);
 }
 
-ConVarMonitorTimer::ConVarMonitorTimer( ConVar * varToWatch,
+ConVarMonitorTimer::ConVarMonitorTimer( float delay,
+                                        ConVar * varToWatch,
                                         const string & expectedValue,
                                         const string & warningMessage)
-    : toWatch(varToWatch), value(expectedValue), message(warningMessage)
+    : BaseTimer(delay), toWatch(varToWatch), value(expectedValue), message(warningMessage)
 {
 }
 
-void ConVarMonitorTimer::operator()()
+void ConVarMonitorTimer::execute()
 {
     ServerPlugin * plugin = ServerPlugin::getInstance();
-    TimerEngine * timers = plugin->getTimerEngine();
 
     if (toWatch->GetString() != value)
     {
@@ -644,5 +638,5 @@ void ConVarMonitorTimer::operator()()
         i18n->i18nCenterSay(recipients, message);
     }
 
-    timers->addTimer(1, ConVarMonitorTimer(toWatch, value, message));
+    plugin->addTimer(new ConVarMonitorTimer(1.0f, toWatch, value, message));
 }

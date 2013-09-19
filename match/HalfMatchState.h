@@ -25,7 +25,7 @@
 
 #include "BaseMatchState.h"
 #include "../misc/BaseSingleton.h"
-#include "../plugin/Timer.h"
+#include "../plugin/BaseTimer.h"
 #include "../messages/Menu.h"
 
 #include "igameevents.h" // IGameEventListener2, IGameEvent
@@ -91,11 +91,13 @@ namespace cssmatch
     };
 
     /** Delayed swap */
-    class SwapTimer : public TimerCallback
+    class SwapTimer : public BaseTimer
     {
     public:
-        /** @see TimerCallback */
-        void operator()();
+        SwapTimer(float date);
+
+        // BaseTimer method
+        void execute();
     };
 }
 

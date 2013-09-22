@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2013 Nicolas Maingot
+ * Copyright 2008-2011 Nicolas Maingot
  *
  * This file is part of CSSMatch.
  *
@@ -147,7 +147,7 @@ namespace cssmatch
          * @param message Message or URL
          * @see enum MotdType
          */
-        void motdSay(RecipientFilter & recipients, MotdType type, const std::string & title,
+        void motdSay(RecipientFilter recipients, MotdType type, const std::string & title,
                      const std::string & message);
 
         /** Show/Hide an existing vgui panel
@@ -155,7 +155,7 @@ namespace cssmatch
          * @param panelName Panel name
          * @param show <code>true</code>: show the panel, <code>false</code>: hide the panel
          */
-        void showPanel(RecipientFilter & recipients, const std::string & panelName, bool show);
+        void showPanel(RecipientFilter recipients, const std::string & panelName, bool show);
 
         /** Send a centered message
          * @param recipients Recipient list
@@ -168,12 +168,6 @@ namespace cssmatch
          * @param message The message to send
          */
         void consoleSay(RecipientFilter & recipients, const std::string & message);
-
-        /** Send a right-side (windowed) popup message
-         * @param recipients Recipient list
-         * @param message The message to send
-         */
-        void keyHintSay(RecipientFilter & recipients, const std::string & message);
     };
 }
 

@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2013 Nicolas Maingot
+ * Copyright 2008-2011 Nicolas Maingot
  *
  * This file is part of CSSMatch.
  *
@@ -253,6 +253,7 @@ void DisabledMatchState::configQuestionCallback(Player * player, int choice, Men
 {
     if (choice != 10)
     {
+        DisabledMatchState * state = DisabledMatchState::getInstance();
         ServerPlugin * plugin = ServerPlugin::getInstance();
         MatchManager * match = plugin->getMatch();
         MatchMenuLineData * const matchSettings =

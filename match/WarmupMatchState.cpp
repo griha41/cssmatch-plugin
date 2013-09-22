@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2013 Nicolas Maingot
+ * Copyright 2008-2011 Nicolas Maingot
  *
  * This file is part of CSSMatch.
  *
@@ -171,7 +171,7 @@ void WarmupMatchState::startState()
 
     // Subscribe to the needed game events
     map<string, EventCallback>::iterator itEvent;
-    for(itEvent = eventCallbacks.begin(); itEvent != eventCallbacks.end(); ++itEvent)
+    for(itEvent = eventCallbacks.begin(); itEvent != eventCallbacks.end(); itEvent++)
     {
         interfaces->gameeventmanager2->AddListener(this, itEvent->first.c_str(), true);
     }
@@ -365,7 +365,7 @@ void WarmupMatchState::round_start(IGameEvent * event)
         countdown.fire(duration);
 
         // Increment the round number so a restart will not re-lauch the countdown
-        ++infos->roundNumber;
+        infos->roundNumber++;
     }
     /*	}
         break;
@@ -379,6 +379,9 @@ void WarmupMatchState::round_start(IGameEvent * event)
 void WarmupMatchState::item_pickup(IGameEvent * event)
 {
     // Restrict C4
+
+    ServerPlugin * plugin = ServerPlugin::getInstance();
+    ValveInterfaces * interfaces = plugin->getInterfaces();
 
     string item = event->GetString("item");
 

@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2013 Nicolas Maingot
+ * Copyright 2008-2011 Nicolas Maingot
  *
  * This file is part of CSSMatch.
  *
@@ -45,7 +45,7 @@ namespace cssmatch
         virtual bool IsReliable() const;
 
         /** FIXME: not implemented
-         * @see IRecipientFilter::IsInitMessage
+         * @see IRecipientFilter::IsReliable
          */
         virtual bool IsInitMessage() const;
 

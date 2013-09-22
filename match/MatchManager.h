@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2013 Nicolas Maingot
+ * Copyright 2008-2011 Nicolas Maingot
  *
  * This file is part of CSSMatch.
  *
@@ -90,6 +90,8 @@ namespace cssmatch
         /** End of match time-out countdown */
         class EndOfMatchCountdown : public BaseCountdown
         {
+        private:
+            int duration;
         public:
             // BaseCountdown methods
             void finish();

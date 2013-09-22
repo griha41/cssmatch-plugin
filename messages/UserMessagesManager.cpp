@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2013 Nicolas Maingot
+ * Copyright 2008-2011 Nicolas Maingot
  *
  * This file is part of CSSMatch.
  *
@@ -39,7 +39,7 @@ using std::string;
 using std::ostringstream;
 using std::vector;
 
-int UserMessagesManager::findMessageType(const string & typeName)
+int UserMessagesManager::findMessageType(const std::string & typeName)
 {
     int id = CSSMATCH_INVALID_MSG_TYPE;
 
@@ -67,7 +67,7 @@ int UserMessagesManager::findMessageType(const string & typeName)
                     break;
                 }
             }
-            ++i;
+            i++;
         }
         if (id == CSSMATCH_INVALID_MSG_TYPE)
             CSSMATCH_PRINT("Unknown message type " + typeName)
@@ -107,12 +107,13 @@ int UserMessagesManager::findMessageType(const string & typeName)
     void UserMessagesManager::chatWarning(RecipientFilter & recipients, const string & message)
     {
         ostringstream output;
-        output << "\004[" << CSSMATCH_NAME << "]\007FF0000 " << message << "\n";
+        output << "\004[" << CSSMATCH_NAME << "]\003 " << message << "\n";
 
         bf_write * pBitBuf = engine->UserMessageBegin(&recipients, findMessageType("SayText"));
 
-        pBitBuf->WriteByte(00); // no player index
+        pBitBuf->WriteByte(0x02); // \003 => team color
         pBitBuf->WriteString(output.str().c_str());
+        pBitBuf->WriteByte(0x01); // \003 => team color
         pBitBuf->WriteByte(1); // DOCUMENT ME
 
         engine->MessageEnd();
@@ -165,26 +166,13 @@ int UserMessagesManager::findMessageType(const string & typeName)
         // Stop the HintText annoying sound
         const vector<int> * recipientlist = recipients.getVector();
         vector<int>::const_iterator itIndex;
-        for (itIndex = recipientlist->begin(); itIndex != recipientlist->end(); ++itIndex)
+        for (itIndex = recipientlist->begin(); itIndex != recipientlist->end(); itIndex++)
         {
             interfaces->sounds->StopSound(*itIndex, CHAN_STATIC, "UI/hint.wav");
         }
     }
 
-	void UserMessagesManager::keyHintSay(RecipientFilter & recipients, const std::string & message)
-    {
-        ServerPlugin * plugin = ServerPlugin::getInstance();
-        ValveInterfaces * interfaces = plugin->getInterfaces();
-
-        bf_write * pWrite = engine->UserMessageBegin(&recipients, findMessageType("KeyHintText"));
-
-		pWrite->WriteByte(1); // DOCUMENT ME
-        pWrite->WriteString(message.c_str());
-
-        engine->MessageEnd();
-    }
-
-    void UserMessagesManager::motdSay(RecipientFilter & recipients, MotdType type,
+    void UserMessagesManager::motdSay(RecipientFilter recipients, MotdType type,
                                       const string & title,
                                       const string & message)
     {
@@ -206,7 +194,7 @@ int UserMessagesManager::findMessageType(const string & typeName)
         engine->MessageEnd();
     }
 
-    void UserMessagesManager::showPanel(RecipientFilter & recipients, const std::string & panelName,
+    void UserMessagesManager::showPanel(RecipientFilter recipients, const std::string & panelName,
                                         bool show)
     {
         bf_write * pWrite = engine->UserMessageBegin(&recipients, findMessageType("VGUIMenu"));

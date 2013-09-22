@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2013 Nicolas Maingot
+ * Copyright 2008-2011 Nicolas Maingot
  *
  * This file is part of CSSMatch.
  *
@@ -60,7 +60,7 @@ void ClanMember::saveState(PlayerState * state)
     state->objects.clear();
 
     // FIXME: Ouch! (playercount * entitycount) iterations!
-    for (int i = interfaces->gpGlobals->maxClients + 1; i < interfaces->engine->GetEntityCount(); ++i)
+    for (int i = interfaces->gpGlobals->maxClients + 1; i < interfaces->engine->GetEntityCount(); i++)
     {
         edict_t * entity = interfaces->engine->PEntityOfEntIndex(i);
         if (isValidEntity(entity))
@@ -96,7 +96,7 @@ void ClanMember::restoreState(PlayerState * state)
         setAccount(state->account);*/
 
     /*list<string>::const_iterator itObject;
-    for(itObject = state->objects.begin(); itObject != state->objects.end(); ++itObject)
+    for(itObject = state->objects.begin(); itObject != state->objects.end(); itObject++)
     {
         give(*itObject);
     }*/

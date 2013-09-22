@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2013 Nicolas Maingot
+ * Copyright 2008-2011 Nicolas Maingot
  *
  * This file is part of CSSMatch.
  *
@@ -41,7 +41,7 @@ Menu::Menu(Menu * parentMenu, const string & menuTitle, BaseMenuCallback * menuC
 Menu::~Menu()
 {
     vector<MenuLine *>::iterator itLine;
-    for(itLine = lines.begin(); itLine != lines.end(); ++itLine)
+    for(itLine = lines.begin(); itLine != lines.end(); itLine++)
     {
         if ((*itLine)->data != NULL)
             delete (*itLine)->data;
@@ -264,8 +264,8 @@ void Menu::send(Player * recipient, int page, const map<string, string> & parame
                     menu << line->text;
                 menu << "\n";
 
-                ++iOption;
-                ++iBegin;
+                iOption++;
+                iBegin++;
             }
         }
         menu << "0. " << i18n->getTranslation(language, "menu_close");

@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2013 Nicolas Maingot
+ * Copyright 2008-2011 Nicolas Maingot
  *
  * This file is part of CSSMatch.
  *
@@ -139,7 +139,7 @@ BaseMenuLineData * const Player::getMenuData()
 
 void Player::nextPage()
 {
-    ++menuHandler.page;
+    menuHandler.page++;
     menuHandler.menu->send(this, menuHandler.page);
 }
 
@@ -269,6 +269,8 @@ void Player::ban(int duration, const string & reason) const
 
 bool Player::swap(/*bool respawn*/)
 {
+    ServerPlugin * plugin = ServerPlugin::getInstance();
+    I18nManager * i18n = plugin->getI18nManager();
     RecipientFilter recipient;
     recipient.addRecipient(identity.index);
 

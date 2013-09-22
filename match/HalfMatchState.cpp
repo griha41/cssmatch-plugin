@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2013 Nicolas Maingot
+ * Copyright 2008-2011 Nicolas Maingot
  *
  * This file is part of CSSMatch.
  *
@@ -86,7 +86,7 @@ void HalfMatchState::startState()
 
     // Subscribe to the needed game events
     map<string, EventCallback>::iterator itEvent;
-    for(itEvent = eventCallbacks.begin(); itEvent != eventCallbacks.end(); ++itEvent)
+    for(itEvent = eventCallbacks.begin(); itEvent != eventCallbacks.end(); itEvent++)
     {
         interfaces->gameeventmanager2->AddListener(this, itEvent->first.c_str(), true);
     }
@@ -108,10 +108,11 @@ void HalfMatchState::startState()
         recordName << dateBuffer << '_' << interfaces->gpGlobals->mapname.ToCStr() << "_set" <<
         infos->halfNumber;
 
+        TvRecord * record = NULL;
         try
         {
             string finalName = recordName.str();
-            TvRecord * record = new TvRecord(finalName);
+            record = new TvRecord(finalName);
             record->start();
             match->getRecords()->push_back(record);
         }
@@ -388,7 +389,7 @@ void HalfMatchState::endHalf()
         }
 
         // One more half started
-        ++infos->halfNumber;
+        infos->halfNumber++;
 
         // Swap every players
         plugin->addTimer(new SwapTimer((float)timeoutDuration));
@@ -416,26 +417,20 @@ void HalfMatchState::finish()
     recipients.addAllPlayers();
     map<string, string> parameters;
 
-    if (infos->halfNumber < plugin->getConVar("cssmatch_sets")->GetInt())
-    {
-        parameters["$current"] = toString(infos->halfNumber);
-        //i18n->i18nChatSay(recipients, "match_end_current_manche", parameters);
+    parameters["$current"] = toString(infos->halfNumber);
 
-        ClanStats * statsClan1 = lignup->clan1.getStats();
-        parameters["$team1"] = *lignup->clan1.getName();
-        parameters["$score1"] = toString(statsClan1->scoreCT + statsClan1->scoreT);
+    i18n->i18nChatSay(recipients, "match_end_current_manche", parameters);
 
-        ClanStats * statsClan2 = lignup->clan2.getStats();
-        parameters["$team2"] = *lignup->clan2.getName();
-        parameters["$score2"] = toString(statsClan2->scoreCT + statsClan2->scoreT);
+    ClanStats * statsClan1 = lignup->clan1.getStats();
+    parameters["$team1"] = *lignup->clan1.getName();
+    parameters["$score1"] = toString(statsClan1->scoreCT + statsClan1->scoreT);
 
-        i18n->i18nPopupSay(recipients, "match_end_manche_popup", 6, parameters);
-        //i18n->i18nConsoleSay(recipients,"match_end_manche_popup",parameters);
-    }
-    else
-    {
-        i18n->i18nChatSay(recipients, "match_end");
-    }
+    ClanStats * statsClan2 = lignup->clan2.getStats();
+    parameters["$team2"] = *lignup->clan2.getName();
+    parameters["$score2"] = toString(statsClan2->scoreCT + statsClan2->scoreT);
+
+    i18n->i18nPopupSay(recipients, "match_end_manche_popup", 6, parameters);
+    //i18n->i18nConsoleSay(recipients,"match_end_manche_popup",parameters);
 }
 
 void HalfMatchState::FireGameEvent(IGameEvent * event)
@@ -454,12 +449,14 @@ void HalfMatchState::player_death(IGameEvent * event)
 {
     // Update the score [history] of the involved players
 
+    ServerPlugin * plugin = ServerPlugin::getInstance();
+
     int idVictim = event->GetInt("userid");
     ClanMember * victim = NULL;
     CSSMATCH_VALID_PLAYER(PlayerHavingUserid, idVictim, victim)
     {
         PlayerScore * currentScore = victim->getCurrentScore();
-        ++currentScore->deaths;
+        currentScore->deaths++;
     }
 
     int idAttacker = event->GetInt("attacker");
@@ -470,9 +467,9 @@ void HalfMatchState::player_death(IGameEvent * event)
         {
             PlayerScore * currentScore = attacker->getCurrentScore();
             if (attacker->getMyTeam() != victim->getMyTeam())
-                ++currentScore->kills;
+                currentScore->kills++;
             else
-                --currentScore->kills;
+                currentScore->kills--;
         }
     }
 }
@@ -547,7 +544,7 @@ void HalfMatchState::round_start(IGameEvent * event)
             parameters["$score1"] = toString(statsClan1->scoreCT + statsClan1->scoreT);
             parameters["$team2"] = *lignup->clan2.getName();
             parameters["$score2"] = toString(statsClan2->scoreCT + statsClan2->scoreT);
-            plugin->addTimer(new TimerI18nKeyHintSay(4.5f, recipients, "match_round_popup",
+            plugin->addTimer(new TimerI18nPopupSay(1.5f, recipients, "match_round_popup", 5,
                                                    parameters));
         }
         }
@@ -564,10 +561,9 @@ void HalfMatchState::round_end(IGameEvent * event)
 
     if (infos->roundNumber > 0) // otherwise the restarts haven't even occured yet
     {
-        const char * message = event->GetString("message");
         if ((plugin->getPlayerCount(T_TEAM) > 0) && (plugin->getPlayerCount(CT_TEAM) > 0)
-            && (strcmp(message, "#Round_Draw") != 0)
-            && (strcmp(message, "#Game_Commencing") != 0))
+            && (strcmp(event->GetString("message"), "#Round_Draw") != 0)
+            && (strcmp(event->GetString("message"), "#Game_Commencing") != 0))
         {
             try
             {
@@ -576,10 +572,10 @@ void HalfMatchState::round_end(IGameEvent * event)
                 switch(winnerTeam)
                 {
                 case T_TEAM:
-                    ++winner->getStats()->scoreT;
+                    winner->getStats()->scoreT++;
                     break;
                 case CT_TEAM:
-                    ++winner->getStats()->scoreCT;
+                    winner->getStats()->scoreCT++;
                     break;
                 }
                 if (infos->roundNumber >= plugin->getConVar("cssmatch_rounds")->GetInt())
@@ -587,7 +583,7 @@ void HalfMatchState::round_end(IGameEvent * event)
             }
             catch(const MatchManagerException & e)
             {
-                CSSMATCH_PRINT_EXCEPTION(e);
+                // CSSMATCH_PRINT_EXCEPTION(e); // round draw
             }
         }
         else
@@ -608,7 +604,7 @@ void SwapTimer::execute()
 
     list<ClanMember *> * playerlist = plugin->getPlayerlist();
     list<ClanMember *>::iterator itPlayer;
-    for(itPlayer = playerlist->begin(); itPlayer != playerlist->end(); ++itPlayer)
+    for(itPlayer = playerlist->begin(); itPlayer != playerlist->end(); itPlayer++)
     {
         (*itPlayer)->swap(/*false*/);
     }

@@ -1,5 +1,5 @@
 /* 
- * Copyright 2008-2013 Nicolas Maingot
+ * Copyright 2008-2011 Nicolas Maingot
  * 
  * This file is part of CSSMatch.
  * 
@@ -71,7 +71,7 @@ void EntityProp::getOffset(SendTable * table,  istringstream & propPathLeft)
                 i = nbrProps; // break
             }
         }
-        ++i;
+        i++;
     }
 }
 

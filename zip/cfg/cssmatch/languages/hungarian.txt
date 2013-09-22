@@ -26,8 +26,6 @@
 //  (Alt+03) = light green or team color
 //  (Alt+04) = green
 //  (Alt+05) = dark green
-// rrggbb (Alt+07) = hexadecimal RGB code
-// rrggbbaa (Alt+08) = hexadecimal RGBA code
 
 [Hungarian]
 
@@ -92,12 +90,11 @@ match_in_progress =				"A mecss már fut ..."
 match_not_in_progress =			"Nincs futó meccs ..."
 match_round_popup =				"Körök: $current / $total\n$team1 : $score1\n$team2 : $score2"
 match_password_popup =			"Szerver jelszava : $password"
-match_password_remember =		"EMLÉKEZTETŐ ! A szerver jelszava: FF0000$password"
+match_password_remember =		"EMLÉKEZTETŐ ! A szerver jelszava: $password"
 match_name =					"$team1 VS $team2"
 match_config_error =			"Hiba : a konfigurációs fájl nem tartalmaz meccs információt !"
 match_scores =					"Pontok :"
 match_scores_team =				"$team : $score"
-match_no_score =				"No match was played"
 match_winner =					"Győztes csapat : $team"
 match_no_winner =				"Győztes csapat : nincs"
 match_dead_time =				"$time másodperc múlva fénykép készül !"
@@ -106,6 +103,7 @@ match_start_manche =			"Félidő indul $current / $total"
 match_restarts =				"3 újraindítás, aztán MENJ ! MENJ ! MENJ !"
 match_go =      				".:Élő:. Sok sikert !"
 match_end_manche_popup =		"Félidő vége $current !\n\nPontok :\n$team1 : $score1\n$team2 : $score2"
+match_end_current_manche =		"$current félidő befejezve !"
 match_end =						"Meccs vége !"
 match_end_popup =				"Vége a meccsnek !\n\nPontok :\n$team1 : $score1\n$team2 : $score2"
 

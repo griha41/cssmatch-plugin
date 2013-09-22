@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2013 Nicolas Maingot
+ * Copyright 2008-2011 Nicolas Maingot
  *
  * This file is part of CSSMatch.
  *
@@ -47,8 +47,6 @@ namespace cssmatch
             /** The state to lauch once the time-out is ended */
             BaseMatchState * nextState;
         public:
-			TimeoutCountdown() : nextState(NULL){}
-
             // BaseCountdown method
             /**
              * @param seconds Countdown duration

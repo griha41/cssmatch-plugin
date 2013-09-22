@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2013 Nicolas Maingot
+ * Copyright 2008-2011 Nicolas Maingot
  *
  * This file is part of CSSMatch.
  *
@@ -180,6 +180,11 @@ void MatchManager::player_activate(IGameEvent * event)
 
             i18n->i18nChatSay(recipients, "player_join_game", parameters);
         }
+
+        /*RecipientFilter newplayerRecipient;
+        newplayerRecipient.addRecipient(player);
+
+        i18n->i18nPopupSay(newplayerRecipient,"player_match_hosted_popup",0);*/
     }
 }
 
@@ -381,7 +386,7 @@ throw(MatchManagerException)
 
         // Start to listen some events
         map<string, EventCallback>::iterator itEvent;
-        for(itEvent = eventCallbacks.begin(); itEvent != eventCallbacks.end(); ++itEvent)
+        for(itEvent = eventCallbacks.begin(); itEvent != eventCallbacks.end(); itEvent++)
         {
             interfaces->gameeventmanager2->AddListener(this, itEvent->first.c_str(), true);
         }
@@ -439,6 +444,8 @@ void MatchManager::stop() throw (MatchManagerException)
         // Send all the announcements
         RecipientFilter recipients;
         recipients.addAllPlayers();
+
+        i18n->i18nChatSay(recipients, "match_end");
 
         const string * tagClan1 = lignup.clan1.getName();
         ClanStats * clan1Stats = lignup.clan1.getStats();
@@ -565,7 +572,7 @@ void MatchManager::sendStatus(RecipientFilter & recipients) const
 
     list<ClanMember *> * playerlist = plugin->getPlayerlist();
     list<ClanMember *>::const_iterator itPlayer;
-    for (itPlayer = playerlist->begin(); itPlayer != playerlist->end(); ++itPlayer)
+    for (itPlayer = playerlist->begin(); itPlayer != playerlist->end(); itPlayer++)
     {
         status.str("");
         IPlayerInfo * pInfo = (*itPlayer)->getPlayerInfo();

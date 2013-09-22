@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2013 Nicolas Maingot
+ * Copyright 2008-2011 Nicolas Maingot
  *
  * This file is part of CSSMatch.
  *
@@ -39,35 +39,26 @@ using std::vector;
 
 map<string, string> I18nManager::WITHOUT_PARAMETERS;
 
-void I18nManager::buildMessageCache(   const RecipientFilter & recipients,
-                                       const string & keyword,
-                                       const map<string, string> & parameters)
+void I18nManager::updateMessageCache(   int recipientIndex,
+                                        const std::string & language,
+                                        const std::string & keyword,
+                                        const std::map<std::string, std::string> & parameters)
 {
-    const vector<int> * recipientVector = recipients.getVector();
-    vector<int>::const_iterator itIndex;
-    for(itIndex = recipientVector->begin(); itIndex != recipientVector->end(); ++itIndex)
+    // Is the message already in the cache?
+    map<string, I18nMessage>::iterator itCache = messageCache.find(language);
+    if (itCache == messageCache.end())
     {
-        string language = engine->GetClientConVarValue(*itIndex, "cl_language");
+        // No, construct/cache it
 
-        // Is the message already in the cache?
-        map<string, I18nMessage>::iterator itCache = messageCache.find(language);
-        if (itCache == messageCache.end())
-        {
-            // No, construct/cache it
-            messageCache[language].message = getTranslation(language, keyword, parameters);
-            messageCache[language].recipients.addRecipient(*itIndex);
-        }
-        else
-        {
-            // Yes, just add the new recipient to the recipient list
-            itCache->second.recipients.addRecipient(*itIndex);
-        }
+        messageCache[language].message = getTranslation(language, keyword, parameters);
+        messageCache[language].recipients.addRecipient(recipientIndex);
     }
-}
+    else
+    {
+        // Yes, just add the new recipient to the recipient list
 
-void I18nManager::clearMessageCache()
-{
-    messageCache.clear();
+        itCache->second.recipients.addRecipient(recipientIndex);
+    }
 }
 
 I18nManager::I18nManager() : defaultLanguage(NULL)
@@ -76,7 +67,7 @@ I18nManager::I18nManager() : defaultLanguage(NULL)
 I18nManager::~I18nManager()
 {
     map<string, TranslationFile *>::iterator itLanguage;
-    for(itLanguage = languages.begin(); itLanguage != languages.end(); ++itLanguage)
+    for(itLanguage = languages.begin(); itLanguage != languages.end(); itLanguage++)
     {
         delete itLanguage->second;
     }
@@ -113,8 +104,8 @@ TranslationFile * I18nManager::getTranslationFile(const string & language)
             // The file was not found, we'll use the default language instead
             if (defaultLanguage != NULL)
             {
-                string defaultLanguageName = defaultLanguage->GetString();
-                map<string, TranslationFile *>::iterator itDefault = languages.find(
+                std::string defaultLanguageName = defaultLanguage->GetString();
+                std::map<std::string, TranslationFile *>::iterator itDefault = languages.find(
                     defaultLanguageName);
                 if (itDefault == lastLanguages)
                 {
@@ -163,8 +154,10 @@ string I18nManager::getTranslation( const string & lang,
             message = (*translation)[keyword]; // copying it, because we will replace the parameters
 
             // Relace the parameters
+            // FIXME: unnecessarily called as many times as recipients
+            //	Make a lang cache system in the I18nManager methods ?
             map<string, string>::const_iterator itParameters;
-            for(itParameters = parameters.begin(); itParameters != parameters.end(); ++itParameters)
+            for(itParameters = parameters.begin(); itParameters != parameters.end(); itParameters++)
             {
                 const string * parameter = &itParameters->first;
                 size_t parameterSize = parameter->size();
@@ -199,9 +192,16 @@ void I18nManager::i18nChatSay(  RecipientFilter & recipients,
                                 const map<string, string> & parameters,
                                 int playerIndex)
 {
-    buildMessageCache(recipients, keyword, parameters);
+    const vector<int> * recipientVector = recipients.getVector();
+    vector<int>::const_iterator itIndex;
+    for(itIndex = recipientVector->begin(); itIndex != recipientVector->end(); itIndex++)
+    {
+        string language = engine->GetClientConVarValue(*itIndex, "cl_language");
+        updateMessageCache(*itIndex, language, keyword, parameters);
+    }
+
     map<string, I18nMessage>::iterator itMessage;
-    for(itMessage = messageCache.begin(); itMessage != messageCache.end(); ++itMessage)
+    for(itMessage = messageCache.begin(); itMessage != messageCache.end(); itMessage++)
     {
         chatSay(itMessage->second.recipients, itMessage->second.message, playerIndex);
     }
@@ -211,81 +211,103 @@ void I18nManager::i18nChatSay(  RecipientFilter & recipients,
 void I18nManager::i18nChatWarning(  RecipientFilter & recipients,
                                     const string & keyword,
                                     const map<string, string> & parameters)
-{ 
-    buildMessageCache(recipients, keyword, parameters);
+{
+    const vector<int> * recipientVector = recipients.getVector();
+    vector<int>::const_iterator itIndex;
+    for(itIndex = recipientVector->begin(); itIndex != recipientVector->end(); itIndex++)
+    {
+        string language = engine->GetClientConVarValue(*itIndex, "cl_language");
+        updateMessageCache(*itIndex, language, keyword, parameters);
+    }
+
     map<string, I18nMessage>::iterator itMessage;
-    for(itMessage = messageCache.begin(); itMessage != messageCache.end(); ++itMessage)
+    for(itMessage = messageCache.begin(); itMessage != messageCache.end(); itMessage++)
     {
         chatWarning(itMessage->second.recipients, itMessage->second.message);
     }
-    clearMessageCache();
+    messageCache.clear();
 }
 
 void I18nManager::i18nPopupSay( RecipientFilter & recipients,
-                                const string & keyword,
+                                const std::string & keyword,
                                 int lifeTime,
                                 const map<string, string> & parameters,
                                 int flags)
 {
-    buildMessageCache(recipients, keyword, parameters);
+    const vector<int> * recipientVector = recipients.getVector();
+    vector<int>::const_iterator itIndex;
+    for(itIndex = recipientVector->begin(); itIndex != recipientVector->end(); itIndex++)
+    {
+        string language = engine->GetClientConVarValue(*itIndex, "cl_language");
+        updateMessageCache(*itIndex, language, keyword, parameters);
+    }
+
     map<string, I18nMessage>::iterator itMessage;
-    for(itMessage = messageCache.begin(); itMessage != messageCache.end(); ++itMessage)
+    for(itMessage = messageCache.begin(); itMessage != messageCache.end(); itMessage++)
     {
         popupSay(itMessage->second.recipients, itMessage->second.message, lifeTime, flags);
     }
-    clearMessageCache();
+    messageCache.clear();
 }
 
 void I18nManager::i18nHintSay(  RecipientFilter & recipients,
                                 const string & keyword,
                                 const map<string, string> & parameters)
 {
-    buildMessageCache(recipients, keyword, parameters);
+    const vector<int> * recipientVector = recipients.getVector();
+    vector<int>::const_iterator itIndex;
+    for(itIndex = recipientVector->begin(); itIndex != recipientVector->end(); itIndex++)
+    {
+        string language = engine->GetClientConVarValue(*itIndex, "cl_language");
+        updateMessageCache(*itIndex, language, keyword, parameters);
+    }
+
     map<string, I18nMessage>::iterator itMessage;
-    for(itMessage = messageCache.begin(); itMessage != messageCache.end(); ++itMessage)
+    for(itMessage = messageCache.begin(); itMessage != messageCache.end(); itMessage++)
     {
         hintSay(itMessage->second.recipients, itMessage->second.message);
     }
-    clearMessageCache();
-}
-
-void I18nManager::i18nKeyHintSay(  RecipientFilter & recipients,
-                                   const string & keyword,
-                                   const map<string, string> & parameters)
-{
-    buildMessageCache(recipients, keyword, parameters);
-    map<string, I18nMessage>::iterator itMessage;
-    for(itMessage = messageCache.begin(); itMessage != messageCache.end(); ++itMessage)
-    {
-        keyHintSay(itMessage->second.recipients, itMessage->second.message);
-    }
-    clearMessageCache();
+    messageCache.clear();
 }
 
 void I18nManager::i18nCenterSay(RecipientFilter & recipients,
                                 const string & keyword,
                                 const map<string, string> & parameters)
 {
-    buildMessageCache(recipients, keyword, parameters);
+    const vector<int> * recipientVector = recipients.getVector();
+    vector<int>::const_iterator itIndex;
+    for(itIndex = recipientVector->begin(); itIndex != recipientVector->end(); itIndex++)
+    {
+        string language = engine->GetClientConVarValue(*itIndex, "cl_language");
+        updateMessageCache(*itIndex, language, keyword, parameters);
+    }
+
     map<string, I18nMessage>::iterator itMessage;
-    for(itMessage = messageCache.begin(); itMessage != messageCache.end(); ++itMessage)
+    for(itMessage = messageCache.begin(); itMessage != messageCache.end(); itMessage++)
     {
         centerSay(itMessage->second.recipients, itMessage->second.message);
     }
-    clearMessageCache();
+    messageCache.clear();
 }
 
 void I18nManager::i18nConsoleSay(   RecipientFilter & recipients,
                                     const string & keyword,
                                     const map<string, string> & parameters)
 {
-    buildMessageCache(recipients, keyword, parameters);
+    const vector<int> * recipientVector = recipients.getVector();
+    vector<int>::const_iterator itIndex;
+    for(itIndex = recipientVector->begin(); itIndex != recipientVector->end(); itIndex++)
+    {
+        string language = engine->GetClientConVarValue(*itIndex, "cl_language");
+        updateMessageCache(*itIndex, language, keyword, parameters);
+    }
+
     map<string, I18nMessage>::iterator itMessage;
-    for(itMessage = messageCache.begin(); itMessage != messageCache.end(); ++itMessage)
+    for(itMessage = messageCache.begin(); itMessage != messageCache.end(); itMessage++)
     {
         consoleSay(itMessage->second.recipients, itMessage->second.message);
     }
-    clearMessageCache();
+    messageCache.clear();
 }
 
 void I18nManager::i18nMsg(const string & keyword, const map<string, string> & parameters)
@@ -325,17 +347,4 @@ void TimerI18nPopupSay::execute()
     ServerPlugin::getInstance()->getI18nManager()->i18nPopupSay(recipients, keyword, lifeTime,
                                                                 parameters,
                                                                 flags);
-}
-
-TimerI18nKeyHintSay::TimerI18nKeyHintSay(   float delay,
-                                        RecipientFilter & recip,
-                                        const string & key,
-                                        const map<string, string> & param)
-    :   BaseTimer(delay), recipients(recip), keyword(key), parameters(param)
-{}
-
-void TimerI18nKeyHintSay::execute()
-{
-    ServerPlugin::getInstance()->getI18nManager()->i18nKeyHintSay(recipients, keyword, 
-                                                                parameters);
 }

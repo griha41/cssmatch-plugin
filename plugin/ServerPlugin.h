@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2013 Nicolas Maingot
+ * Copyright 2008-2011 Nicolas Maingot
  *
  * This file is part of CSSMatch.
  *
@@ -203,7 +203,7 @@ namespace cssmatch
 
                 success = getInterface<T>(factory, toInitialize, toget.str());
 
-                ++minVersion;
+                minVersion++;
             }
 
             return success;
@@ -221,7 +221,7 @@ namespace cssmatch
         {
             bool success = false;
 
-            toInitialize = static_cast<T *>(factory(interfaceName.c_str(), NULL));
+            toInitialize = (T *)factory(interfaceName.c_str(), NULL);
             if (toInitialize == NULL)
                 Msg(std::string(
                         CSSMATCH_NAME ": Unable to get the interface \"" + interfaceName +
@@ -319,11 +319,10 @@ namespace cssmatch
 
         /** Hook a ConCommand (one hook = one callback)
          * @param commandName The name of the ConCommand to hook
-         * @param flags The command's flags (see iconvar.h)
          * @param callback Callback to invoke when the hooked command is used
          * @param antispam Does this command need to be protected against spam?
          */
-        void hookConCommand(const std::string & commandName, int flags, HookCallback callback, bool antispam);
+        void hookConCommand(const std::string & commandName, HookCallback callback, bool antispam);
 
         /** Add a plugin console command
          * @param commandName The name of the ConCommand to hook
@@ -402,7 +401,7 @@ namespace cssmatch
 /* Loop over all players excluding the 0 index
 #define FOREACH_PLAYER(indexVar) \
     int maxplayers = ServerPlugin::getInstance()->getInterfaces()->gpGlobals->maxClients; \
-    for (int indexVar=1;indexVar<=maxplayers;++indexVar)*/
+    for (int indexVar=1;indexVar<=maxplayers;indexVar++)*/
 
 /** Search for a valid player pointer satisfying a predicat */
 #define CSSMATCH_VALID_PLAYER(Predicat, criteria, out) \

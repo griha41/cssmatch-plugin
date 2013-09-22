@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2013 Nicolas Maingot
+ * Copyright 2008-2011 Nicolas Maingot
  *
  * This file is part of CSSMatch.
  *
@@ -65,7 +65,7 @@ class CBaseCombatCharacter;
 
 #define CSSMATCH_NAME "CSSMatch"
 
-#define CSSMATCH_PLUGIN_PRINT_BASE "2.2.4"
+#define CSSMATCH_PLUGIN_PRINT_BASE "2.2.2"
 #ifdef CSSMATCH_BETA
 #define CSSMATCH_VERSION CSSMATCH_PLUGIN_PRINT_BASE " BETA"
 #else

@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2013 Nicolas Maingot
+ * Copyright 2008-2011 Nicolas Maingot
  *
  * This file is part of CSSMatch.
  *
@@ -34,6 +34,8 @@ using std::list;
 
 void ConfigurationFile::removeEndLine(string & line)
 {
+    size_t strSize = line.size();
+
     size_t iEndLine = line.find("\r"); // getline already removed \n
     if (iEndLine != string::npos)
         line = line.substr(0, iEndLine);
@@ -41,6 +43,8 @@ void ConfigurationFile::removeEndLine(string & line)
 
 void ConfigurationFile::removeComments(string & line)
 {
+    size_t strSize = line.size();
+
     size_t iComment = line.find("//");
 
     if (iComment != string::npos)
@@ -57,8 +61,8 @@ void ConfigurationFile::trim(string & line)
     string::const_iterator lastChar = line.end();
     while((itChar != lastChar) && ((*itChar == ' ') || (*itChar == '\t')))
     {
-        ++iDataBegin;
-        ++itChar;
+        iDataBegin++;
+        itChar++;
     }
 
     // Trim back
@@ -67,7 +71,7 @@ void ConfigurationFile::trim(string & line)
     while((itRChar != lastRChar) && ((*itRChar == ' ') || (*itRChar == '\t')))
     {
         iDataEnd--;
-        ++itRChar;
+        itRChar++;
     }
 
     line = line.substr(iDataBegin, iDataEnd-iDataBegin);

@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2013 Nicolas Maingot
+ * Copyright 2008-2011 Nicolas Maingot
  *
  * This file is part of CSSMatch.
  *
@@ -68,17 +68,11 @@ namespace cssmatch
         /** {language => I18nMessage} */
         std::map<std::string, I18nMessage> messageCache;
 
-        /** Build the message cache 
-         * @param recipients Recipient list
-         * @param keyword The identifier of the translation to use
-         * @param parameters If specified, the message's parameters and their values
-         */
-        void buildMessageCache(  const RecipientFilter & recipients,
-                                 const std::string & keyword,
-                                 const std::map<std::string, std::string> & parameters);
-
-        /** Clear the message cache */
-        void clearMessageCache();
+        /** Update the message cache */
+        void updateMessageCache(    int recipientIndex,
+                                    const std::string & language,
+                                    const std::string & keyword,
+                                    const std::map<std::string, std::string> & parameters);
     public:
         /** Empty map for messages which have no option to parse */
         static std::map<std::string, std::string> WITHOUT_PARAMETERS;
@@ -189,15 +183,6 @@ namespace cssmatch
          */
         void i18nMsg(   const std::string & keyword,
                         const std::map<std::string, std::string> & parameters = WITHOUT_PARAMETERS);
-
-        /** Send a right-side (windowed) popup message
-         * @param recipients Recipient list
-         * @param keyword The identifier of the translation to use
-         * @param parameters If specified, the message's parameters and their values
-         */
-        void i18nKeyHintSay(RecipientFilter & recipients,
-                            const std::string & keyword,
-                            const std::map<std::string, std::string> & parameters = WITHOUT_PARAMETERS);
     };
 
     /** Send a delayed message in the chat area
@@ -262,7 +247,7 @@ namespace cssmatch
         /** @see I18nManager::I18nPopupSay */
         int flags;
 
-        /** @see I18nManager::I18nPopupSay */
+        /** @see I18nManager::I18nChatSay */
         std::map<std::string, std::string> parameters;
     public:
         /**
@@ -272,7 +257,7 @@ namespace cssmatch
          * @param lifeTime Display time (in seconds)
          * @param parameters If specified, the message's parameters and their values
          * @param flags Options that the player can select
-         * @see I18nManager::I18nPopupSay
+         * @see I18nManager::I18nChatSay
          */
         TimerI18nPopupSay(  float executionDate,
                             RecipientFilter & recipients,
@@ -282,41 +267,6 @@ namespace cssmatch
                                            std::string> & parameters =
                                 I18nManager::WITHOUT_PARAMETERS,
                             int flags = OPTION_ALL);
-
-        /** @see BaseTimer */
-        void execute();
-    };
-
-    /** Send a delayed right-side hint message
-     * @see BaseTimer
-     */
-    class TimerI18nKeyHintSay : public BaseTimer
-    {
-    private:
-        /** The message manager */
-        I18nManager * i18n;
-
-        /** Recipient list */
-        RecipientFilter recipients;
-
-        /** @see I18nManager::I18nKeyHintSay */
-        std::string keyword;
-
-        /** @see I18nManager::I18nKeyHintSay */
-        std::map<std::string, std::string> parameters;
-    public:
-        /**
-         * @param executionDate When this timer will be executed
-         * @param recipients Recipient list
-         * @param keyword Translation identifier to use
-         * @see I18nManager::I18nKeyHintSay
-         */
-        TimerI18nKeyHintSay(  float executionDate,
-                            RecipientFilter & recipients,
-                            const std::string & keyword,
-                            const std::map<std::string,
-                                           std::string> & parameters =
-                                I18nManager::WITHOUT_PARAMETERS);
 
         /** @see BaseTimer */
         void execute();

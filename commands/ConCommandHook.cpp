@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2013 Nicolas Maingot
+ * Copyright 2008-2011 Nicolas Maingot
  *
  * This file is part of CSSMatch.
  *
@@ -32,9 +32,9 @@ using namespace cssmatch;
 using std::string;
 using std::list;
 
-ConCommandHook::ConCommandHook(const char * name, int flags, HookCallback hookCallback, bool antispam)
+ConCommandHook::ConCommandHook(const char * name, HookCallback hookCallback, bool antispam)
     : ConCommand(name, (FnCommandCallback_t)NULL, CSSMATCH_NAME " Hook",
-                 flags), hooked(NULL), callback(hookCallback), nospam(antispam)
+                 FCVAR_GAMEDLL), hooked(NULL), callback(hookCallback), nospam(antispam)
 {
 }
 

@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2013 Nicolas Maingot
+ * Copyright 2008-2011 Nicolas Maingot
  *
  * This file is part of CSSMatch.
  *
@@ -175,7 +175,7 @@ void XmlReport::writeJoueurs(ticpp::Element * eTeam, MatchClan * clan)
     ticpp::Element * eJoueurs = new ticpp::Element("joueurs");
 
     list<ClanMember *>::const_iterator itPlayer;
-    for(itPlayer = playerlist.begin(); itPlayer != playerlist.end(); ++itPlayer)
+    for(itPlayer = playerlist.begin(); itPlayer != playerlist.end(); itPlayer++)
     {
         writeJoueur(eJoueurs, *itPlayer);
     }
@@ -215,12 +215,12 @@ void XmlReport::writeSpectateurs(ticpp::Element * eMatch)
 
     int nbSpec = 0;
     list<ClanMember *>::const_iterator itPlayer;
-    for(itPlayer = playerlist->begin(); itPlayer != playerlist->end(); ++itPlayer)
+    for(itPlayer = playerlist->begin(); itPlayer != playerlist->end(); itPlayer++)
     {
         if ((*itPlayer)->getMyTeam() == SPEC_TEAM)
         {
             writeJoueur(eSpectateurs, *itPlayer);
-            ++nbSpec;
+            nbSpec++;
         }
     }
 
@@ -242,14 +242,14 @@ void XmlReport::writeSourcetv(ticpp::Element * eMatch)
 
         int recordId = 1;
         list<TvRecord *>::const_iterator itRecord;
-        for(itRecord = recordlist->begin(); itRecord != recordlist->end(); ++itRecord)
+        for(itRecord = recordlist->begin(); itRecord != recordlist->end(); itRecord++)
         {
             ticpp::Element * eManche = new ticpp::Element("manche", *(*itRecord)->getName());
             eManche->SetAttribute("numero", recordId);
 
             eSourcetv->LinkEndChild(eManche);
 
-            ++recordId;
+            recordId++;
         }
 
         eMatch->LinkEndChild(eSourcetv);

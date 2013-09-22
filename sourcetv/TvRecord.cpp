@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2013 Nicolas Maingot
+ * Copyright 2008-2011 Nicolas Maingot
  *
  * This file is part of CSSMatch.
  *
@@ -62,7 +62,7 @@ TvRecord::TvRecord(std::string & recordName) throw (TvRecordException) : recordi
 
             tempName = newName.str();
 
-            ++fileCount;
+            fileCount++;
         }
         name = baseName + ".dem";
     }

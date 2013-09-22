@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2013 Nicolas Maingot
+ * Copyright 2008-2011 Nicolas Maingot
  *
  * This file is part of CSSMatch.
  *
@@ -61,7 +61,7 @@ bool cssmatch::normalizeFileName(std::string & fileName)
     bool change = false;
 
     string::iterator itChar;
-    for(itChar = fileName.begin(); itChar != fileName.end(); ++itChar)
+    for(itChar = fileName.begin(); itChar != fileName.end(); itChar++)
     {
         char currentChar = *itChar;
         if (currentChar == '/' ||

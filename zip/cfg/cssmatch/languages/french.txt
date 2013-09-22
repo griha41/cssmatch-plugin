@@ -14,8 +14,6 @@
 //  (Alt+03) = vert clair (ou couleur de la team)
 //  (Alt+04) = vert
 //  (Alt+05) = vert foncé
-// rrggbb (Alt+07) = code hexadecimal RGB
-// rrggbbaa (Alt+08) = code hexadecimal RGBA
 
 [French]
 
@@ -80,20 +78,20 @@ match_in_progress =				"Un match est déjà en cours..."
 match_not_in_progress =			"Il n'y a aucun match en cours..."
 match_round_popup =				"Round $current / $total\n$team1 : $score1\n$team2 : $score2"
 match_password_popup =			"Mot de passe du serveur : $password"
-match_password_remember =		"RAPPEL : Le mot de passe du serveur est FF0000$password"
+match_password_remember =		"RAPPEL : Le mot de passe du serveur est $password"
 match_name =					"$team1 VS $team2"
 match_config_error =			"Erreur : le fichier de configuration n'impose aucune phase de match !"
 match_scores =					"Scores :"
 match_scores_team =				"$team : $score"
-match_no_score =				"Aucun match n'a été joué."
 match_winner =					"Team gagnante : $team"
 match_no_winner =				"Match nul"
-match_dead_time =				"$time secondes de temps mort !"
+match_dead_time =				"$time secondes de temps mort, prenez vos screenshots !"
 match_please_changelevel =		"Changez de map pour restaurer au maximum la configuration par défaut"
 match_start_manche =			"Lancement de la manche $current / $total"
 match_restarts =				"3 restarts puis GO !"
 match_go =      				".:Live:. GO GO GO !"
 match_end_manche_popup =		"Fin de la manche $current !\n\nScores :\n$team1 : $score1\n$team2 : $score2"
+match_end_current_manche =		"Fin de la manche $current !"
 match_end =						"Fin du match !"
 match_end_popup =				"Fin du match !\n\nScores :\n$team1 : $score1\n$team2 : $score2"
 

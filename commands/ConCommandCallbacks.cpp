@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2013 Nicolas Maingot
+ * Copyright 2008-2011 Nicolas Maingot
  *
  * This file is part of CSSMatch.
  *
@@ -70,7 +70,7 @@ void cssmatch::cssm_help(const CCommand & args)
             Msg("%s\n", helpText);
             delete helpText;
 
-            ++itConCommand;
+            itConCommand++;
         }
     }
     else
@@ -292,7 +292,7 @@ void cssmatch::cssm_adminlist(const CCommand & args)
 
     plugin->log("Admin list:");
     list<string>::const_iterator itSteamid;
-    for(itSteamid = adminlist->begin(); itSteamid != adminlist->end(); ++itSteamid)
+    for(itSteamid = adminlist->begin(); itSteamid != adminlist->end(); itSteamid++)
     {
         plugin->log(*itSteamid);
     }
@@ -562,7 +562,16 @@ bool cssmatch::say_hook(ClanMember * user, const CCommand & args)
         ClanStats * stats1 = lignup->clan1.getStats();
         ClanStats * stats2 = lignup->clan2.getStats();
 
+        map<string, string> parameters1;
+        parameters1["$team"] = *lignup->clan1.getName();
+        parameters1["$score"] = toString(stats1->scoreT + stats1->scoreCT);
+
+        map<string, string> parameters2;
+        parameters2["$team"] = *lignup->clan2.getName();
+        parameters2["$score"] = toString(stats2->scoreT + stats2->scoreCT);
+
         RecipientFilter recipients;
+
         if (commandName == "say")
             recipients.addAllPlayers();
         else
@@ -570,35 +579,16 @@ bool cssmatch::say_hook(ClanMember * user, const CCommand & args)
             TeamCode team = user->getMyTeam();
             list<ClanMember *> * playerlist = plugin->getPlayerlist();
             list<ClanMember *>::const_iterator itPlayer;
-            for (itPlayer = playerlist->begin(); itPlayer != playerlist->end(); ++itPlayer)
+            for (itPlayer = playerlist->begin(); itPlayer != playerlist->end(); itPlayer++)
             {
                 if ((*itPlayer)->getMyTeam() == team)
                     recipients.addRecipient(*itPlayer);
             }
         }
 
-        int scoreClan1 = stats1->scoreT + stats1->scoreCT;
-        int scoreClan2 = stats2->scoreT + stats2->scoreCT;
-
-        if ((match->getMatchState() == match->getInitialState()) 
-            && (scoreClan1 == 0) && (scoreClan2 == 0))
-        {
-            i18n->i18nChatSay(recipients, "match_no_score");
-        }
-        else
-        {
-            map<string, string> parameters1;
-            parameters1["$team"] = *lignup->clan1.getName();
-            parameters1["$score"] = toString(scoreClan1);
-
-            map<string, string> parameters2;
-            parameters2["$team"] = *lignup->clan2.getName();
-            parameters2["$score"] = toString(scoreClan2);
-
-            i18n->i18nChatSay(recipients, "match_scores");
-            i18n->i18nChatSay(recipients, "match_scores_team", parameters1);
-            i18n->i18nChatSay(recipients, "match_scores_team", parameters2);
-        }
+        i18n->i18nChatSay(recipients, "match_scores");
+        i18n->i18nChatSay(recipients, "match_scores_team", parameters1);
+        i18n->i18nChatSay(recipients, "match_scores_team", parameters2);
     }
     // !teamt: cf cssm_teamt
     else if (chatCommand == "!teamt")

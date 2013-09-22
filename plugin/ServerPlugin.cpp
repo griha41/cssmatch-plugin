@@ -370,7 +370,7 @@ bool ServerPlugin::Load(CreateInterfaceFn interfaceFactory, CreateInterfaceFn ga
             try
             {
                 updateThread = new UpdateNotifier();
-                updateThread->Start();
+                updateThread->start();
             }
             catch(const UpdateNotifierException & e)
             {
@@ -399,8 +399,7 @@ void ServerPlugin::Unload()
     {
         if (updateThread != NULL)
         {
-            updateThread->End();
-            updateThread->Join();
+            updateThread->join();
             delete updateThread;
             updateThread = NULL;
         }

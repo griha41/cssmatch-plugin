@@ -52,7 +52,7 @@ SRCDS_A_DIR = $(SDK_SRC_DIR)/lib/linux
 
 # Paramètres du compilateur
 ARCH_CFLAGS = -mtune=i686 -march=pentium  -mmmx
-USER_CFLAGS = -DTIXML_USE_TICPP
+USER_CFLAGS = -DTIXML_USE_TICPP -pthread
 BASE_CFLAGS = 	-msse \
 				-fpermissive \
 				-D_LINUX \

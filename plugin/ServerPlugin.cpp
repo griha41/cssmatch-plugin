@@ -392,9 +392,15 @@ void ServerPlugin::Unload()
     if (instances == 0)
     {
         if (updateThread != NULL)
-        {
-            updateThread->End();
-            updateThread->Join();
+        {            
+            try
+            {
+                updateThread->join();
+            }
+            catch (const UpdateNotifierException & e)
+            {
+                Msg(CSSMATCH_NAME ": %s (%s, l.%i)\n", e.what(), __FILE__, __LINE__);
+            }
             delete updateThread;
             updateThread = NULL;
         }

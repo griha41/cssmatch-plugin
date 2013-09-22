@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2013 Nicolas Maingot
+ * Copyright 2008-2011 Nicolas Maingot
  *
  * This file is part of CSSMatch.
  *
@@ -31,9 +31,51 @@ using std::ostringstream;
 using std::string;
 using std::getline;
 
-UpdateNotifier::UpdateNotifier() : alive(true), version(CSSMATCH_VERSION)
+static ThreadReturn updateNotifierInternalRun(ThreadParam param)
+{
+    UpdateNotifier * notifier = static_cast<UpdateNotifier *>(param);
+    SOCKADDR_IN serv;
+    memset(&serv, 0, sizeof(serv));
+
+    const char * hostname =
+        ServerPlugin::getInstance()->getConVar("cssmatch_updatesite")->GetString();
+
+    hostent * host = gethostbyname(hostname);
+    if (host == NULL)
+    {
+        CSSMATCH_PRINT("gethostbyname() failed (error " + toString(SOCKET_ERROR_CODE) + ")");
+    }
+    else
+    {
+        memcpy(&serv.sin_addr, host->h_addr, host->h_length);
+
+        serv.sin_port = htons(80);
+        serv.sin_family = AF_INET;
+
+        SOCKET socketfd = socket(AF_INET, SOCK_STREAM, 0);
+        if (socketfd == INVALID_SOCKET)
+        {
+            CSSMATCH_PRINT("socket() failed (error " + toString(SOCKET_ERROR_CODE) + ")");
+        }
+        else
+        {
+            notifier->query(serv, socketfd, hostname);
+
+            shutdown(socketfd, SD_BOTH);
+            closesocket(socketfd);
+        }
+    }
+#ifdef _WIN32
+    return 0l;
+#else
+    return NULL;
+#endif // _WIN32
+}
+
+UpdateNotifier::UpdateNotifier() : threadStarted(false), version(CSSMATCH_VERSION)
 {
 #ifdef _WIN32
+    // Init use of Winsock DLL
     WSADATA wsa;
     if (WSAStartup(MAKEWORD(2, 2), &wsa) != 0)
     {
@@ -45,7 +87,13 @@ UpdateNotifier::UpdateNotifier() : alive(true), version(CSSMATCH_VERSION)
 UpdateNotifier::~UpdateNotifier()
 {
 #ifdef _WIN32
+    // Terminates use of the Winsock 2 DLL
     WSACleanup();
+    
+    // Close the thread handle
+    if (threadStarted)
+        CloseHandle(threadHandle);
+
 #endif // _WIN32
 }
 
@@ -112,9 +160,7 @@ void UpdateNotifier::query(const SOCKADDR_IN & serv, const SOCKET & socketfd,
                 while(getline(stream, temp)) {} // get the last line
 
                 // Update the last version name found
-                mutex.Lock();
                 version = temp;
-                mutex.Unlock();
             }
 #ifdef _DEBUG
             else
@@ -126,70 +172,42 @@ void UpdateNotifier::query(const SOCKADDR_IN & serv, const SOCKET & socketfd,
     }
 }
 
-int UpdateNotifier::Run()
+void UpdateNotifier::start()
 {
-#ifndef _WIN32
-    wake.Wait(1); // REVIEW ME: The first wait does not work under Linux?
-#endif // ! _WIN32
-
-    while(alive)
+    if (threadStarted)
     {
-        wake.Reset();
-
-        SOCKADDR_IN serv;
-        memset(&serv, 0, sizeof(serv));
-
-        const char * hostname =
-            ServerPlugin::getInstance()->getConVar("cssmatch_updatesite")->GetString();
-
-        hostent * host = gethostbyname(hostname);
-        if (host == NULL)
-        {
-            CSSMATCH_PRINT("gethostbyname() failed (error " + toString(SOCKET_ERROR_CODE) + ")");
-        }
-        else
-        {
-            memcpy(&serv.sin_addr, host->h_addr, host->h_length);
-
-            serv.sin_port = htons(80);
-            serv.sin_family = AF_INET;
-
-            SOCKET socketfd = socket(AF_INET, SOCK_STREAM, 0);
-            if (socketfd == INVALID_SOCKET)
-            {
-                CSSMATCH_PRINT("socket() failed (error " + toString(SOCKET_ERROR_CODE) + ")");
-            }
-            else
-            {
-                query(serv, socketfd, hostname);
-
-                shutdown(socketfd, SD_BOTH);
-                closesocket(socketfd);
-            }
-        }
-#ifdef _DEBUG
-        wake.Wait(1*60*1000);
-#else
-        wake.Wait(24*60*60*1000); // 24h, so open/shutdown the connection each iteration
-#endif // _DEBUG
+        CSSMATCH_PRINT("Update notifier already started");
     }
-
-    return 0;
+    else
+    {
+#if defined _WIN32
+        DWORD threadId;
+        threadHandle = CreateThread(NULL, 0, updateNotifierInternalRun, this, 0, &threadId);
+        if (threadId == NULL)
+#else
+        if (pthread_create(&threadHandle, NULL, updateNotifierInternalRun, this) != 0)
+#endif // _WIN32
+            throw UpdateNotifierException("Thread initialization failed");
+        threadStarted = true;
+    }
 }
 
-void UpdateNotifier::End()
+void UpdateNotifier::join()
 {
-    alive = false;
-    wake.Set();
+    if (threadStarted)
+    {
+#if defined _WIN32
+        if (WaitForSingleObject(threadHandle, INFINITE) == WAIT_FAILED)
+#else
+        if (pthread_join(threadHandle, NULL) != 0)
+#endif // _WIN32
+            throw UpdateNotifierException("Thread join failed");
+    }
+    else
+            throw UpdateNotifierException("Thread not started");
 }
 
 std::string UpdateNotifier::getLastVer() const
 {
-    string result;
-
-    mutex.Lock();
-    result = version;
-    mutex.Unlock();
-
-    return result;
+    return version;
 }

@@ -334,6 +334,7 @@ void HalfMatchState::menuWithAdminCallback(Player * player, int choice, MenuLine
 void HalfMatchState::endHalf()
 {
     ServerPlugin * plugin = ServerPlugin::getInstance();
+    TimerEngine * timers = plugin->getTimerEngine();
     MatchManager * match = plugin->getMatch();
     MatchInfo * infos = match->getInfos();
 
@@ -377,7 +378,7 @@ void HalfMatchState::endHalf()
         {
             map<string, string> timeoutParameters;
             timeoutParameters["$time"] = toString(timeoutDuration);
-            plugin->addTimer(new TimerI18nChatSay(2.0f, recipients, "match_dead_time",
+            timers->addTimer(2, TimerI18nChatSay(recipients, "match_dead_time",
                                                   timeoutParameters));
 
             TimeoutMatchState::doTimeout(timeoutDuration, nextState);
@@ -391,7 +392,7 @@ void HalfMatchState::endHalf()
         ++infos->halfNumber;
 
         // Swap every players
-        plugin->addTimer(new SwapTimer((float)timeoutDuration));
+        timers->addTimer(timeoutDuration, SwapTimer());
     }
     else
     {
@@ -488,6 +489,7 @@ void HalfMatchState::round_start(IGameEvent * event)
     else
     {
         ServerPlugin * plugin = ServerPlugin::getInstance();
+        TimerEngine * timers = plugin->getTimerEngine();
         MatchManager * match = plugin->getMatch();
         I18nManager * i18n = plugin->getI18nManager();
 
@@ -524,7 +526,6 @@ void HalfMatchState::round_start(IGameEvent * event)
                 for_each(playerlist->begin(), playerlist->end(), SaveHalfPlayerState());
             }
         default:
-        {
             // If there was a restart, restore the players equipement/score
             if (roundRestarted)
             {
@@ -547,9 +548,8 @@ void HalfMatchState::round_start(IGameEvent * event)
             parameters["$score1"] = toString(statsClan1->scoreCT + statsClan1->scoreT);
             parameters["$team2"] = *lignup->clan2.getName();
             parameters["$score2"] = toString(statsClan2->scoreCT + statsClan2->scoreT);
-            plugin->addTimer(new TimerI18nKeyHintSay(4.5f, recipients, "match_round_popup",
+            timers->addTimer(4.5f, TimerI18nKeyHintSay(recipients, "match_round_popup",
                                                    parameters));
-        }
         }
     }
 }
@@ -597,11 +597,7 @@ void HalfMatchState::round_end(IGameEvent * event)
     }
 }
 
-SwapTimer::SwapTimer(float delay) : BaseTimer(delay)
-{
-}
-
-void SwapTimer::execute()
+void SwapTimer::operator()()
 {
     ServerPlugin * plugin = ServerPlugin::getInstance();
     MatchManager * match = plugin->getMatch();

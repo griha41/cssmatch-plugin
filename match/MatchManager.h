@@ -223,22 +223,22 @@ namespace cssmatch
 
 
     /** Timer used to redetect the clan names (e.g. after player_changename) */
-    class ClanNameDetectionTimer : public BaseTimer
+    class ClanNameDetectionTimer : public TimerCallback
     {
     private:
         /* Clan's team */
         TeamCode team;
     public:
-        ClanNameDetectionTimer(float date, TeamCode teamCode);
+        ClanNameDetectionTimer(TeamCode teamCode);
 
-        /** @see BaseTimer */
-        void execute();
+        /** @see TimerCallback */
+        void operator()();
     };
 
     /** Timer used to watch a ConVar value (e.g. sv_alltalk) <br>
      * Installing a callback for the value changes isn't satisfying because it's easy to get around
      */
-    class ConVarMonitorTimer : public BaseTimer
+    class ConVarMonitorTimer : public TimerCallback
     {
     private:
         /** The ConVar to watch */
@@ -251,19 +251,17 @@ namespace cssmatch
         std::string message;
     public:
         /**
-         * @param delay Time before starting
          * @param varToWatch The ConVar to watch
          * @param expectedValue The expected value of this variable
          * @param warningMessage Message (its i18n keyword) to send if the ConVar is not equalto to the expected value
          * @see BaseTimer
          */
-        ConVarMonitorTimer( float delay,
-                            ConVar * varToWatch,
+        ConVarMonitorTimer( ConVar * varToWatch,
                             const std::string & expectedValue,
                             const std::string & warningMessage);
 
-        /** @see BaseTimer */
-        void execute();
+        /** @see TimerCallback */
+        void operator()();
     };
 }
 

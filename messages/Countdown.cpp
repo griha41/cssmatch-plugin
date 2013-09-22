@@ -32,11 +32,11 @@ using namespace cssmatch;
 using std::ostringstream;
 using std::list;
 
-BaseCountdown::CountdownTick::CountdownTick(BaseCountdown * owner, float delay, int timeLeft)
-    : BaseTimer(delay), countdown(owner), left(timeLeft)
+BaseCountdown::CountdownTick::CountdownTick(BaseCountdown * owner, int timeLeft)
+    : countdown(owner), left(timeLeft)
 {}
 
-void BaseCountdown::CountdownTick::execute()
+void BaseCountdown::CountdownTick::operator()()
 {
     // Convert the time left to minutes/seconds values
     int seconds = left;
@@ -76,34 +76,36 @@ void BaseCountdown::tick()
 {
     if (--left >= 0)
     {
-        nextTick = new CountdownTick(this, 1.0f, left);
-        ServerPlugin::getInstance()->addTimer(nextTick);
+        ServerPlugin * plugin = ServerPlugin::getInstance();
+        TimerEngine * timers = plugin->getTimerEngine();
+
+        nextTick = timers->addTimer(1, CountdownTick(this, left));
     }
     else
     {
-        nextTick = NULL;
+        nextTick = TimerEngine::INVALID_HANDLE;
         finish();
     }
 }
 
-BaseCountdown::BaseCountdown() : left(-1), nextTick(NULL)
-{}
-
-BaseCountdown::~BaseCountdown()
+BaseCountdown::BaseCountdown() : left(-1), nextTick(TimerEngine::INVALID_HANDLE)
 {}
 
 void BaseCountdown::fire(int seconds)
 {
     left = seconds;
-    CountdownTick(this, 0.0f, left).execute();
+    CountdownTick(this, left)();
 }
 
 void BaseCountdown::stop()
 {
     if (left >= 0)
     {
+        ServerPlugin * plugin = ServerPlugin::getInstance();
+        TimerEngine * timers = plugin->getTimerEngine();
+
         left = -1;
-        nextTick->cancel();
-        nextTick = NULL;
+        timers->cancelTimer(nextTick);
+        nextTick = TimerEngine::INVALID_HANDLE;
     }
 }

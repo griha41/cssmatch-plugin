@@ -34,8 +34,8 @@ namespace cssmatch
         CannotBeCopied & operator =(const CannotBeCopied & toCopy);
     protected:
         // Allow the instanciation of the children
-        CannotBeCopied();
-        /*virtual causes crash*/ ~CannotBeCopied();
+        CannotBeCopied(){};
+        /*virtual causes crash*/ ~CannotBeCopied(){};
     };
 }
 

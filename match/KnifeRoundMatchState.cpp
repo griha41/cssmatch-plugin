@@ -352,6 +352,7 @@ void KnifeRoundMatchState::item_pickup(IGameEvent * event)
     // Restrict all the weapons but knife
 
     ServerPlugin * plugin = ServerPlugin::getInstance();
+    TimerEngine * timers = plugin->getTimerEngine();
     ValveInterfaces * interfaces = plugin->getInterfaces();
 
     string item = event->GetString("item");
@@ -365,12 +366,12 @@ void KnifeRoundMatchState::item_pickup(IGameEvent * event)
             if (item == "c4")
             {
                 if (! plugin->getConVar("cssmatch_kniferound_allows_c4")->GetBool())
-                    plugin->addTimer(new ItemRemoveTimer(userid, "weapon_c4", false));
+                    timers->addTimer(0.1f, ItemRemoveTimer(userid, "weapon_c4", false));
             }
             else if (strstr(plugin->getConVar("cssmatch_weapons")->GetString(),
                             item.c_str()) != NULL)
             {
-                plugin->addTimer(new ItemRemoveTimer(userid, "weapon_" + item, true));
+                timers->addTimer(0.1f, ItemRemoveTimer(userid, "weapon_" + item, true));
             }
         }
         else
@@ -446,11 +447,11 @@ void KnifeRoundMatchState::bomb_beginplant(IGameEvent * event)
 }*/
 
 ItemRemoveTimer::ItemRemoveTimer(int playerUserid, const string & item, bool switchKnife)
-    : BaseTimer(0.1f), userid(playerUserid), toRemove(item), useKnife(switchKnife)
+    : userid(playerUserid), toRemove(item), useKnife(switchKnife)
 {
 }
 
-void ItemRemoveTimer::execute()
+void ItemRemoveTimer::operator()()
 {
     ServerPlugin * plugin = ServerPlugin::getInstance();
     ConVar * sv_cheats = plugin->getConVar("sv_cheats");

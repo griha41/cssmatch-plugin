@@ -234,19 +234,19 @@
 			Filter="cpp;c;cxx;rc;def;r;odl;idl;hpj;bat"
 			>
 			<File
-				RelativePath=".\plugin\BaseTimer.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\plugin\BaseTimer.h"
-				>
-			</File>
-			<File
 				RelativePath=".\plugin\ServerPlugin.cpp"
 				>
 			</File>
 			<File
 				RelativePath=".\plugin\ServerPlugin.h"
+				>
+			</File>
+			<File
+				RelativePath=".\plugin\Timer.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\plugin\Timer.h"
 				>
 			</File>
 			<File
@@ -318,15 +318,7 @@
 			Name="misc"
 			>
 			<File
-				RelativePath=".\misc\BaseSingleton.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\misc\BaseSingleton.h"
-				>
-			</File>
-			<File
-				RelativePath=".\misc\CannotBeCopied.cpp"
 				>
 			</File>
 			<File

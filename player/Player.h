@@ -52,7 +52,7 @@ namespace cssmatch
     };
 
     /** Team id */
-    typedef enum TeamCode
+    enum TeamCode
     {
         INVALID_TEAM = TEAM_INVALID,
         UN_TEAM = TEAM_UNASSIGNED,
@@ -62,7 +62,7 @@ namespace cssmatch
     };
 
     /** Weapon slot codes */
-    typedef enum WeaponSlotCode
+    enum WeaponSlotCode
     {
         WEAPON_SLOT1 = 0,
         WEAPON_SLOT2,

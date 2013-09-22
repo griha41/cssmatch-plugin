@@ -31,52 +31,6 @@ using std::ostringstream;
 using std::string;
 using std::getline;
 
-
-// socket api
-// Leave it here so Source SDK undef/redefine the microsoft's ARRAYSIZE macro
-#include <string.h>
-#ifdef _WIN32
-
-#pragma comment(lib,"ws2_32.lib")
-#include <winsock2.h>
-#define SOCKET_ERROR_CODE WSAGetLastError()
-
-#else
-
-#include <errno.h>
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <arpa/inet.h>
-#include <unistd.h> // close
-#include <netdb.h> // gethostbyname
-#define INVALID_SOCKET -1
-#define SOCKET_ERROR -1
-#define closesocket(s) close(s)
-#define SD_BOTH SHUT_RDWR
-typedef int SOCKET;
-typedef sockaddr_in SOCKADDR_IN; // typedef struct sockaddr_in SOCKADDR_IN;
-typedef sockaddr SOCKADDR;
-typedef in_addr IN_ADDR;
-#define SOCKET_ERROR_CODE errno
-
-#endif
-
-// thread api
-#ifdef _WIN32
-    typedef DWORD ThreadReturn;
-#define ThreadReturn ThreadReturn WINAPI
-    typedef LPVOID ThreadParam;
-    
-    const HANDLE INVALID_HANDLE = INVALID_HANDLE_VALUE;
-#else
-#include <pthread.h>
-    typedef void * ThreadReturn;
-    typedef void * ThreadParam;
-
-    const int INVALID_HANDLE = -1;
-#endif
-    
 static ThreadReturn updateNotifierInternalRun(ThreadParam param)
 {
     UpdateNotifier * notifier = static_cast<UpdateNotifier *>(param);
@@ -115,10 +69,10 @@ static ThreadReturn updateNotifierInternalRun(ThreadParam param)
     return 0l;
 #else
     return NULL;
-#endif
+#endif // _WIN32
 }
 
-UpdateNotifier::UpdateNotifier() : threadHandle(INVALID_HANDLE), version(CSSMATCH_VERSION)
+UpdateNotifier::UpdateNotifier() : threadStarted(false), version(CSSMATCH_VERSION)
 {
 #ifdef _WIN32
     // Init use of Winsock DLL
@@ -137,7 +91,7 @@ UpdateNotifier::~UpdateNotifier()
     WSACleanup();
     
     // Close the thread handle
-    if (threadHandle != INVALID_HANDLE)
+    if (threadStarted)
         CloseHandle(threadHandle);
 
 #endif // _WIN32
@@ -220,29 +174,37 @@ void UpdateNotifier::query(const SOCKADDR_IN & serv, const SOCKET & socketfd,
 
 void UpdateNotifier::start()
 {
-    if (threadHandle == INVALID_HANDLE)
+    if (threadStarted)
+    {
+        CSSMATCH_PRINT("Update notifier already started");
+    }
+    else
     {
 #if defined _WIN32
         DWORD threadId;
         threadHandle = CreateThread(NULL, 0, updateNotifierInternalRun, this, 0, &threadId);
         if (threadId == NULL)
 #else
-        if (pthread_ceate(&threadHandle, &threadAttr, updateNotifierInternalRun, this) != 0)
-#endif
+        if (pthread_create(&threadHandle, NULL, updateNotifierInternalRun, this) != 0)
+#endif // _WIN32
             throw UpdateNotifierException("Thread initialization failed");
+        threadStarted = true;
     }
-    else
-        CSSMATCH_PRINT("Update notifier already started");
 }
 
 void UpdateNotifier::join()
 {
+    if (threadStarted)
+    {
 #if defined _WIN32
-    if (WaitForSingleObject(threadHandle, INFINITE) == WAIT_FAILED)
+        if (WaitForSingleObject(threadHandle, INFINITE) == WAIT_FAILED)
 #else
-    if (pthread_join(&threadHandle, NULL) != 0)
-#endif
-        throw UpdateNotifierException("Thread join failed");
+        if (pthread_join(threadHandle, NULL) != 0)
+#endif // _WIN32
+            throw UpdateNotifierException("Thread join failed");
+    }
+    else
+            throw UpdateNotifierException("Thread not started");
 }
 
 std::string UpdateNotifier::getLastVer() const

@@ -53,11 +53,18 @@ typedef in_addr IN_ADDR;
 
 #endif
 
+// thread api
 #ifdef _WIN32
 #include <windows.h>
     typedef HANDLE ThreadHandle;
+    typedef DWORD ThreadReturn;
+#define ThreadReturn ThreadReturn WINAPI
+    typedef LPVOID ThreadParam;
 #else
-    typedef int ThreadHandle;
+#include <pthread.h>
+    typedef pthread_t ThreadHandle;
+    typedef void * ThreadReturn;
+    typedef void * ThreadParam;
 #endif
 
 #include "../misc/common.h" // pragma
@@ -86,6 +93,9 @@ namespace cssmatch
     private:
         /** Thread handle */
         ThreadHandle threadHandle;
+
+        /** Is the thread started? (aka threadHandle is valid.) */
+        bool threadStarted;
 
         /** Last plugin version found */
         std::string version;

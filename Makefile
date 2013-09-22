@@ -67,7 +67,7 @@ BASE_CFLAGS = 	-msse \
 				-Dstrcmpi=strcasecmp \
 				-fPIC \
 				-Wno-deprecated \
-				-msse 
+				-m32 
 OPT_FLAGS = -O3 -funroll-loops -s -pipe
 DEBUG_FLAGS = -g -ggdb3 -O0 -D_DEBUG				
 

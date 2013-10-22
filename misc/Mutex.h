@@ -55,6 +55,13 @@ namespace cssmatch
         /** Mutex handle. */
         MutexHandle handle;
     public:
+        /** 
+         * @throws MutexException
+         */
+        Mutex();
+
+        ~Mutex();
+
         /** Lock the mutex. 
          * @throws MutexException
          */

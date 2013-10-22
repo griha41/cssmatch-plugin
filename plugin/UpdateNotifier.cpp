@@ -218,7 +218,7 @@ string UpdateNotifier::getLastVer()
     }
     catch (const MutexException & e)
     {
-        throw UpdateNotifierException("Mutex unlock failed");
+        throw UpdateNotifierException(e.what());
     }
     return versionName;
 }

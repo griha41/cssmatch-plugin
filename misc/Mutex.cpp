@@ -24,24 +24,43 @@
 
 using namespace cssmatch;
 
+Mutex::Mutex()                                                    
+{      
+#if defined _WIN32                                                
+    handle = CreateMutex(NULL, FALSE, NULL);                      
+    if (handle == NULL)                                           
+#else
+    if (pthread_mutex_init(&handle, NULL) != 0)                   
+#endif // _WIN32                                                  
+        throw MutexException("Mutex initialization failed");      
+}  
+   
+Mutex::~Mutex()
+{      
+#if defined _WIN32                                                
+    CloseHandle(handle);                                          
+#else
+    if (pthread_mutex_destroy(&handle) != 0)                      
+        CSSMATCH_PRINT("Error destroying the mutex");             
+#endif // _WIN32                                                  
+}      
+                                                                  
 void Mutex::lock()
 {
-#if defined _WIN32
-    handle = CreateMutex(NULL, FALSE, NULL);
-    if (WaitForSingleObject(handle, INFINITE) != WAIT_OBJECT_0)
-#else
-    handle = PTHREAD_MUTEX_INITIALIZER;
-    if (pthread_mutex_lock(handle) != 0)
+#if defined _WIN32                                                
+    if (WaitForSingleObject(handle, INFINITE) != WAIT_OBJECT_0)   
+#else                                                             
+    if (pthread_mutex_lock(&handle) != 0)                         
 #endif // _WIN32
-        throw MutexException("Mutex lock failed");
-}
-
-void Mutex::unlock()
-{
+        throw MutexException("Mutex lock failed");                
+}      
+   
+void Mutex::unlock()                                              
+{                                                                 
 #if defined _WIN32
     if (! ReleaseMutex(handle))
 #else
-    if (pthread_mutex_unlock(handle) != 0)
+    if (pthread_mutex_unlock(&handle) != 0)
 #endif // _WIN32
         throw MutexException("Mutex unlock failed");
 }

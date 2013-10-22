@@ -207,7 +207,18 @@ void UpdateNotifier::join()
             throw UpdateNotifierException("Thread not started");
 }
 
-std::string UpdateNotifier::getLastVer() const
+string UpdateNotifier::getLastVer()
 {
-    return version;
+    string versionName;
+    try
+    {
+        versionLock.lock();
+        versionName = version;
+        versionLock.unlock();
+    }
+    catch (const MutexException & e)
+    {
+        throw UpdateNotifierException("Mutex unlock failed");
+    }
+    return versionName;
 }

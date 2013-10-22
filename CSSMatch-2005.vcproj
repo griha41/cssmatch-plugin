@@ -341,6 +341,14 @@
 				RelativePath=".\misc\common.h"
 				>
 			</File>
+			<File
+				RelativePath=".\misc\Mutex.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\misc\Mutex.h"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="messages"

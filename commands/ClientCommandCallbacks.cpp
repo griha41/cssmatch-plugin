@@ -130,12 +130,19 @@ PLUGIN_RESULT cssmatch::clientcmd_cssmatch(ClanMember * user, const CCommand & a
         {
             if (updateNotifier != NULL)
             {
-                if (updateNotifier->getLastVer() != CSSMATCH_VERSION)
+                try
                 {
-                    RecipientFilter recipients;
-                    recipients.addRecipient(user);
+                    if (updateNotifier->getLastVer() != CSSMATCH_VERSION)
+                    {
+                        RecipientFilter recipients;
+                        recipients.addRecipient(user);
 
-                    i18n->i18nChatSay(recipients, "update_available");
+                        i18n->i18nChatSay(recipients, "update_available");
+                    }
+                }
+                catch (const UpdateNotifierException & e)
+                {
+                    CSSMATCH_PRINT_EXCEPTION(e);
                 }
             }
         }

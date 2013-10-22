@@ -56,18 +56,12 @@ typedef in_addr IN_ADDR;
 // thread api
 #ifdef _WIN32
 #include <windows.h>
-    typedef HANDLE ThreadHandle;
-    typedef DWORD ThreadReturn;
-#define ThreadReturn ThreadReturn WINAPI
-    typedef LPVOID ThreadParam;
 #else
 #include <pthread.h>
-    typedef pthread_t ThreadHandle;
-    typedef void * ThreadReturn;
-    typedef void * ThreadParam;
-#endif
+#endif // _WIN32
 
 #include "../misc/common.h" // pragma
+#include "../misc/Mutex.h"
 #include "../exceptions/BaseException.h"
 
 #include <string>
@@ -80,6 +74,16 @@ typedef in_addr IN_ADDR;
 
 namespace cssmatch
 {
+#ifdef _WIN32
+    typedef HANDLE ThreadHandle;
+    typedef DWORD ThreadReturn;
+#define ThreadReturn ThreadReturn WINAPI
+    typedef LPVOID ThreadParam;
+#else
+    typedef pthread_t ThreadHandle;
+    typedef void * ThreadReturn;
+    typedef void * ThreadParam;
+#endif // _WIN32
 
     class UpdateNotifierException : public BaseException
     {
@@ -99,6 +103,9 @@ namespace cssmatch
 
         /** Last plugin version found */
         std::string version;
+
+        /** Version data lock. */
+        Mutex versionLock;
     public:
         /**
          * @throws UpdateNotifierException If the socket api cannot being initialized
@@ -117,7 +124,10 @@ namespace cssmatch
          */
         void join();
 
-        std::string getLastVer() const;
+        /**
+         * @throws UpdateNotifierException If the lock/unlock part failed
+         */
+        std::string getLastVer();
 
         /** INTERNAL; Query the server and update "version". Do not call. */
         void query(const SOCKADDR_IN & serv, const SOCKET & socketfd, const std::string & hostname);

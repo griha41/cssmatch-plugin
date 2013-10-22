@@ -68,7 +68,7 @@ void cssmatch::cssm_help(const CCommand & args)
 
             const char * helpText = command->GetHelpText();
             Msg("%s\n", helpText);
-            delete helpText;
+            delete [] helpText;
 
             itConCommand++;
         }
@@ -82,7 +82,7 @@ void cssmatch::cssm_help(const CCommand & args)
         {
             const char * helpText = itConCommand->second->GetHelpText();
             Msg("%s\n", helpText);
-            delete helpText;
+            delete [] helpText;
         }
         else
         {

@@ -160,7 +160,9 @@ void UpdateNotifier::query(const SOCKADDR_IN & serv, const SOCKET & socketfd,
                 while(getline(stream, temp)) {} // get the last line
 
                 // Update the last version name found
+                versionLock.lock();
                 version = temp;
+                versionLock.unlock();
             }
 #ifdef _DEBUG
             else

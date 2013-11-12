@@ -25,7 +25,7 @@ BASE_DIR = ../hl2sdk-ob
 
 # Compilateur
 #CXX = g++-3.4 # maximise la compatibilité
-CXX = g++-4.1 # disponible sur les distri récentes
+CXX = g++
 
 # Nom du fichier binaire de sortie
 BINARY_NAME = cssmatch.so

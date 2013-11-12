@@ -375,7 +375,7 @@ bool ServerPlugin::Load(CreateInterfaceFn interfaceFactory, CreateInterfaceFn ga
             }
             catch(const ThreadException & e)
             {
-                Msg(CSSMATCH_NAME ": %s (%s, l.%i)\n", e.getMessage(), __FILE__, __LINE__);
+                Msg(CSSMATCH_NAME ": %s (%s, l.%i)\n", e.getMessage().c_str(), __FILE__, __LINE__);
             }
 
             Msg(CSSMATCH_NAME ": loaded\n");
@@ -407,7 +407,7 @@ void ServerPlugin::Unload()
             }
             catch (const ThreadException & e)
             {
-                Msg(CSSMATCH_NAME ": %s (%s, l.%i)\n", e.getMessage(), __FILE__, __LINE__);
+                Msg(CSSMATCH_NAME ": %s (%s, l.%i)\n", e.getMessage().c_str(), __FILE__, __LINE__);
             }
             delete updateThread;
             updateThread = NULL;

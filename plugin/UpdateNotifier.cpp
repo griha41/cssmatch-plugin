@@ -138,6 +138,8 @@ void UpdateNotifier::run()
 {
     while(alive)
     {
+        wake.reset();
+
         SOCKADDR_IN serv;
         memset(&serv, 0, sizeof(serv));
 
@@ -189,7 +191,7 @@ void UpdateNotifier::end()
     alive = false;
     try
     {
-        wake.signal();
+        wake.set();
     }
     catch (const ThreadException & e)
     {

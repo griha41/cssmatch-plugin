@@ -120,7 +120,7 @@ namespace threading
     };
 
     /**
-     * Basic platform-independant event.
+     * Basic platform-independant manual-reset event.
      */
     class Event
     {
@@ -142,7 +142,12 @@ namespace threading
         /**
          * Fire an event.
          */
-        void signal() throw(ThreadException);
+        void set() throw(ThreadException);
+
+        /**
+         * Reset the event.
+         */
+        void reset() throw(ThreadException);
     };
 } // namespace threading
 

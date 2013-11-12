@@ -618,10 +618,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\threading\threading_test.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\threading\threading_windows.cpp"
 				>
 			</File>

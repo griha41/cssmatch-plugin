@@ -125,7 +125,7 @@ struct threading::EventData
 
 Event::Event() : data(NULL)
 {
-    HANDLE handle = CreateEvent(NULL, FALSE, FALSE, TEXT("threading::Event")); 
+    HANDLE handle = CreateEvent(NULL, TRUE, FALSE, TEXT("threading::Event")); 
 
     if (handle == NULL)
         throw ThreadException("Event::Event() : CreateEvent did return NULL.");
@@ -154,12 +154,20 @@ EventWaitResult Event::wait(long timeoutMs)
     return waitResult;
 }
 
-void Event::signal()
+void Event::set()
 {
     DWORD result = SetEvent(data->handle);
 
     if (! result)
-        throw ThreadException("Event::signal() : SetEvent did return FALSE.");
+        throw ThreadException("Event::set() : SetEvent did return FALSE.");
+}
+
+void Event::reset()
+{
+    DWORD result = ResetEvent(data->handle);
+
+    if (! result)
+        throw ThreadException("Event::reset() : ResetEvent did return FALSE.");
 }
 
 #endif // _WIN32

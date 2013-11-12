@@ -17,7 +17,7 @@
  * along with CSSMatch; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
- * Portions of this code are also Copyright © 1996-2005 Valve Corporation, All rights reserved
+ * Portions of this code are also Copyright Â© 1996-2005 Valve Corporation, All rights reserved
  */
 
 #ifndef __UPDATE_NOTIFIER_H__
@@ -53,84 +53,57 @@ typedef in_addr IN_ADDR;
 
 #endif
 
-// thread api
-#ifdef _WIN32
-#include <windows.h>
-#else
-#include <pthread.h>
-#endif // _WIN32
-
 #include "../misc/common.h" // pragma
-#include "../misc/Mutex.h"
 #include "../exceptions/BaseException.h"
+#include "../threading/threading.h"
 
 #include <string>
 
 #ifdef CSSMATCH_BETA
 #define CSSMATCH_VERSION_FILE "/plugin/versionbeta.php"
 #else
-#define CSSMATCH_VERSION_FILE "/plugin/version.php"
+#define CSSMATCH_VERSION_FILE "/plugin/versionbeta.php"
 #endif
 
 namespace cssmatch
 {
-#ifdef _WIN32
-    typedef HANDLE ThreadHandle;
-    typedef DWORD ThreadReturn;
-#define ThreadReturn ThreadReturn WINAPI
-    typedef LPVOID ThreadParam;
-#else
-    typedef pthread_t ThreadHandle;
-    typedef void * ThreadReturn;
-    typedef void * ThreadParam;
-#endif // _WIN32
-
+    
     class UpdateNotifierException : public BaseException
     {
     public:
         UpdateNotifierException(const std::string & message) : BaseException(message){}
     };
 
-    /** Thread that compares the current plugin version with the one from cssmatch.com */
-    class UpdateNotifier
+    /** Compares the current plugin version with the one from cssmatch.com */
+    class UpdateNotifier : public threading::Thread
     {
     private:
-        /** Thread handle */
-        ThreadHandle threadHandle;
-
-        /** Is the thread started? (aka threadHandle is valid.) */
-        bool threadStarted;
-
         /** Last plugin version found */
         std::string version;
 
-        /** Version data lock. */
-        Mutex versionLock;
+        bool alive; // thread can continue?
+        threading::Event wake;
+        threading::Mutex mutex;
+
+        /** Query the server and update "version" */
+        void query(const SOCKADDR_IN & serv, const SOCKET & socketfd, const std::string & hostname);
     public:
         /**
          * @throws UpdateNotifierException If the socket api cannot being initialized
          */
-        UpdateNotifier(); /* throw(UpdateNotifierException); => throw statement only useful under Windows, but only
+        UpdateNotifier(); /* throw(UpdateNotifierException); => only useful under Windows, but only
                            supported under Linux (see pragma) */
         ~UpdateNotifier();
 
         /**
-         * @throws UpdateNotifierException If the thread initialization failed
+         * @see threading::Thread
          */
-        void start();
+        void run();
 
-        /**
-         * @throws UpdateNotifierException If the thread join failed
-         */
-        void join();
+        /** Tell to the thread that it must exit */
+        void end();
 
-        /**
-         * @throws UpdateNotifierException If the lock/unlock part failed
-         */
         std::string getLastVer();
-
-        /** INTERNAL; Query the server and update "version". Do not call. */
-        void query(const SOCKADDR_IN & serv, const SOCKET & socketfd, const std::string & hostname);
     };
 }
 

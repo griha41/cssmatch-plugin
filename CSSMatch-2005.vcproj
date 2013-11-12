@@ -341,14 +341,6 @@
 				RelativePath=".\misc\common.h"
 				>
 			</File>
-			<File
-				RelativePath=".\misc\Mutex.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\misc\Mutex.h"
-				>
-			</File>
 		</Filter>
 		<Filter
 			Name="messages"
@@ -611,6 +603,22 @@
 			</File>
 			<File
 				RelativePath=".\report\XmlReport.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="threading"
+			>
+			<File
+				RelativePath=".\threading\threading.h"
+				>
+			</File>
+			<File
+				RelativePath=".\threading\threading_test.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\threading\threading_windows.cpp"
 				>
 			</File>
 		</Filter>

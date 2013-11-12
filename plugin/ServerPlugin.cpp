@@ -47,6 +47,7 @@
 #include "toolframework/itoolentity.h"
 
 using namespace cssmatch;
+using namespace threading;
 
 using std::string;
 using std::list;
@@ -372,9 +373,9 @@ bool ServerPlugin::Load(CreateInterfaceFn interfaceFactory, CreateInterfaceFn ga
                 updateThread = new UpdateNotifier();
                 updateThread->start();
             }
-            catch(const UpdateNotifierException & e)
+            catch(const ThreadException & e)
             {
-                Msg(CSSMATCH_NAME ": %s (%s, l.%i)\n", e.what(), __FILE__, __LINE__);
+                Msg(CSSMATCH_NAME ": %s (%s, l.%i)\n", e.getMessage(), __FILE__, __LINE__);
             }
 
             Msg(CSSMATCH_NAME ": loaded\n");
@@ -401,11 +402,12 @@ void ServerPlugin::Unload()
         {
             try
             {
+                updateThread->end();
                 updateThread->join();
             }
-            catch (const UpdateNotifierException & e)
+            catch (const ThreadException & e)
             {
-                Msg(CSSMATCH_NAME ": %s (%s, l.%i)\n", e.what(), __FILE__, __LINE__);
+                Msg(CSSMATCH_NAME ": %s (%s, l.%i)\n", e.getMessage(), __FILE__, __LINE__);
             }
             delete updateThread;
             updateThread = NULL;

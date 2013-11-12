@@ -17,7 +17,7 @@
  * along with CSSMatch; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
- * Portions of this code are also Copyright © 1996-2005 Valve Corporation, All rights reserved
+ * Portions of this code are also Copyright Â© 1996-2005 Valve Corporation, All rights reserved
  */
 
 #include "UpdateNotifier.h"
@@ -26,56 +26,15 @@
 #include <sstream>
 
 using namespace cssmatch;
+using namespace threading;
 using std::istringstream;
 using std::ostringstream;
 using std::string;
 using std::getline;
 
-static ThreadReturn updateNotifierInternalRun(ThreadParam param)
-{
-    UpdateNotifier * notifier = static_cast<UpdateNotifier *>(param);
-    SOCKADDR_IN serv;
-    memset(&serv, 0, sizeof(serv));
-
-    const char * hostname =
-        ServerPlugin::getInstance()->getConVar("cssmatch_updatesite")->GetString();
-
-    hostent * host = gethostbyname(hostname);
-    if (host == NULL)
-    {
-        CSSMATCH_PRINT("gethostbyname() failed (error " + toString(SOCKET_ERROR_CODE) + ")");
-    }
-    else
-    {
-        memcpy(&serv.sin_addr, host->h_addr, host->h_length);
-
-        serv.sin_port = htons(80);
-        serv.sin_family = AF_INET;
-
-        SOCKET socketfd = socket(AF_INET, SOCK_STREAM, 0);
-        if (socketfd == INVALID_SOCKET)
-        {
-            CSSMATCH_PRINT("socket() failed (error " + toString(SOCKET_ERROR_CODE) + ")");
-        }
-        else
-        {
-            notifier->query(serv, socketfd, hostname);
-
-            shutdown(socketfd, SD_BOTH);
-            closesocket(socketfd);
-        }
-    }
-#ifdef _WIN32
-    return 0l;
-#else
-    return NULL;
-#endif // _WIN32
-}
-
-UpdateNotifier::UpdateNotifier() : threadStarted(false), version(CSSMATCH_VERSION)
+UpdateNotifier::UpdateNotifier() : alive(true), version(CSSMATCH_VERSION)
 {
 #ifdef _WIN32
-    // Init use of Winsock DLL
     WSADATA wsa;
     if (WSAStartup(MAKEWORD(2, 2), &wsa) != 0)
     {
@@ -87,13 +46,7 @@ UpdateNotifier::UpdateNotifier() : threadStarted(false), version(CSSMATCH_VERSIO
 UpdateNotifier::~UpdateNotifier()
 {
 #ifdef _WIN32
-    // Terminates use of the Winsock 2 DLL
     WSACleanup();
-    
-    // Close the thread handle
-    if (threadStarted)
-        CloseHandle(threadHandle);
-
 #endif // _WIN32
 }
 
@@ -160,9 +113,16 @@ void UpdateNotifier::query(const SOCKADDR_IN & serv, const SOCKET & socketfd,
                 while(getline(stream, temp)) {} // get the last line
 
                 // Update the last version name found
-                versionLock.lock();
-                version = temp;
-                versionLock.unlock();
+                try
+                {
+                    mutex.lock();
+                    version = temp;
+                    mutex.unlock();
+                }
+                catch (const ThreadException & e)
+                {
+                    CSSMATCH_PRINT(e.getMessage());
+                }
             }
 #ifdef _DEBUG
             else
@@ -174,53 +134,84 @@ void UpdateNotifier::query(const SOCKADDR_IN & serv, const SOCKET & socketfd,
     }
 }
 
-void UpdateNotifier::start()
+void UpdateNotifier::run()
 {
-    if (threadStarted)
+    while(alive)
     {
-        CSSMATCH_PRINT("Update notifier already started");
-    }
-    else
-    {
-#if defined _WIN32
-        DWORD threadId;
-        threadHandle = CreateThread(NULL, 0, updateNotifierInternalRun, this, 0, &threadId);
-        if (threadId == NULL)
+        SOCKADDR_IN serv;
+        memset(&serv, 0, sizeof(serv));
+
+        const char * hostname =
+            ServerPlugin::getInstance()->getConVar("cssmatch_updatesite")->GetString();
+
+        hostent * host = gethostbyname(hostname);
+        if (host == NULL)
+        {
+            CSSMATCH_PRINT("gethostbyname() failed (error " + toString(SOCKET_ERROR_CODE) + ")");
+        }
+        else
+        {
+            memcpy(&serv.sin_addr, host->h_addr, host->h_length);
+
+            serv.sin_port = htons(80);
+            serv.sin_family = AF_INET;
+
+            SOCKET socketfd = socket(AF_INET, SOCK_STREAM, 0);
+            if (socketfd == INVALID_SOCKET)
+            {
+                CSSMATCH_PRINT("socket() failed (error " + toString(SOCKET_ERROR_CODE) + ")");
+            }
+            else
+            {
+                query(serv, socketfd, hostname);
+
+                shutdown(socketfd, SD_BOTH);
+                closesocket(socketfd);
+            }
+        }
+        try
+        {
+#ifdef _DEBUG
+            wake.wait(1*60*1000);
 #else
-        if (pthread_create(&threadHandle, NULL, updateNotifierInternalRun, this) != 0)
-#endif // _WIN32
-            throw UpdateNotifierException("Thread initialization failed");
-        threadStarted = true;
+            wake.wait(24*60*60*1000); // 24h
+#endif // _DEBUG
+        }
+        catch (const ThreadException & e)
+        {
+            CSSMATCH_PRINT(e.getMessage());
+        }
     }
 }
 
-void UpdateNotifier::join()
+void UpdateNotifier::end()
 {
-    if (threadStarted)
-    {
-#if defined _WIN32
-        if (WaitForSingleObject(threadHandle, INFINITE) == WAIT_FAILED)
-#else
-        if (pthread_join(threadHandle, NULL) != 0)
-#endif // _WIN32
-            throw UpdateNotifierException("Thread join failed");
-    }
-    else
-            throw UpdateNotifierException("Thread not started");
-}
-
-string UpdateNotifier::getLastVer()
-{
-    string versionName;
+    alive = false;
     try
     {
-        versionLock.lock();
-        versionName = version;
-        versionLock.unlock();
+        wake.signal();
     }
-    catch (const MutexException & e)
+    catch (const ThreadException & e)
     {
-        throw UpdateNotifierException(e.what());
+        CSSMATCH_PRINT(e.getMessage());
     }
-    return versionName;
+}
+
+std::string UpdateNotifier::getLastVer()
+{
+    string result;
+
+    try
+    {
+        mutex.lock();
+        result = version;
+        mutex.unlock();
+    }
+    catch (const ThreadException & e)
+    {
+        CSSMATCH_PRINT(e.getMessage());
+        result = CSSMATCH_VERSION;
+    }
+
+    return result;
 }

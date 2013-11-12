@@ -138,7 +138,14 @@ void UpdateNotifier::run()
 {
     while(alive)
     {
-        wake.reset();
+        try
+        {
+            wake.reset();    
+        }
+        catch (const ThreadException & e)
+        {
+            CSSMATCH_PRINT(e.getMessage());
+        }
 
         SOCKADDR_IN serv;
         memset(&serv, 0, sizeof(serv));
@@ -181,6 +188,7 @@ void UpdateNotifier::run()
         }
         catch (const ThreadException & e)
         {
+            alive = false;
             CSSMATCH_PRINT(e.getMessage());
         }
     }

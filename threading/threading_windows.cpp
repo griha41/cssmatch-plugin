@@ -140,12 +140,18 @@ Event::~Event()
     free(data), data = NULL;
 }
 
-void Event::wait()
+EventWaitResult Event::wait(long timeoutMs)
 {
-    DWORD result = WaitForSingleObject(data->handle, INFINITE);
+    DWORD result = WaitForSingleObject(data->handle, timeoutMs);
 
-    if (result != WAIT_OBJECT_0)
-        throw ThreadException("Event::wait() : WaitForSingleObject didn't return WAIT_OBJECT_0.");
+    EventWaitResult waitResult;
+    if (result == WAIT_OBJECT_0)
+        waitResult = THREADING_EVENT_SIGNALED;
+    else if (result == WAIT_TIMEOUT)
+    waitResult = THREADING_EVENT_TIMEOUT;
+    else
+        throw ThreadException("Event::wait() : WaitForSingleObject didn't return WAIT_OBJECT_0 nor WAIT_TIMEOUT.");
+    return waitResult;
 }
 
 void Event::signal()

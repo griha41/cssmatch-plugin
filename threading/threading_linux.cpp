@@ -194,7 +194,7 @@ void Event::signal() throw(ThreadException)
     if (resultLock != 0)
         throw ThreadException("Event::signal() : pthread_mutex_lock didn't return 0.");
 
-    int resultSignal = pthread_cond_signal(&data->handle);
+    int resultSignal = pthread_cond_broadcast(&data->handle);
     if (resultSignal != 0)
         throw ThreadException("Event::signal() : pthread_cond_signal didn't return 0.");
 

@@ -81,6 +81,12 @@ namespace threading
         void join() throw(ThreadException);
     };
 
+    /**
+     * Cause the current thread to sleep.
+     * @param ms Sleeping duration in milliseconds.
+     */
+    void sleep(long ms);
+
     
     struct MutexData;
 
@@ -108,7 +114,7 @@ namespace threading
         void unlock() throw(ThreadException);
     };
 
-
+#if 0
     struct EventData;
 
     /**
@@ -124,7 +130,7 @@ namespace threading
     };
 
     /**
-     * Basic platform-independant manual-reset event.
+     * Basic platform-independant auto-reset event.
      */
     class Event
     {
@@ -147,12 +153,8 @@ namespace threading
          * Fire an event.
          */
         void set() throw(ThreadException);
-
-        /**
-         * Reset the event.
-         */
-        void reset() throw(ThreadException);
     };
+#endif
 } // namespace threading
 
 #ifdef _MSC_VER // VC++ only

@@ -140,75 +140,56 @@ void UpdateNotifier::query(const SOCKADDR_IN & serv, const SOCKET & socketfd,
 
 void UpdateNotifier::run()
 {
+    lastCheckDate = std::time(NULL);
     while(alive)
     {
-        try
+        time_t curtime = std::time(NULL);
+        if (curtime - lastCheckDate > 24
+#ifndef _DEBUG
+                * 60 * 60
+#endif
+                )
         {
-            wake.reset();    
-        }
-        catch (const ThreadException & e)
-        {
-            CSSMATCH_PRINT(e.getMessage());
-        }
+            SOCKADDR_IN serv;
+            memset(&serv, 0, sizeof(serv));
 
-        SOCKADDR_IN serv;
-        memset(&serv, 0, sizeof(serv));
+            const char * hostname =
+                ServerPlugin::getInstance()->getConVar("cssmatch_updatesite")->GetString();
 
-        const char * hostname =
-            ServerPlugin::getInstance()->getConVar("cssmatch_updatesite")->GetString();
-
-        hostent * host = gethostbyname(hostname);
-        if (host == NULL)
-        {
-            CSSMATCH_PRINT("gethostbyname() failed (error " + toString(SOCKET_ERROR_CODE) + ")");
-        }
-        else
-        {
-            memcpy(&serv.sin_addr, host->h_addr, host->h_length);
-
-            serv.sin_port = htons(80);
-            serv.sin_family = AF_INET;
-
-            SOCKET socketfd = socket(AF_INET, SOCK_STREAM, 0);
-            if (socketfd == INVALID_SOCKET)
+            hostent * host = gethostbyname(hostname);
+            if (host == NULL)
             {
-                CSSMATCH_PRINT("socket() failed (error " + toString(SOCKET_ERROR_CODE) + ")");
+                CSSMATCH_PRINT("gethostbyname() failed (error " + toString(SOCKET_ERROR_CODE) + ")");
             }
             else
             {
-                query(serv, socketfd, hostname);
+                memcpy(&serv.sin_addr, host->h_addr, host->h_length);
 
-                shutdown(socketfd, SD_BOTH);
-                closesocket(socketfd);
+                serv.sin_port = htons(80);
+                serv.sin_family = AF_INET;
+
+                SOCKET socketfd = socket(AF_INET, SOCK_STREAM, 0);
+                if (socketfd == INVALID_SOCKET)
+                {
+                    CSSMATCH_PRINT("socket() failed (error " + toString(SOCKET_ERROR_CODE) + ")");
+                }
+                else
+                {
+                    query(serv, socketfd, hostname);
+
+                    shutdown(socketfd, SD_BOTH);
+                    closesocket(socketfd);
+                }
             }
+            lastCheckDate = curtime;
         }
-        try
-        {
-#ifdef _DEBUG
-            wake.wait(1*60*1000);
-#else
-            wake.wait(24*60*60*1000); // 24h
-#endif // _DEBUG
-        }
-        catch (const ThreadException & e)
-        {
-            alive = false;
-            CSSMATCH_PRINT(e.getMessage());
-        }
+        threading::sleep(1000);
     }
 }
 
 void UpdateNotifier::end()
 {
     alive = false;
-    try
-    {
-        wake.set();
-    }
-    catch (const ThreadException & e)
-    {
-        CSSMATCH_PRINT(e.getMessage());
-    }
 }
 
 std::string UpdateNotifier::getLastVer()

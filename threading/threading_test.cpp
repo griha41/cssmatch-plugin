@@ -11,7 +11,7 @@
 using namespace threading;
 using namespace std;
 
-Event evt;
+//Event evt;
 
 class MyThread : public Thread
 {
@@ -27,21 +27,17 @@ public:
         cout << "MyThread::unlocking()" << endl;
         guard.unlock();
         cout << "MyThread::unlocked()" << endl;
-        for (int i = 0; i < 3; i++)
-        {
-            cout << "Try " << i << endl;
-            EventWaitResult result;
-            do
-            {
-                cout << "MyThread::run() tick" << endl;
-                result = evt.wait(500);
-            }
-            while (result == THREADING_EVENT_TIMEOUT);
-            if (i < 1)
-                evt.reset();
-            else
-                cout << "MyThread::run() /me don't reset the event" << endl;
-        }
+        //for (int i = 0; i < 2; i++)
+        //{
+        //    cout << "Try " << i << endl;
+        //    EventWaitResult result;
+        //    do
+        //    {
+        //        cout << "MyThread::run() tick" << endl;
+        //        result = evt.wait(500);
+        //    }
+        //    while (result == THREADING_EVENT_TIMEOUT);
+        //}
         cout << "MyThread::run() exit" << endl;
     }
 };
@@ -51,14 +47,10 @@ class MyThreadEvt : public Thread
 public:
     void run()
     {
-        for (int i = 0; i < 2; i++)
+        for (int i = 0; i < 3; i++)
         {
-#ifdef _WIN32
-            Sleep(2000);
-#else
-            sleep(2);
-#endif
-            evt.set();
+            threading::sleep(2000);
+            //evt.set();
         }
     }
 };

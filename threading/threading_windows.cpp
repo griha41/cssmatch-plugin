@@ -82,6 +82,10 @@ void Thread::join()
         throw ThreadException("Thread::join() : WaitForSingleObject didn't return WAIT_OBJECT_0.");
 }
 
+void threading::sleep(long ms)
+{
+    Sleep(ms);
+}
 
 struct threading::MutexData
 {
@@ -122,6 +126,7 @@ void Mutex::unlock()
 }
 
 
+#if 0
 struct threading::EventData
 {
     HANDLE handle;
@@ -130,6 +135,7 @@ struct threading::EventData
 Event::Event() : data(NULL)
 {
     HANDLE handle = CreateEvent(NULL, TRUE, FALSE, TEXT("threading::Event")); 
+    // Use of a manual reset-event to release all waiting threads instead of just one when the event is signaled
 
     if (handle == NULL)
         throw ThreadException("Event::Event() : CreateEvent did return NULL.");
@@ -152,7 +158,7 @@ EventWaitResult Event::wait(long timeoutMs)
     if (result == WAIT_OBJECT_0)
         waitResult = THREADING_EVENT_SIGNALED;
     else if (result == WAIT_TIMEOUT)
-    waitResult = THREADING_EVENT_TIMEOUT;
+        waitResult = THREADING_EVENT_TIMEOUT;
     else
         throw ThreadException("Event::wait() : WaitForSingleObject didn't return WAIT_OBJECT_0 nor WAIT_TIMEOUT.");
     return waitResult;
@@ -161,17 +167,13 @@ EventWaitResult Event::wait(long timeoutMs)
 void Event::set()
 {
     DWORD result = SetEvent(data->handle);
-
     if (! result)
         throw ThreadException("Event::set() : SetEvent did return FALSE.");
-}
 
-void Event::reset()
-{
-    DWORD result = ResetEvent(data->handle);
-
+    /*DWORD resultReset = ResetEvent(data->handle);
     if (! result)
-        throw ThreadException("Event::reset() : ResetEvent did return FALSE.");
+        throw ThreadException("Event::set() : ResetEvent did return FALSE.");*/
 }
+#endif
 
 #endif // _WIN32

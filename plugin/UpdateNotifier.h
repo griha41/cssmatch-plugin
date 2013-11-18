@@ -62,6 +62,7 @@ typedef in_addr IN_ADDR;
 #include "../threading/threading.h"
 
 #include <string>
+#include <ctime>
 
 #ifdef CSSMATCH_BETA
 #define CSSMATCH_VERSION_FILE "/plugin/versionbeta.php"
@@ -85,8 +86,10 @@ namespace cssmatch
         /** Last plugin version found */
         std::string version;
 
-        bool alive; // thread can continue?
-        threading::Event wake;
+        /** Last check for new version date */
+        std::time_t lastCheckDate;
+
+        volatile bool alive; // thread can continue?
         threading::Mutex mutex;
 
         /** Query the server and update "version" */

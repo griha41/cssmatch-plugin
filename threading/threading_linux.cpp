@@ -36,6 +36,18 @@
 
 using namespace threading;
 
+/**
+ * Fill a timespec structure based on a milliseconds duration.
+ */
+static inline void ms_to_timespec(long ms, timespec & out)
+{
+    out.tv_nsec = (ms % 1000) * 1000000;
+    out.tv_sec = ms / 1000;
+    // Fix tv_nsec so it's not greater than 1 sec
+    out.tv_sec += out.tv_nsec / 1000000000;
+    out.tv_nsec %= 1000000000;
+}
+
 struct threading::ThreadData
 {
     pthread_t handle;
@@ -126,12 +138,18 @@ void Mutex::unlock() throw(ThreadException)
         throw ThreadException("Mutex::unlock() : pthread_unmutex_lock didn't return 0.");
 }
 
+void threading::sleep(long ms)
+{
+    timespec timeout;
+    ms_to_timespec(ms, timeout);
+    nanosleep(timeout, NULL);
+}
 
+#if 0
 struct threading::EventData
 {
     pthread_cond_t handle;
     pthread_mutex_t mutex;
-    bool fired; /** Did the event has been fired? (aka not been reset yet) */
 };
 
 Event::Event() : data(NULL)
@@ -154,7 +172,6 @@ Event::Event() : data(NULL)
     data = (EventData *)calloc(1, sizeof(EventData));
     data->handle = handle;
     data->mutex = mutex;
-    data->fired = false;
 }
 
 Event::~Event()
@@ -170,29 +187,22 @@ EventWaitResult Event::wait(long timeoutMs) throw(ThreadException)
     if (resultLock != 0)
         throw ThreadException("Event::wait() : pthread_mutex_lock didn't return 0.");
 
-    EventWaitResult waitResult;
-    if (data->fired)
-    {
-        waitResult = THREADING_EVENT_SIGNALED;
-    }
-    else
-    {
-        timespec timeout;
-        clock_gettime(CLOCK_REALTIME, &timeout);
-        timeout.tv_nsec += (timeoutMs % 1000) * 1000000;
-        timeout.tv_sec += timeoutMs / 1000;
-        // Fix tv_nsec so it's not greater than 1 sec
-        timeout.tv_sec += timeout.tv_nsec / 1000000000;
-        timeout.tv_nsec %= 1000000000;
-        int resultWait = pthread_cond_timedwait(&data->handle, &data->mutex, &timeout);
+    timespec timeout;
+    clock_gettime(CLOCK_REALTIME, &timeout);
+    timeout.tv_nsec += (timeoutMs % 1000) * 1000000;
+    timeout.tv_sec += timeoutMs / 1000;
+    // Fix tv_nsec so it's not greater than 1 sec
+    timeout.tv_sec += timeout.tv_nsec / 1000000000;
+    timeout.tv_nsec %= 1000000000;
+    int resultWait = pthread_cond_timedwait(&data->handle, &data->mutex, &timeout);
 
-        if (resultWait == 0)
-            waitResult = THREADING_EVENT_SIGNALED;
-        else if (resultWait == ETIMEDOUT)
-            waitResult = THREADING_EVENT_TIMEOUT;
-        else
-            throw ThreadException("Event::wait() : pthread_cond_wait didn't return 0 nor ETIMEDOUT.");
-    }
+    EventWaitResult waitResult;
+    if (resultWait == 0)
+        waitResult = THREADING_EVENT_SIGNALED;
+    else if (resultWait == ETIMEDOUT)
+        waitResult = THREADING_EVENT_TIMEOUT;
+    else
+        throw ThreadException("Event::wait() : pthread_cond_wait didn't return 0 nor ETIMEDOUT.");
 
     int resultUnlock = pthread_mutex_unlock(&data->mutex);
     if (resultUnlock != 0)
@@ -206,8 +216,6 @@ void Event::set() throw(ThreadException)
     int resultLock = pthread_mutex_lock(&data->mutex);
     if (resultLock != 0)
         throw ThreadException("Event::set() : pthread_mutex_lock didn't return 0.");
-    
-    data->fired = true;
 
     int resultSignal = pthread_cond_broadcast(&data->handle);
     if (resultSignal != 0)
@@ -217,18 +225,6 @@ void Event::set() throw(ThreadException)
     if (resultUnlock != 0)
         throw ThreadException("Event::set() : pthread_mutex_unlock didn't return 0.");
 }
-
-void Event::reset() throw(ThreadException)
-{
-    int resultLock = pthread_mutex_lock(&data->mutex);
-    if (resultLock != 0)
-        throw ThreadException("Event::set() : pthread_mutex_lock didn't return 0.");
-
-    data->fired = false;
-
-    int resultUnlock = pthread_mutex_unlock(&data->mutex);
-    if (resultUnlock != 0)
-        throw ThreadException("Event::set() : pthread_mutex_unlock didn't return 0.");
-}
+#endif
 
 #endif // ! _WIN32

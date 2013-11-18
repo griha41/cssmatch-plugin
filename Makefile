@@ -14,10 +14,14 @@
 # GNU General Public License for more details.
 # 
 # You should have received a copy of the GNU General Public License
-# along with CSSMatch; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
-#
-# Portions of this code are also Copyright © 2004-2006 SourceMM Development Team, All rights reserved
+# along with CSSMatch; if not, see <http://www.gnu.org/licenses>.
+# 
+# Additional permission under GNU GPL version 3 section 7
+# 
+# If you modify CSSMatch, or any covered work, by linking or combining
+# it with "Source SDK" (or a modified version of that SDK), containing
+# parts covered by the terms of Source SDK licence, the licensors of 
+# CSSMatch grant you additional permission to convey the resulting work.
 #
 
 # Dossier de travail
